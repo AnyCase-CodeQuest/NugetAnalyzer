@@ -16,6 +16,6 @@ namespace NugetAnalyzer.Domain
 
         public int Revision { get; set; }
 
-        public DateTime PublishedDate { get; set; }
+        public DateTime? PublishedDate { get; set; }
     }
 }
