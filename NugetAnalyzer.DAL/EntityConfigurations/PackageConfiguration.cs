@@ -8,14 +8,14 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Package> builder)
         {
-            builder.HasKey(k => k.PackageId);
+            builder.HasKey(p => p.PackageId);
 
             builder.Property(p => p.Name).IsRequired().HasMaxLength(4096);
 
             builder
-                .HasOne(x => x.ReferencePackage)
-                .WithMany(x => x.CurrentPackages)
-                .HasForeignKey(x => x.ReferencePackageId)
+                .HasOne(p => p.ReferencePackage)
+                .WithMany(p => p.CurrentPackages)
+                .HasForeignKey(p => p.ReferencePackageId)
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }

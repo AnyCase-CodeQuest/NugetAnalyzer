@@ -7,7 +7,7 @@ namespace NugetAnalyzer.DAL.Context
     public class NugetAnalyzerDbContext : DbContext
     {
         public NugetAnalyzerDbContext(DbContextOptions<NugetAnalyzerDbContext> options)
-            :base(options)
+            : base(options)
         {
         }
 

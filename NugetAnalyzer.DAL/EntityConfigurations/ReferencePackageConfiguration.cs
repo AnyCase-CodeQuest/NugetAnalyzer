@@ -8,7 +8,7 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<ReferencePackage> builder)
         {
-            builder.HasKey(k => k.PackageId);
+            builder.HasKey(p => p.PackageId);
 
             builder.Property(p => p.Name).IsRequired().HasMaxLength(4096);
         }
