@@ -24,7 +24,7 @@ namespace NugetAnalyzer
         {
             services.AddDbContext<NugetAnalyzerDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
             services.AddMvc();
