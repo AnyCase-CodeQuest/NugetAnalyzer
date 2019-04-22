@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NugetAnalyzer.Common.Middlewares;
 
 namespace NugetAnalyzer
 {
@@ -30,6 +31,7 @@ namespace NugetAnalyzer
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseMvc();
         }
     }
