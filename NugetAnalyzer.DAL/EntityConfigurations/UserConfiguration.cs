@@ -8,12 +8,22 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(p => p.UserId);
+            builder
+                .Property(p => p.Email)
+                .HasMaxLength(256);
 
-            builder.Property(p => p.Email).HasMaxLength(256);
-            builder.Property(p => p.UserName).IsRequired().HasMaxLength(256);
-            builder.Property(p => p.FirstName).HasMaxLength(256);
-            builder.Property(p => p.LastName).HasMaxLength(256);
+            builder
+                .Property(p => p.UserName)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            builder
+                .Property(p => p.FirstName)
+                .HasMaxLength(256);
+
+            builder
+                .Property(p => p.LastName)
+                .HasMaxLength(256);
         }
     }
 }

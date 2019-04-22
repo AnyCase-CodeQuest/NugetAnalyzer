@@ -8,10 +8,14 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Repository> builder)
         {
-            builder.HasKey(p => p.RepositoryId);
+            builder
+                .Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(4096);
 
-            builder.Property(p => p.Name).IsRequired().HasMaxLength(4096);
-            builder.Property(p => p.UserId).IsRequired();
+            builder
+                .Property(p => p.UserId)
+                .IsRequired();
         }
     }
 }
