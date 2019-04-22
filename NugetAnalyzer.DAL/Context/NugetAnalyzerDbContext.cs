@@ -11,11 +11,6 @@ namespace NugetAnalyzer.DAL.Context
         {
         }
 
-        public DbSet<Package> Packages { get; set; }
-        public DbSet<ReferencePackage> ReferencePackages { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Repository> Repositories { get; set; }
-        public DbSet<Solution> Solutions { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
