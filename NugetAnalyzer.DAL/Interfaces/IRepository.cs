@@ -10,7 +10,7 @@ namespace NugetAnalyzer.DAL.Interfaces
 
         IEnumerable<T> Find(Func<T, bool> predicate);
 
-        IEnumerable<T> GetAll();
+        IReadOnlyCollection<T> GetAll();
 
         void Delete(int id);
 

@@ -36,7 +36,7 @@ namespace NugetAnalyzer.DAL.Repositories
                 .Where(predicate);
         }
 
-        public IEnumerable<T> GetAll()
+        public IReadOnlyCollection<T> GetAll()
         {
             return dbSet.AsNoTracking()
                 .ToList();
