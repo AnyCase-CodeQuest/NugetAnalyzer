@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.Common.Middlewares;
 using NugetAnalyzer.DAL.Context;
+using NugetAnalyzer.DAL.Interfaces;
+using NugetAnalyzer.DAL.Repositories;
+using NugetAnalyzer.DAL.UnitOfWork;
 
 namespace NugetAnalyzer
 {
@@ -26,6 +29,9 @@ namespace NugetAnalyzer
             {
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
+
+            services.AddScoped(typeof(Repository<>), typeof(Repository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddMvc();
         }
