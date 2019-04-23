@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
@@ -20,9 +21,9 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             return new Repository<T>(context);
         }
 
-        public void SaveChanges()
+        public async Task<int> SaveChangesAsync()
         {
-            context.SaveChanges();
+            return await context.SaveChangesAsync();
         }
     }
 }
