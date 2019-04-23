@@ -8,7 +8,7 @@ namespace NugetAnalyzer.DAL.Interfaces
     {
         void Add(T item);
 
-        IEnumerable<T> Get(Func<T, bool> predicate);
+        IEnumerable<T> Find(Func<T, bool> predicate);
 
         IEnumerable<T> GetAll();
 

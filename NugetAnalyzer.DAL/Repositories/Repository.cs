@@ -11,10 +11,12 @@ namespace NugetAnalyzer.DAL.Repositories
         where T : class
     {
         private readonly NugetAnalyzerDbContext context;
+        private readonly DbSet<T> dbSet;
 
         public Repository(NugetAnalyzerDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.dbSet = context.Set<T>();
         }
 
         public void Add(T item)
@@ -22,35 +24,33 @@ namespace NugetAnalyzer.DAL.Repositories
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            context.Set<T>().Add(item);
+            dbSet.Add(item);
         }
 
-        public IEnumerable<T> Get(Func<T, bool> predicate)
+        public IEnumerable<T> Find(Func<T, bool> predicate)
         {
             if (predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
 
-            return context.Set<T>()
-                .AsNoTracking()
+            return dbSet.AsNoTracking()
                 .AsEnumerable()
                 .Where(predicate);
         }
 
         public IEnumerable<T> GetAll()
         {
-            return context.Set<T>()
-                .AsNoTracking()
+            return dbSet.AsNoTracking()
                 .ToList();
         }
 
         public void Delete(int id)
         {
-            var item = context.Set<T>().Find(id);
+            var item = dbSet.Find(id);
 
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            context.Set<T>().Remove(item);
+            dbSet.Remove(item);
         }
 
         public void Update(T item)
@@ -58,7 +58,7 @@ namespace NugetAnalyzer.DAL.Repositories
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            context.Set<T>().Attach(item);
+            dbSet.Attach(item);
             context.Entry(item).State = EntityState.Modified;
         }
     }
