@@ -33,8 +33,7 @@ namespace NugetAnalyzer.DAL.Repositories
             return context.Set<T>()
                 .AsNoTracking()
                 .AsEnumerable()
-                .Where(predicate)
-                .ToList();
+                .Where(predicate);
         }
 
         public IEnumerable<T> GetAll()
