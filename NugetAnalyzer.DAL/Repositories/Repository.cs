@@ -33,7 +33,6 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicate));
 
             return dbSet.AsNoTracking()
-                .AsEnumerable()
                 .Where(predicate);
         }
 
