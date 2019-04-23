@@ -22,7 +22,7 @@ namespace NugetAnalyzer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<NugetAnalyzerDbContext>(options =>
+            services.AddDbContextPool<NugetAnalyzerDbContext>(options =>
             {
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
