@@ -50,9 +50,8 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            var entity = await dbSet.AsNoTracking().SingleOrDefaultAsync(predicates);
-
-            return entity;
+            return await dbSet.AsNoTracking()
+                .SingleOrDefaultAsync(predicates);
         }
 
         public async Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
