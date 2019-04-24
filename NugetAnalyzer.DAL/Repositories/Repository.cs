@@ -57,7 +57,6 @@ namespace NugetAnalyzer.DAL.Repositories
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            dbSet.Attach(item);
             context.Entry(item).State = EntityState.Modified;
         }
     }
