@@ -63,7 +63,9 @@ namespace NugetAnalyzer.DAL.Repositories
         public async Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
         {
             if (predicates == null)
+            {
                 throw new ArgumentNullException(nameof(predicates));
+            }
 
             var list = await dbSet.Where(predicates)
                 .AsNoTracking()
@@ -83,7 +85,9 @@ namespace NugetAnalyzer.DAL.Repositories
             var item = dbSet.Find(id);
 
             if (item == null)
+            {
                 throw new ArgumentNullException(nameof(item));
+            }
 
             dbSet.Remove(item);
         }
@@ -91,7 +95,9 @@ namespace NugetAnalyzer.DAL.Repositories
         public void Update(T item)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException(nameof(item));
+            }
 
             context.Entry(item).State = EntityState.Modified;
         }
