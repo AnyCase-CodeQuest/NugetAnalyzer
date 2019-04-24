@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace NugetAnalyzer.DAL.Interfaces
 {
@@ -8,9 +10,13 @@ namespace NugetAnalyzer.DAL.Interfaces
     {
         void Add(T item);
 
-        IEnumerable<T> Find(Func<T, bool> predicate);
+        Task<T> GetByIdAsync(int id);
 
-        IReadOnlyCollection<T> GetAll();
+        Task<T> GetSignleOrDefaultAsync(Expression<Func<T, bool>> predicates);
+
+        Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates);
+
+        Task<IReadOnlyCollection<T>> GetAllAsync();
 
         void Delete(int id);
 

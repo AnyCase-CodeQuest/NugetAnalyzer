@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
@@ -22,24 +24,58 @@ namespace NugetAnalyzer.DAL.Repositories
         public void Add(T item)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException(nameof(item));
+            }
 
             dbSet.Add(item);
         }
 
-        public IEnumerable<T> Find(Func<T, bool> predicate)
+        public async Task<T> GetByIdAsync(int id)
         {
-            if (predicate == null)
-                throw new ArgumentNullException(nameof(predicate));
+            var entity = await dbSet.FindAsync(id);
 
-            return dbSet.AsNoTracking()
-                .Where(predicate);
+            if (entity != null)
+            {
+                this.context.Entry(null).State = EntityState.Detached;
+            }
+
+            return entity;
         }
 
-        public IReadOnlyCollection<T> GetAll()
+        public async Task<T> GetSignleOrDefaultAsync(Expression<Func<T, bool>> predicates)
         {
-            return dbSet.AsNoTracking()
-                .ToList();
+            if (predicates == null)
+            {
+                throw new ArgumentNullException(nameof(predicates));
+            }
+
+            var entity = await dbSet.SingleOrDefaultAsync(predicates);
+
+            if (entity != null)
+            {
+                this.context.Entry(null).State = EntityState.Detached;
+            }
+
+            return entity;
+        }
+
+        public async Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
+        {
+            if (predicates == null)
+                throw new ArgumentNullException(nameof(predicates));
+
+            var list = await dbSet.Where(predicates)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return list.AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<T>> GetAllAsync()
+        {
+            return await dbSet.AsNoTracking()
+                .ToListAsync();
         }
 
         public void Delete(int id)
