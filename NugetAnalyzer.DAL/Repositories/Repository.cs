@@ -50,12 +50,7 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            var entity = await dbSet.SingleOrDefaultAsync(predicates);
-
-            if (entity != null)
-            {
-                this.context.Entry(null).State = EntityState.Detached;
-            }
+            var entity = await dbSet.AsNoTracking().SingleOrDefaultAsync(predicates);
 
             return entity;
         }
