@@ -30,6 +30,7 @@ namespace NugetAnalyzer
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddMvc();

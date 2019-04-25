@@ -37,7 +37,7 @@ namespace NugetAnalyzer.DAL.Repositories
 
             if (entity != null)
             {
-                this.context.Entry(null).State = EntityState.Detached;
+                this.context.Entry(entity).State = EntityState.Detached;
             }
 
             return entity;
@@ -50,7 +50,8 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            return await dbSet.AsNoTracking()
+            return await dbSet
+                .AsNoTracking()
                 .SingleOrDefaultAsync(predicates);
         }
 
@@ -61,7 +62,8 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            var list = await dbSet.Where(predicates)
+            var list = await dbSet
+                .Where(predicates)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -70,7 +72,8 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public async Task<IReadOnlyCollection<T>> GetAllAsync()
         {
-            return await dbSet.AsNoTracking()
+            return await dbSet
+                .AsNoTracking()
                 .ToListAsync();
         }
 
