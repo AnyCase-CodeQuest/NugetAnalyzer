@@ -62,12 +62,10 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            var list = await dbSet
+            return await dbSet
                 .Where(predicates)
                 .AsNoTracking()
                 .ToListAsync();
-
-            return list.AsReadOnly();
         }
 
         public async Task<IReadOnlyCollection<T>> GetAllAsync()
