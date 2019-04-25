@@ -55,26 +55,24 @@ namespace NugetAnalyzer.DAL.Repositories
                 .SingleOrDefaultAsync(predicates);
         }
 
-        public Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
+        public async Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
         {
             if (predicates == null)
             {
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            return dbSet
+            return await dbSet
                 .Where(predicates)
                 .AsNoTracking()
-                .ToListAsync()
-                as Task<IReadOnlyCollection<T>>;
+                .ToListAsync();
         }
 
-        public Task<IReadOnlyCollection<T>> GetAllAsync()
+        public async Task<IReadOnlyCollection<T>> GetAllAsync()
         {
-            return dbSet
+            return await dbSet
                 .AsNoTracking()
-                .ToListAsync()
-                as Task<IReadOnlyCollection<T>>;
+                .ToListAsync();
         }
 
         public void Delete(int id)
