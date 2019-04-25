@@ -43,36 +43,38 @@ namespace NugetAnalyzer.DAL.Repositories
             return entity;
         }
 
-        public async Task<T> GetSignleOrDefaultAsync(Expression<Func<T, bool>> predicates)
+        public Task<T> GetSignleOrDefaultAsync(Expression<Func<T, bool>> predicates)
         {
             if (predicates == null)
             {
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            return await dbSet
+            return dbSet
                 .AsNoTracking()
                 .SingleOrDefaultAsync(predicates);
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
+        public Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
         {
             if (predicates == null)
             {
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            return await dbSet
+            return dbSet
                 .Where(predicates)
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync()
+                as Task<IReadOnlyCollection<T>>;
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync()
+        public Task<IReadOnlyCollection<T>> GetAllAsync()
         {
-            return await dbSet
+            return dbSet
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync()
+                as Task<IReadOnlyCollection<T>>;
         }
 
         public void Delete(int id)
