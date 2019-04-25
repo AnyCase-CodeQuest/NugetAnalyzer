@@ -23,9 +23,9 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             return serviceProvider.GetRequiredService<IRepository<T>>();
         }
 
-        public async Task<int> SaveChangesAsync()
+        public Task<int> SaveChangesAsync()
         {
-            return await context.SaveChangesAsync();
+            return context.SaveChangesAsync();
         }
     }
 }
