@@ -31,28 +31,19 @@ namespace NugetAnalyzer.DAL.Repositories
             dbSet.Add(item);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public Task<T> GetByIdAsync(int id)
         {
-            var entity = await dbSet.FindAsync(id);
-
-            if (entity != null)
-            {
-                this.context.Entry(entity).State = EntityState.Detached;
-            }
-
-            return entity;
+            return dbSet.FindAsync(id);
         }
 
-        public Task<T> GetSignleOrDefaultAsync(Expression<Func<T, bool>> predicates)
+        public Task<T> GetSingleOrDefaultAsync(Expression<Func<T, bool>> predicates)
         {
             if (predicates == null)
             {
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            return dbSet
-                .AsNoTracking()
-                .SingleOrDefaultAsync(predicates);
+            return dbSet.SingleOrDefaultAsync(predicates);
         }
 
         public async Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)

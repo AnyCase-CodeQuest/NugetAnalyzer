@@ -12,7 +12,7 @@ namespace NugetAnalyzer.DAL.Interfaces
 
         Task<T> GetByIdAsync(int id);
 
-        Task<T> GetSignleOrDefaultAsync(Expression<Func<T, bool>> predicates);
+        Task<T> GetSingleOrDefaultAsync(Expression<Func<T, bool>> predicates);
 
         Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates);
 
