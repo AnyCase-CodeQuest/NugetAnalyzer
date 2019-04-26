@@ -12,6 +12,6 @@ namespace NugetAnalyzer.Domain
 
         public Solution Solution { get; set; }
 
-        public ICollection<Package> Packages { get; set; }
+        public ICollection<ProjectPackageVersion> ProjectPackages { get; set; }
     }
 }

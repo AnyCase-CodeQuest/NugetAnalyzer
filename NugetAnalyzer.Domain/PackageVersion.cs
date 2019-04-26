@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NugetAnalyzer.Domain
 {
-    public abstract class PackageBase
+    public class PackageVersion
     {
         public int Id { get; set; }
-
-        public string Name { get; set; }
 
         public int Major { get; set; }
 
@@ -17,5 +16,11 @@ namespace NugetAnalyzer.Domain
         public int Revision { get; set; }
 
         public DateTime? PublishedDate { get; set; }
+
+        public int PackageId { get; set; }
+
+        public Package Package { get; set; }
+
+        public ICollection<ProjectPackageVersion> ProjectPackages { get; set; }
     }
 }

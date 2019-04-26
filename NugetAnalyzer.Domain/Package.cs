@@ -1,13 +1,14 @@
-﻿namespace NugetAnalyzer.Domain
+﻿using System;
+using System.Collections.Generic;
+
+namespace NugetAnalyzer.Domain
 {
-    public class Package : PackageBase
+    public class Package
     {
-        public int ProjectId { get; set; }
+        public int Id { get; set; }
 
-        public Project Project { get; set; }
+        public string Name { get; set; }
 
-        public int? ReferencePackageId { get; set; }
-
-        public ReferencePackage ReferencePackage { get; set; }
+        public ICollection<PackageVersion> Versions { get; set; }
     }
 }
