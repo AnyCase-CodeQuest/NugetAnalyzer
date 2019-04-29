@@ -16,7 +16,8 @@ namespace NugetAnalyzer.DAL.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new PackageConfiguration());
-            builder.ApplyConfiguration(new ReferencePackageConfiguration());
+            builder.ApplyConfiguration(new PackageVersionConfiguration());
+            builder.ApplyConfiguration(new ProjectPackageVersionConfiguration());
             builder.ApplyConfiguration(new ProjectConfiguration());
             builder.ApplyConfiguration(new RepositoryConfiguration());
             builder.ApplyConfiguration(new SolutionConfiguration());

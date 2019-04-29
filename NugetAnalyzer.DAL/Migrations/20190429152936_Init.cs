@@ -4,33 +4,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NugetAnalyzer.DAL.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ReferencePackage",
+                name: "Packages",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 4096, nullable: false),
-                    Major = table.Column<int>(nullable: false),
-                    Minor = table.Column<int>(nullable: false),
-                    Build = table.Column<int>(nullable: false),
-                    Revision = table.Column<int>(nullable: false),
-                    PublishedDate = table.Column<DateTime>(nullable: true)
+                    LastUpdateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReferencePackage", x => x.Id);
+                    table.PrimaryKey("PK_Packages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(maxLength: 256, nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     FirstName = table.Column<string>(maxLength: 256, nullable: true),
@@ -42,19 +39,43 @@ namespace NugetAnalyzer.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Repository",
+                name: "PackageVersions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Major = table.Column<int>(nullable: false),
+                    Minor = table.Column<int>(nullable: false),
+                    Build = table.Column<int>(nullable: false),
+                    Revision = table.Column<int>(nullable: false),
+                    PublishedDate = table.Column<DateTime>(nullable: true),
+                    PackageId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PackageVersions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PackageVersions_Packages_PackageId",
+                        column: x => x.PackageId,
+                        principalTable: "Packages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Repositories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 4096, nullable: false),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Repository", x => x.Id);
+                    table.PrimaryKey("PK_Repositories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Repository_Users_UserId",
+                        name: "FK_Repositories_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -62,7 +83,7 @@ namespace NugetAnalyzer.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Solution",
+                name: "Solutions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -72,17 +93,17 @@ namespace NugetAnalyzer.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Solution", x => x.Id);
+                    table.PrimaryKey("PK_Solutions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Solution_Repository_RepositoryId",
+                        name: "FK_Solutions_Repositories_RepositoryId",
                         column: x => x.RepositoryId,
-                        principalTable: "Repository",
+                        principalTable: "Repositories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Project",
+                name: "Projects",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -92,89 +113,84 @@ namespace NugetAnalyzer.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.PrimaryKey("PK_Projects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Project_Solution_SolutionId",
+                        name: "FK_Projects_Solutions_SolutionId",
                         column: x => x.SolutionId,
-                        principalTable: "Solution",
+                        principalTable: "Solutions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Package",
+                name: "ProjectPackageVersions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 4096, nullable: false),
-                    Major = table.Column<int>(nullable: false),
-                    Minor = table.Column<int>(nullable: false),
-                    Build = table.Column<int>(nullable: false),
-                    Revision = table.Column<int>(nullable: false),
-                    PublishedDate = table.Column<DateTime>(nullable: true),
                     ProjectId = table.Column<int>(nullable: false),
-                    ReferencePackageId = table.Column<int>(nullable: true)
+                    PackageVersionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Package", x => x.Id);
+                    table.PrimaryKey("PK_ProjectPackageVersions", x => new { x.ProjectId, x.PackageVersionId });
                     table.ForeignKey(
-                        name: "FK_Package_Project_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Project",
+                        name: "FK_ProjectPackageVersions_PackageVersions_PackageVersionId",
+                        column: x => x.PackageVersionId,
+                        principalTable: "PackageVersions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Package_ReferencePackage_ReferencePackageId",
-                        column: x => x.ReferencePackageId,
-                        principalTable: "ReferencePackage",
+                        name: "FK_ProjectPackageVersions_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Package_ProjectId",
-                table: "Package",
-                column: "ProjectId");
+                name: "IX_PackageVersions_PackageId",
+                table: "PackageVersions",
+                column: "PackageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Package_ReferencePackageId",
-                table: "Package",
-                column: "ReferencePackageId");
+                name: "IX_ProjectPackageVersions_PackageVersionId",
+                table: "ProjectPackageVersions",
+                column: "PackageVersionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Project_SolutionId",
-                table: "Project",
+                name: "IX_Projects_SolutionId",
+                table: "Projects",
                 column: "SolutionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Repository_UserId",
-                table: "Repository",
+                name: "IX_Repositories_UserId",
+                table: "Repositories",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Solution_RepositoryId",
-                table: "Solution",
+                name: "IX_Solutions_RepositoryId",
+                table: "Solutions",
                 column: "RepositoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Package");
+                name: "ProjectPackageVersions");
 
             migrationBuilder.DropTable(
-                name: "Project");
+                name: "PackageVersions");
 
             migrationBuilder.DropTable(
-                name: "ReferencePackage");
+                name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "Solution");
+                name: "Packages");
 
             migrationBuilder.DropTable(
-                name: "Repository");
+                name: "Solutions");
+
+            migrationBuilder.DropTable(
+                name: "Repositories");
 
             migrationBuilder.DropTable(
                 name: "Users");

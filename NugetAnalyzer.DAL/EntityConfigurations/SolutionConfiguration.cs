@@ -8,6 +8,8 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Solution> builder)
         {
+            builder.ToTable("Solutions");
+
             builder
                 .Property(p => p.Name)
                 .IsRequired()

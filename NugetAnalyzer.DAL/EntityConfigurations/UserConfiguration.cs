@@ -8,6 +8,8 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("Users");
+
             builder
                 .Property(p => p.Email)
                 .HasMaxLength(256);
