@@ -8,6 +8,8 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Repository> builder)
         {
+            builder.ToTable("Repositories");
+
             builder
                 .Property(p => p.Name)
                 .IsRequired()
