@@ -22,4 +22,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
