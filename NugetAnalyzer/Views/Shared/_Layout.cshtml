@@ -7,7 +7,7 @@
     <title>@ViewData["Title"]</title>
 
     <link href="~/stylesheets/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/stylesheets/_Layout.min.css" rel="stylesheet" />
+    <link href="~/stylesheets/Shared/_Layout.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -19,7 +19,7 @@
             </svg>
         </a>
 
-        <button class="navbar-toggler pull-left" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler text-center" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -36,12 +36,19 @@
                     </a>
                 </li>
             </ul>
-            <div class="dropdown float-right">
+            <!--
+                 <div class="nav-item small float-right border border-white rounded">
+                <a asp-action="SignIn" asp-controller="User" class="nav-link text-white" style="font-size:16px">
+                    Sign In
+                </a>
+            </div>
+            -->
+            <div class="dropdown float-right" id="menu">
                 <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropddownMenu" data-toggle="dropdown">
                     <span style="font-size:26px">+</span>
                     <span class="caret align-middle"></span>
                 </button>
-                <ul class="dropdown-menu text-white pull-right dropdown-menu-right mr-auto" aria-labelled-by="dropddownMenu">
+                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto" aria-labelled-by="dropddownMenu" id="navbar__ul">
                     <li>
                         <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
                             New repository
@@ -55,7 +62,7 @@
 
                     <span class="caret align-middle"></span>
                 </button>
-                <ul class="dropdown-menu text-white pull-right dropdown-menu-right mr-auto" aria-labelled-by="dropddownMenu">
+                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto" aria-labelled-by="dropddownMenu" id="navbar__ul">
                     <li>
                         <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
                             New repository
@@ -64,13 +71,35 @@
                 </ul>
             </div>
         </div>
-
     </nav>
 
-    @RenderBody()
+    @RenderBody();
 
+    <footer class="container" id="footer">
+        <div class="row" style="margin-top:10px">
+            <div class="col text-left small">
+                © 2019 GitHub, Inc
+            </div>
+            <div class="col col-1 text-center">
+                <a asp-action="Index" asp-controller="Home" class="footer__logo text-center">
+                    <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+            <div class="col text-right small">
+                <a asp-action="About" asp-controller="Home" class="text-primary" style="font-size:14px;">
+                    About
+                </a>
+                <a asp-action="About" asp-controller="Home" class="text-primary" style="font-size:14px; margin-left:10px">
+                    Contcts
+                </a>
+            </div>
+        </div>
+    </footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="~/scripts/jquery-3.4.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="~/scripts/bootstrap.min.js"></script>
 </body>

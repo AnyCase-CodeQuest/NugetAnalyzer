@@ -3,12 +3,28 @@
         fill: #fff;
     }
 
-
     &:hover {
         svg {
             fill: hsla(0,0%,100%,.7);
         }
     }
+}
+
+.footer__logo {
+    svg {
+        fill: rgba(0,0,0,.2);
+    }
+
+    &:hover {
+        svg {
+            fill: rgba(0,0,0,.4);
+        }
+    }
+}
+
+#footer {
+    border-top: 1px solid rgba(0,0,0,.2);
+    margin-top: 20px;
 }
 
 .nav-link:hover {
@@ -31,5 +47,24 @@
     &:hover {
         background-color: #0366d6;
         color: #fff !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .nav-item {
+        border-top: 1px solid hsla(0,0%,100%,.15);
+    }
+
+    #menu {
+        float: none !important;
+    }
+
+    #navbar__ul {
+        left: 0;
+        right: auto;
+    }
+
+    #logo {
+        text-align: center;
     }
 }

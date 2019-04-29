@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/stylesheets/_Layout.css",
     "inputFile": "wwwroot/stylesheets/_Layout.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Shared/_Layout.css",
+    "inputFile": "wwwroot/stylesheets/Shared/_Layout.scss"
   }
 ]
