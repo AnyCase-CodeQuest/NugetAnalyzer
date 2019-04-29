@@ -14,7 +14,8 @@ namespace NugetAnalyzer.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 4096, nullable: false)
+                    Name = table.Column<string>(maxLength: 4096, nullable: false),
+                    LastUpdateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

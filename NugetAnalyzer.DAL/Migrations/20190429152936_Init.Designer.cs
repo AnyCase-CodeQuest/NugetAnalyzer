@@ -10,7 +10,7 @@ using NugetAnalyzer.DAL.Context;
 namespace NugetAnalyzer.DAL.Migrations
 {
     [DbContext(typeof(NugetAnalyzerDbContext))]
-    [Migration("20190429084648_Init")]
+    [Migration("20190429152936_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,8 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("LastUpdateTime");
 
                     b.Property<string>("Name")
                         .IsRequired()
