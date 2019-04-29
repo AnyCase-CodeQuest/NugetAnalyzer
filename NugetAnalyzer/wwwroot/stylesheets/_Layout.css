@@ -1,0 +1,21 @@
+﻿.navbar__logo svg {
+  fill: #fff; }
+
+.navbar__logo:hover svg {
+  fill: rgba(255, 255, 255, 0.7); }
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.7) !important; }
+
+.navbar-toggler, .btn {
+  border: none !important; }
+  .navbar-toggler:hover, .navbar-toggler:focus, .btn:hover, .btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    color: rgba(255, 255, 255, 0.7) !important; }
+
+.navbar__li {
+  color: #24292e; }
+  .navbar__li:hover {
+    background-color: #0366d6;
+    color: #fff !important; }

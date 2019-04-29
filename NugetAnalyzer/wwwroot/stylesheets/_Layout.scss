@@ -1,0 +1,35 @@
+﻿.navbar__logo {
+    svg {
+        fill: #fff;
+    }
+
+
+    &:hover {
+        svg {
+            fill: hsla(0,0%,100%,.7);
+        }
+    }
+}
+
+.nav-link:hover {
+    color: hsla(0,0%,100%,.7) !important;
+}
+
+.navbar-toggler, .btn {
+    border: none !important;
+
+    &:hover, &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+        color: hsla(0,0%,100%,.7) !important;
+    }
+}
+
+.navbar__li {
+    color: #24292e;
+
+    &:hover {
+        background-color: #0366d6;
+        color: #fff !important;
+    }
+}

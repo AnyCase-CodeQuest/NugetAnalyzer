@@ -45,6 +45,9 @@ namespace NugetAnalyzer
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseMvc();
+
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
