@@ -25,31 +25,38 @@ namespace NugetAnalyzer.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(4096);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Packages");
+                });
+
+            modelBuilder.Entity("NugetAnalyzer.Domain.PackageVersion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("Build");
 
                     b.Property<int>("Major");
 
                     b.Property<int>("Minor");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(4096);
-
-                    b.Property<int>("ProjectId");
+                    b.Property<int>("PackageId");
 
                     b.Property<DateTime?>("PublishedDate");
-
-                    b.Property<int?>("ReferencePackageId");
 
                     b.Property<int>("Revision");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("PackageId");
 
-                    b.HasIndex("ReferencePackageId");
-
-                    b.ToTable("Package");
+                    b.ToTable("PackageVersions");
                 });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Project", b =>
@@ -68,32 +75,20 @@ namespace NugetAnalyzer.DAL.Migrations
 
                     b.HasIndex("SolutionId");
 
-                    b.ToTable("Project");
+                    b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("NugetAnalyzer.Domain.ReferencePackage", b =>
+            modelBuilder.Entity("NugetAnalyzer.Domain.ProjectPackageVersion", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ProjectId");
 
-                    b.Property<int>("Build");
+                    b.Property<int>("PackageVersionId");
 
-                    b.Property<int>("Major");
+                    b.HasKey("ProjectId", "PackageVersionId");
 
-                    b.Property<int>("Minor");
+                    b.HasIndex("PackageVersionId");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(4096);
-
-                    b.Property<DateTime?>("PublishedDate");
-
-                    b.Property<int>("Revision");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ReferencePackage");
+                    b.ToTable("ProjectPackageVersions");
                 });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Repository", b =>
@@ -106,14 +101,13 @@ namespace NugetAnalyzer.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(4096);
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Repository");
+                    b.ToTable("Repositories");
                 });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Solution", b =>
@@ -132,13 +126,14 @@ namespace NugetAnalyzer.DAL.Migrations
 
                     b.HasIndex("RepositoryId");
 
-                    b.ToTable("Solution");
+                    b.ToTable("Solutions");
                 });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -158,17 +153,12 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("NugetAnalyzer.Domain.Package", b =>
+            modelBuilder.Entity("NugetAnalyzer.Domain.PackageVersion", b =>
                 {
-                    b.HasOne("NugetAnalyzer.Domain.Project", "Project")
-                        .WithMany("Packages")
-                        .HasForeignKey("ProjectId")
+                    b.HasOne("NugetAnalyzer.Domain.Package", "Package")
+                        .WithMany("Versions")
+                        .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("NugetAnalyzer.Domain.ReferencePackage", "ReferencePackage")
-                        .WithMany("CurrentPackages")
-                        .HasForeignKey("ReferencePackageId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Project", b =>
@@ -176,6 +166,19 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.HasOne("NugetAnalyzer.Domain.Solution", "Solution")
                         .WithMany("Projects")
                         .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NugetAnalyzer.Domain.ProjectPackageVersion", b =>
+                {
+                    b.HasOne("NugetAnalyzer.Domain.PackageVersion", "PackageVersion")
+                        .WithMany("ProjectPackageVersions")
+                        .HasForeignKey("PackageVersionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("NugetAnalyzer.Domain.Project", "Project")
+                        .WithMany("ProjectPackageVersions")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
