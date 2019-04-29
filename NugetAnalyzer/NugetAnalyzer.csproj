@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.1" />
   </ItemGroup>
 
@@ -25,7 +26,6 @@
   <ItemGroup>
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
