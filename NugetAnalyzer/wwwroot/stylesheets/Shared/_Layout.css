@@ -10,7 +10,7 @@
 .footer__logo:hover svg {
   fill: rgba(0, 0, 0, 0.4); }
 
-#footer {
+.navbar_footer {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
   margin-top: 20px; }
 
@@ -33,10 +33,23 @@
 @media screen and (max-width: 576px) {
   .nav-item {
     border-top: 1px solid rgba(255, 255, 255, 0.15); }
-  #menu {
+  .dropdown__menu_float {
     float: none !important; }
-  #navbar__ul {
+  .navbar__ul {
     left: 0;
-    right: auto; }
-  #logo {
-    text-align: center; } }
+    right: auto; } }
+
+.navbar-dark {
+  background-color: #24292e !important; }
+
+.navbar__link_text {
+  font-size: 14px !important; }
+
+.navbar__dropdown_button {
+  font-size: 26px !important; }
+
+.footer__row_margin {
+  margin-top: 10px; }
+
+.footer__link_margin {
+  margin-left: 10px; }

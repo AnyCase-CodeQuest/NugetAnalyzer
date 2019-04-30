@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #24292e">
+    <nav class="navbar navbar-expand-sm navbar-dark">
         <a asp-action="Index" asp-controller="Home" class="navbar-brand navbar__logo">
             <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
                 <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z" />
@@ -25,43 +25,43 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item small font-weight-bold">
-                    <a asp-action="About" asp-controller="Home" class="nav-link text-white" style="font-size:14px">
+                    <a asp-action="About" asp-controller="Home" class="nav-link text-white navbar__link_text">
                         About
                     </a>
                 </li>
                 <li class="nav-item small font-weight-bold">
-                    <a asp-action="Contacts" asp-controller="Home" class="nav-link text-white" style="font-size:14px">
+                    <a asp-action="Contacts" asp-controller="Home" class="nav-link text-white navbar__link_text">
                         Contacts
                     </a>
                 </li>
             </ul>
             <!--
                  <div class="nav-item small float-right border border-white rounded">
-                <a asp-action="SignIn" asp-controller="User" class="nav-link text-white" style="font-size:16px">
+                <a asp-action="SignIn" asp-controller="User" class="nav-link text-white navbar__link_text">
                     Sign In
                 </a>
             </div>
             -->
-            <div class="dropdown float-right" id="menu">
-                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropddownMenu" data-toggle="dropdown">
-                    <span style="font-size:26px">+</span>
+            <div class="dropdown float-right dropdown__menu_float">
+                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
+                    <span class="navbar__dropdown_button">+</span>
                     <span class="caret align-middle"></span>
                 </button>
-                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto" aria-labelled-by="dropddownMenu" id="navbar__ul">
+                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
                     <li>
                         <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
                             New repository
                         </a>
                     </li>
                 </ul>
-                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropddownMenu" data-toggle="dropdown">
-                    <span style="font-size:24px">
+                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
+                    <span class="navbar__dropdown_button">
                         <img src="~/images/icon.jpg" width="24px" height="24px" alt="Alternate Text" />
                     </span>
 
                     <span class="caret align-middle"></span>
                 </button>
-                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto" aria-labelled-by="dropddownMenu" id="navbar__ul">
+                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
                     <li>
                         <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
                             New repository
@@ -74,8 +74,8 @@
 
     @RenderBody();
 
-    <footer class="container" id="footer">
-        <div class="row" style="margin-top:10px">
+    <footer class="container navbar_footer">
+        <div class="row footer__row_margin">
             <div class="col text-left small">
                 © 2019 GitHub, Inc
             </div>
@@ -87,10 +87,10 @@
                 </a>
             </div>
             <div class="col text-right small">
-                <a asp-action="About" asp-controller="Home" class="text-primary" style="font-size:14px;">
+                <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text">
                     About
                 </a>
-                <a asp-action="About" asp-controller="Home" class="text-primary" style="font-size:14px; margin-left:10px">
+                <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text footer__link_margin">
                     Contcts
                 </a>
             </div>
