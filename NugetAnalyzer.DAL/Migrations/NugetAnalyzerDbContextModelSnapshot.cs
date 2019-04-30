@@ -25,6 +25,8 @@ namespace NugetAnalyzer.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("LastUpdateTime");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(4096);
