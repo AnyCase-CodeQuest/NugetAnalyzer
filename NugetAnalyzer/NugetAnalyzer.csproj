@@ -6,15 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\stylesheets\_Layout.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\stylesheets\_Layout.min.css" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="compilerconfig.json" />
   </ItemGroup>
 
