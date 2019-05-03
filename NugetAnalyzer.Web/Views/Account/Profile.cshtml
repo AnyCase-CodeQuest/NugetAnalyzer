@@ -1,0 +1,19 @@
+﻿@model NugetAnalyzer.BLL.Models.Profile
+@{
+    ViewData["Title"] = "Profile";
+}
+
+    <div class="row">
+        <div class="column">
+            <img src=@Model.AvatarUrl />
+            <label>@Model.UserName</label>
+            <button>Edit</button>
+        </div>
+        <div class="column">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#">Overview</a></li>
+                <li><a href="#">Repositories</a></li>
+            </ul>
+        </div>
+    </div>
+

@@ -35,45 +35,51 @@
                     </a>
                 </li>
             </ul>
-            <!--
-                 <div class="nav-item small float-right border border-white rounded">
-                <a asp-action="SignIn" asp-controller="User" class="nav-link text-white navbar__link_text">
-                    Sign In
-                </a>
-            </div>
-            -->
-            <div class="dropdown float-right dropdown__menu_float">
-                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
-                    <span class="navbar__dropdown_button">+</span>
-                    <span class="caret align-middle"></span>
-                </button>
-                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
-                    <li>
-                        <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
-                            New repository
-                        </a>
-                    </li>
-                </ul>
-                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
-                    <span class="navbar__dropdown_button">
-                        <img src="~/images/icon.jpg" width="24px" height="24px" alt="Alternate Text" />
-                    </span>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="nav-item small float-right border border-white rounded">
+                    <a asp-action="SourceChoice" asp-controller="OAuthSignIn" class="nav-link text-white navbar__link_text">
+                        Sign In
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="dropdown float-right dropdown__menu_float">
+                    <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
+                        <span class="navbar__dropdown_button">+</span>
+                        <span class="caret align-middle"></span>
+                    </button>
+                    <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
+                        <li>
+                            <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
+                                New repository
+                            </a>
+                        </li>
+                    </ul>
+                    <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
+                        <span class="navbar__dropdown_button">
+                            <!--Todo: resize icon-->
+                            <img src="~/images/icon.jpg" width="24px" height="24px" alt="Alternate Text" />
+                        </span>
 
-                    <span class="caret align-middle"></span>
-                </button>
-                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
-                    <li>
-                        <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
-                            New repository
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                        <span class="caret align-middle"></span>
+                    </button>
+                    <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
+                        <li>
+                            <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
+                                New repository
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+
         </div>
     </nav>
 
     @RenderBody()
-
     <footer class="container footer__container">
         <div class="row footer__row_margin">
             <div class="col text-left small">
@@ -90,8 +96,8 @@
                 <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text">
                     About
                 </a>
-                <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text footer__link_margin">
-                    Contcts
+                <a asp-action="Contacts" asp-controller="Home" class="text-primary navbar__link_text footer__link_margin">
+                    Contacts
                 </a>
             </div>
         </div>

@@ -6,5 +6,9 @@
   {
     "outputFile": "wwwroot/stylesheets/Shared/_Layout.css",
     "inputFile": "wwwroot/stylesheets/Shared/_Layout.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Shared/SignIn.css",
+    "inputFile": "wwwroot/stylesheets/Shared/SignIn.scss"
   }
 ]

@@ -18,14 +18,6 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
                 .Property(p => p.UserName)
                 .IsRequired()
                 .HasMaxLength(256);
-
-            builder
-                .Property(p => p.FirstName)
-                .HasMaxLength(256);
-
-            builder
-                .Property(p => p.LastName)
-                .HasMaxLength(256);
         }
     }
 }
