@@ -1,34 +1,7 @@
 ﻿$link-hover-color: hsla(0,0%,100%,.7);
 $logo-fill-color: rgba(0,0,0,.2);
 
-.navbar__logo {
-    svg {
-        fill: #fff;
-    }
-
-    &:hover {
-        svg {
-            fill: $link-hover-color;
-        }
-    }
-}
-
-.footer__logo {
-    svg {
-        fill: $logo-fill-color;
-    }
-
-    &:hover {
-        svg {
-            fill: rgba(0,0,0,.4);
-        }
-    }
-}
-
-.navbar_footer {
-    border-top: 1px solid $logo-fill-color;
-    margin-top: 20px;
-}
+// -------------------- navbar --------------------
 
 .nav-link:hover {
     color: $link-hover-color !important;
@@ -41,6 +14,18 @@ $logo-fill-color: rgba(0,0,0,.2);
         outline: none !important;
         box-shadow: none !important;
         color: $link-hover-color !important;
+    }
+}
+
+.navbar__logo {
+    svg {
+        fill: #fff;
+    }
+
+    &:hover {
+        svg {
+            fill: $link-hover-color;
+        }
     }
 }
 
@@ -78,6 +63,25 @@ $logo-fill-color: rgba(0,0,0,.2);
 
 .navbar__dropdown_button {
     font-size: 26px !important;
+}
+
+// -------------------- footer --------------------
+
+.footer__container {
+    border-top: 1px solid $logo-fill-color;
+    margin-top: 20px;
+}
+
+.footer__logo {
+    svg {
+        fill: $logo-fill-color;
+    }
+
+    &:hover {
+        svg {
+            fill: rgba(0,0,0,.4);
+        }
+    }
 }
 
 .footer__row_margin {

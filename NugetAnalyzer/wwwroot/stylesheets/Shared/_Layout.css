@@ -1,20 +1,4 @@
-﻿.navbar__logo svg {
-  fill: #fff; }
-
-.navbar__logo:hover svg {
-  fill: rgba(255, 255, 255, 0.7); }
-
-.footer__logo svg {
-  fill: rgba(0, 0, 0, 0.2); }
-
-.footer__logo:hover svg {
-  fill: rgba(0, 0, 0, 0.4); }
-
-.navbar_footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
-  margin-top: 20px; }
-
-.nav-link:hover {
+﻿.nav-link:hover {
   color: rgba(255, 255, 255, 0.7) !important; }
 
 .navbar-toggler, .btn {
@@ -23,6 +7,12 @@
     outline: none !important;
     box-shadow: none !important;
     color: rgba(255, 255, 255, 0.7) !important; }
+
+.navbar__logo svg {
+  fill: #fff; }
+
+.navbar__logo:hover svg {
+  fill: rgba(255, 255, 255, 0.7); }
 
 .navbar__li {
   color: #24292e; }
@@ -47,6 +37,16 @@
 
 .navbar__dropdown_button {
   font-size: 26px !important; }
+
+.footer__container {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  margin-top: 20px; }
+
+.footer__logo svg {
+  fill: rgba(0, 0, 0, 0.2); }
+
+.footer__logo:hover svg {
+  fill: rgba(0, 0, 0, 0.4); }
 
 .footer__row_margin {
   margin-top: 10px; }
