@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="Shortcut Icon" href="~/images/logo/logo.ico" type="image/x-icon" />
+    <title>@ViewData["Title"]</title>
+
+    <link href="~/stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/stylesheets/Shared/_Layout.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark">
+        <a asp-action="Index" asp-controller="Home" class="navbar-brand navbar__logo">
+            <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+                <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z" />
+            </svg>
+        </a>
+
+        <button class="navbar-toggler text-center" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item small font-weight-bold">
+                    <a asp-action="About" asp-controller="Home" class="nav-link text-white navbar__link_text">
+                        About
+                    </a>
+                </li>
+                <li class="nav-item small font-weight-bold">
+                    <a asp-action="Contacts" asp-controller="Home" class="nav-link text-white navbar__link_text">
+                        Contacts
+                    </a>
+                </li>
+            </ul>
+            <!--
+                 <div class="nav-item small float-right border border-white rounded">
+                <a asp-action="SignIn" asp-controller="User" class="nav-link text-white navbar__link_text">
+                    Sign In
+                </a>
+            </div>
+            -->
+            <div class="dropdown float-right dropdown__menu_float">
+                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
+                    <span class="navbar__dropdown_button">+</span>
+                    <span class="caret align-middle"></span>
+                </button>
+                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
+                    <li>
+                        <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
+                            New repository
+                        </a>
+                    </li>
+                </ul>
+                <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenu" data-toggle="dropdown">
+                    <span class="navbar__dropdown_button">
+                        <img src="~/images/icon.jpg" width="24px" height="24px" alt="Alternate Text" />
+                    </span>
+
+                    <span class="caret align-middle"></span>
+                </button>
+                <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenu">
+                    <li>
+                        <a asp-action="About" asp-controller="Home" class="nav-link navbar__li">
+                            New repository
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    <footer class="container footer__container">
+        <div class="row footer__row_margin">
+            <div class="col text-left small">
+                © @System.DateTime.Now.Year Nuget Analyzer
+            </div>
+            <div class="col col-1 text-center">
+                <a asp-action="Index" asp-controller="Home" class="footer__logo text-center">
+                    <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+                        <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z" />
+                    </svg>
+                </a>
+            </div>
+            <div class="col text-right small">
+                <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text">
+                    About
+                </a>
+                <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text footer__link_margin">
+                    Contcts
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/scripts/jquery-3.4.0.min.js"></script>
+    <script src="~/scripts/popper.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+</body>
+</html>
