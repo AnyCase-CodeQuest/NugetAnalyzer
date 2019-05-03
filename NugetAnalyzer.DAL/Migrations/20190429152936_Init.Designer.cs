@@ -22,185 +22,185 @@ namespace NugetAnalyzer.DAL.Migrations
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Package", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("LastUpdateTime");
+                b.Property<DateTime?>("LastUpdateTime");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(4096);
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(4096);
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Packages");
-                });
+                b.ToTable("Packages");
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.PackageVersion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Build");
+                b.Property<int>("Build");
 
-                    b.Property<int>("Major");
+                b.Property<int>("Major");
 
-                    b.Property<int>("Minor");
+                b.Property<int>("Minor");
 
-                    b.Property<int>("PackageId");
+                b.Property<int>("PackageId");
 
-                    b.Property<DateTime?>("PublishedDate");
+                b.Property<DateTime?>("PublishedDate");
 
-                    b.Property<int>("Revision");
+                b.Property<int>("Revision");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("PackageId");
+                b.HasIndex("PackageId");
 
-                    b.ToTable("PackageVersions");
-                });
+                b.ToTable("PackageVersions");
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Project", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(4096);
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(4096);
 
-                    b.Property<int>("SolutionId");
+                b.Property<int>("SolutionId");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("SolutionId");
+                b.HasIndex("SolutionId");
 
-                    b.ToTable("Projects");
-                });
+                b.ToTable("Projects");
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.ProjectPackageVersion", b =>
-                {
-                    b.Property<int>("ProjectId");
+            {
+                b.Property<int>("ProjectId");
 
-                    b.Property<int>("PackageVersionId");
+                b.Property<int>("PackageVersionId");
 
-                    b.HasKey("ProjectId", "PackageVersionId");
+                b.HasKey("ProjectId", "PackageVersionId");
 
-                    b.HasIndex("PackageVersionId");
+                b.HasIndex("PackageVersionId");
 
-                    b.ToTable("ProjectPackageVersions");
-                });
+                b.ToTable("ProjectPackageVersions");
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Repository", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(4096);
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(4096);
 
-                    b.Property<int>("UserId");
+                b.Property<int>("UserId");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Repositories");
-                });
+                b.ToTable("Repositories");
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Solution", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(4096);
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(4096);
 
-                    b.Property<int>("RepositoryId");
+                b.Property<int>("RepositoryId");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("RepositoryId");
+                b.HasIndex("RepositoryId");
 
-                    b.ToTable("Solutions");
-                });
+                b.ToTable("Solutions");
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
+                b.Property<string>("Email")
+                    .HasMaxLength(256);
 
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(256);
+                b.Property<string>("FirstName")
+                    .HasMaxLength(256);
 
-                    b.Property<string>("LastName")
-                        .HasMaxLength(256);
+                b.Property<string>("LastName")
+                    .HasMaxLength(256);
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(256);
+                b.Property<string>("UserName")
+                    .IsRequired()
+                    .HasMaxLength(256);
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Users");
-                });
+                b.ToTable("Users");
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.PackageVersion", b =>
-                {
-                    b.HasOne("NugetAnalyzer.Domain.Package", "Package")
-                        .WithMany("Versions")
-                        .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            {
+                b.HasOne("NugetAnalyzer.Domain.Package", "Package")
+                    .WithMany("Versions")
+                    .HasForeignKey("PackageId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Project", b =>
-                {
-                    b.HasOne("NugetAnalyzer.Domain.Solution", "Solution")
-                        .WithMany("Projects")
-                        .HasForeignKey("SolutionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            {
+                b.HasOne("NugetAnalyzer.Domain.Solution", "Solution")
+                    .WithMany("Projects")
+                    .HasForeignKey("SolutionId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.ProjectPackageVersion", b =>
-                {
-                    b.HasOne("NugetAnalyzer.Domain.PackageVersion", "PackageVersion")
-                        .WithMany("ProjectPackageVersions")
-                        .HasForeignKey("PackageVersionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+            {
+                b.HasOne("NugetAnalyzer.Domain.PackageVersion", "PackageVersion")
+                    .WithMany("ProjectPackageVersions")
+                    .HasForeignKey("PackageVersionId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("NugetAnalyzer.Domain.Project", "Project")
-                        .WithMany("ProjectPackageVersions")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                b.HasOne("NugetAnalyzer.Domain.Project", "Project")
+                    .WithMany("ProjectPackageVersions")
+                    .HasForeignKey("ProjectId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Repository", b =>
-                {
-                    b.HasOne("NugetAnalyzer.Domain.User", "User")
-                        .WithMany("Repositories")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            {
+                b.HasOne("NugetAnalyzer.Domain.User", "User")
+                    .WithMany("Repositories")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity("NugetAnalyzer.Domain.Solution", b =>
-                {
-                    b.HasOne("NugetAnalyzer.Domain.Repository", "Repository")
-                        .WithMany("Solutions")
-                        .HasForeignKey("RepositoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+            {
+                b.HasOne("NugetAnalyzer.Domain.Repository", "Repository")
+                    .WithMany("Solutions")
+                    .HasForeignKey("RepositoryId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 #pragma warning restore 612, 618
         }
     }

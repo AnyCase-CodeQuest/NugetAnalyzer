@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NugetAnalyzer.Common.Middlewares;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
+using NugetAnalyzer.Web.Middleware;
 
 namespace NugetAnalyzer.Web
 {
