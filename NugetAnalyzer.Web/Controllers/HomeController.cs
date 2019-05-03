@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace NugetAnalyzer.Controllers
+namespace NugetAnalyzer.Web.Controllers
 {
     public class HomeController : Controller
     {
