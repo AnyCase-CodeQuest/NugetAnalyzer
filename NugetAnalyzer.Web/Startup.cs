@@ -9,7 +9,7 @@ using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
 
-namespace NugetAnalyzer
+namespace NugetAnalyzer.Web
 {
     public class Startup
     {
