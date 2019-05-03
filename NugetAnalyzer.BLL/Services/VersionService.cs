@@ -18,7 +18,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             this.uow = uow;
             this.dateTimeProvider = dateTimeProvider;
-            versionRepository = uow.GetVersionRepository();
+            versionRepository = uow.GetRepository<IVersionRepository>();
         }
 
         public async Task UpdateLatestVersionOfNewPackagesAsync(IEnumerable<PackageVersion> versions)

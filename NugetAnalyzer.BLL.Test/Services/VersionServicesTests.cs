@@ -26,7 +26,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             dateTimeProviderMock = new Mock<IDateTimeProvider>();
 
             uowMock
-                .Setup(p => p.GetVersionRepository())
+                .Setup(p => p.GetRepository<IVersionRepository>())
                 .Returns(versionRepositoryMock.Object);
 
             versionService = new VersionService(uowMock.Object, dateTimeProviderMock.Object);

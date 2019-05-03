@@ -18,7 +18,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             this.nugetApiService = nugetApiService;
             this.versionService = versionService;
-            packageRepository = uow.GetRepository<Package>();
+            packageRepository = uow.GetGenericRepository<Package>();
         }
 
         private async Task<PackageVersion> GetLatestVersionOfPackageAsync(Package package)
@@ -36,7 +36,9 @@ namespace NugetAnalyzer.BLL.Services
         public async Task RefreshLatestVersionOfAllPackagesAsync()
         {
             var newPackages = await packageRepository.GetAllAsync();
-            var packageVersionTasks = newPackages.Select(GetLatestVersionOfPackageAsync).ToArray();
+            var packageVersionTasks = newPackages
+                                        .Select(GetLatestVersionOfPackageAsync)
+                                        .ToArray();
 
             var versions = await Task.WhenAll(packageVersionTasks);
 
@@ -46,7 +48,9 @@ namespace NugetAnalyzer.BLL.Services
         public async Task RefreshLatestVersionOfNewPackagesAsync()
         {
             var newPackages = await packageRepository.GetAsync(p => p.LastUpdateTime == null);
-            var packageVersionTasks = newPackages.Select(GetLatestVersionOfPackageAsync).ToArray();
+            var packageVersionTasks = newPackages
+                                        .Select(GetLatestVersionOfPackageAsync)
+                                        .ToArray();
 
             var versions = await Task.WhenAll(packageVersionTasks);
 

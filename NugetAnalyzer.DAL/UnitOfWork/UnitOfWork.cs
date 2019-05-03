@@ -17,15 +17,16 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public IRepository<T> GetRepository<T>()
+        public IRepository<T> GetGenericRepository<T>()
             where T : class
         {
             return serviceProvider.GetRequiredService<IRepository<T>>();
         }
 
-        public IVersionRepository GetVersionRepository()
+        public T GetRepository<T>()
+            where T : IVersionRepository
         {
-            return serviceProvider.GetRequiredService<IVersionRepository>();
+            return serviceProvider.GetRequiredService<T>();
         }
 
         public Task<int> SaveChangesAsync()
