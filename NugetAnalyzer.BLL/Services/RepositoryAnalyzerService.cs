@@ -12,7 +12,8 @@ namespace NugetAnalyzer.BLL.Services
             Repository repository = new Repository
             {
                 Name = GetDirectoryMame(repositoryPath),
-                Path = repositoryPath
+                Path = repositoryPath,
+                Solutions = new List<Solution>()
             };
 
             foreach (var solutionDirectoryPath in GetSolutionsDirectoriesPaths(repository.Path))
@@ -20,7 +21,8 @@ namespace NugetAnalyzer.BLL.Services
                 Solution solution = new Solution
                 {
                     Name = GetDirectoryMame(solutionDirectoryPath),
-                    Path = solutionDirectoryPath
+                    Path = solutionDirectoryPath,
+                    Projects = new List<Project>()
                 };
 
                 foreach (var projectDirectoryPath in GetProjectsDirectoriesPaths(solution.Path))
@@ -28,7 +30,8 @@ namespace NugetAnalyzer.BLL.Services
                     Project project = new Project
                     {
                         Name = GetDirectoryMame(projectDirectoryPath),
-                        Path = projectDirectoryPath
+                        Path = projectDirectoryPath,
+                        Packages = new List<Package>()
                     };
 
                     if (GetPackagesConfigPath(project.Path) != null)
@@ -45,27 +48,8 @@ namespace NugetAnalyzer.BLL.Services
 
                 repository.Solutions.Add(solution);
             }
-            
+
             return repository;
-        }
-
-        private string GetCsProjFilePath(string projectFolderPath)
-        {
-            var csProjPath = Directory.GetFiles(projectFolderPath, "*.csproj", SearchOption.AllDirectories);
-
-            return csProjPath.Count() == 0 ? null : csProjPath[0];
-        }
-
-        private string GetPackagesConfigPath(string projectPath)
-        {
-            var packageConfigPath = Directory.GetFiles(projectPath, "packages.config", SearchOption.AllDirectories);
-
-            return packageConfigPath.Count() == 0 ? null : packageConfigPath[0];
-        }
-
-        private static string GetDirectoryMame(string directoryPath)
-        {
-            return new DirectoryInfo(directoryPath).Name;
         }
 
         private static IList<string> GetSolutionsDirectoriesPaths(string repositoryPath)
@@ -96,13 +80,34 @@ namespace NugetAnalyzer.BLL.Services
             return paths;
         }
 
+        private string GetCsProjFilePath(string projectFolderPath)
+        {
+            var csProjPath = Directory.GetFiles(projectFolderPath, "*.csproj", SearchOption.AllDirectories);
+
+            return csProjPath.Count() == 0 ? null : csProjPath[0];
+        }
+
+        private string GetPackagesConfigPath(string projectPath)
+        {
+            var packageConfigPath = Directory.GetFiles(projectPath, "packages.config", SearchOption.AllDirectories);
+
+            return packageConfigPath.Count() == 0 ? null : packageConfigPath[0];
+        }
+
+        private static string GetDirectoryMame(string directoryPath)
+        {
+            return new DirectoryInfo(directoryPath).Name;
+        }
+
         private IList<Package> GetPackagesOfCoreApp(string csProjFilePath)
         {
             IList<Package> packages = new List<Package>();
 
-            XmlDocument doc = CreateaXmlDocument(csProjFilePath);
+            XmlDocument document = new XmlDocument();
 
-            XmlNodeList nodesList = doc.SelectNodes("//Project/ItemGroup/PackageReference");
+            document.Load(csProjFilePath);
+
+            XmlNodeList nodesList = document.SelectNodes("//Project/ItemGroup/PackageReference");
 
             foreach (XmlNode node in nodesList)
             {
@@ -133,9 +138,11 @@ namespace NugetAnalyzer.BLL.Services
         {
             IList<Package> packages = new List<Package>();
 
-            XmlDocument doc = CreateaXmlDocument(packagesConfigFilePath);
+            XmlDocument document = new XmlDocument();
 
-            XmlNodeList nodesList = doc.SelectNodes("//packages/package");
+            document.Load(packagesConfigFilePath);
+
+            XmlNodeList nodesList = document.SelectNodes("//packages/package");
 
             foreach (XmlNode node in nodesList)
             {
@@ -161,18 +168,7 @@ namespace NugetAnalyzer.BLL.Services
 
             return packages;
         }
-
-        private XmlDocument CreateaXmlDocument(string filePath)
-        {
-            XmlDocument document = new XmlDocument();
-
-            document.Load(filePath);
-
-            return document;
-        }
     }
-
-
 
     public class Repository
     {
