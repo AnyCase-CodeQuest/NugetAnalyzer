@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class VersionServicesTests
     {
         private Mock<IUnitOfWork> uowMock;

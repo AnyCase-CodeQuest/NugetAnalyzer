@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class NugetServiceTests
     {
         private Mock<IRepository<Package>> packageRepositoryMock;

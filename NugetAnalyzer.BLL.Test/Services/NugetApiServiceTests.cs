@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class NugetApiServiceTests
     {
         private IConfiguration configuration;
