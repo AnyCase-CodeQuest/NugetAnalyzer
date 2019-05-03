@@ -9,6 +9,8 @@ namespace NugetAnalyzer.Domain
 
         public string Name { get; set; }
 
+        public DateTime? LastUpdateTime { get; set; }
+
         public ICollection<PackageVersion> Versions { get; set; }
     }
 }
