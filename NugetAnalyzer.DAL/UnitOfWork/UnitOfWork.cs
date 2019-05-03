@@ -23,6 +23,11 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             return serviceProvider.GetRequiredService<IRepository<T>>();
         }
 
+        public IVersionRepository GetVersionRepository()
+        {
+            return serviceProvider.GetRequiredService<IVersionRepository>();
+        }
+
         public Task<int> SaveChangesAsync()
         {
             return context.SaveChangesAsync();

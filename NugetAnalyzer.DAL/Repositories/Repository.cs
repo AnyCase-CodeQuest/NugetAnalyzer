@@ -12,8 +12,8 @@ namespace NugetAnalyzer.DAL.Repositories
     public class Repository<T> : IRepository<T>
         where T : class
     {
-        private readonly NugetAnalyzerDbContext context;
-        private readonly DbSet<T> dbSet;
+        protected readonly NugetAnalyzerDbContext context;
+        protected readonly DbSet<T> dbSet;
 
         public Repository(NugetAnalyzerDbContext context)
         {
