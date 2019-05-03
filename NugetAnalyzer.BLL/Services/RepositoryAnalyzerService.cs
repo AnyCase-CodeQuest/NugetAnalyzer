@@ -16,6 +16,13 @@ namespace NugetAnalyzer.BLL.Services
                 Solutions = new List<Solution>()
             };
 
+            AddSolutionsToRepository(repository);
+
+            return repository;
+        }
+
+        private void AddSolutionsToRepository(Repository repository)
+        {
             foreach (var solutionDirectoryPath in GetSolutionsDirectoriesPaths(repository.Path))
             {
                 Solution solution = new Solution
@@ -25,31 +32,44 @@ namespace NugetAnalyzer.BLL.Services
                     Projects = new List<Project>()
                 };
 
-                foreach (var projectDirectoryPath in GetProjectsDirectoriesPaths(solution.Path))
-                {
-                    Project project = new Project
-                    {
-                        Name = GetDirectoryMame(projectDirectoryPath),
-                        Path = projectDirectoryPath,
-                        Packages = new List<Package>()
-                    };
-
-                    if (GetPackagesConfigPath(project.Path) != null)
-                    {
-                        project.Packages = GetPackagesOfFrameworkApp(GetPackagesConfigPath(project.Path));
-                    }
-                    else
-                    {
-                        project.Packages = GetPackagesOfCoreApp(GetCsProjFilePath(project.Path));
-                    }
-
-                    solution.Projects.Add(project);
-                }
+                AddPackagesToSolution(solution);
 
                 repository.Solutions.Add(solution);
             }
+        }
 
-            return repository;
+        private void AddPackagesToSolution(Solution solution)
+        {
+            foreach (var projectDirectoryPath in GetProjectsDirectoriesPaths(solution.Path))
+            {
+                Project project = new Project
+                {
+                    Name = GetDirectoryMame(projectDirectoryPath),
+                    Path = projectDirectoryPath,
+                    Packages = new List<Package>()
+                };
+
+                AddpackagesToProject(project);
+
+                solution.Projects.Add(project);
+            }
+        }
+
+        private void AddpackagesToProject(Project project)
+        {
+            if (GetPackagesConfigPath(project.Path) != null)
+            {
+                project.Packages = GetPackagesOfFrameworkApp(GetPackagesConfigPath(project.Path));
+            }
+            else
+            {
+                project.Packages = GetPackagesOfCoreApp(GetCsProjFilePath(project.Path));
+            }
+        }
+
+        private static string GetDirectoryMame(string directoryPath)
+        {
+            return new DirectoryInfo(directoryPath).Name;
         }
 
         private static IList<string> GetSolutionsDirectoriesPaths(string repositoryPath)
@@ -94,18 +114,11 @@ namespace NugetAnalyzer.BLL.Services
             return packageConfigPath.Count() == 0 ? null : packageConfigPath[0];
         }
 
-        private static string GetDirectoryMame(string directoryPath)
-        {
-            return new DirectoryInfo(directoryPath).Name;
-        }
-
         private IList<Package> GetPackagesOfCoreApp(string csProjFilePath)
         {
             IList<Package> packages = new List<Package>();
 
-            XmlDocument document = new XmlDocument();
-
-            document.Load(csProjFilePath);
+            XmlDocument document = GetXmlDocument(csProjFilePath);
 
             XmlNodeList nodesList = document.SelectNodes("//Project/ItemGroup/PackageReference");
 
@@ -138,9 +151,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             IList<Package> packages = new List<Package>();
 
-            XmlDocument document = new XmlDocument();
-
-            document.Load(packagesConfigFilePath);
+            XmlDocument document = GetXmlDocument(packagesConfigFilePath);
 
             XmlNodeList nodesList = document.SelectNodes("//packages/package");
 
@@ -167,6 +178,15 @@ namespace NugetAnalyzer.BLL.Services
             }
 
             return packages;
+        }
+
+        private XmlDocument GetXmlDocument(string filePath)
+        {
+            XmlDocument document = new XmlDocument();
+
+            document.Load(filePath);
+
+            return document;
         }
     }
 
