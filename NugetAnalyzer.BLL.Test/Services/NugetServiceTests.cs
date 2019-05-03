@@ -19,6 +19,15 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IVersionService> versionServiceMock;
         private Mock<IUnitOfWork> uowMock;
         private INugetService nugetService;
+        private readonly PackageVersion testVersion = new PackageVersion
+        {
+            Id = 1,
+            Major = 1,
+            Minor = 1,
+            Build = -1,
+            Revision = -1,
+            PackageId = 1
+        };
 
         [OneTimeSetUp]
         public void Init()
@@ -37,23 +46,13 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public async Task RefreshLatestVersionOfAllPackagesAsync_Should_Invokes_UpdateLatestVersionOfPackagesAsync_When_Valid_Values()
         {
-            var version = new PackageVersion
-            {
-                Id = 1,
-                Major = 1,
-                Minor = 1,
-                Build = -1,
-                Revision = -1,
-                PackageId = 1
-            };
-
             packageRepositoryMock
                 .Setup(p => p.GetAllAsync())
                 .ReturnsAsync(GetListPackage);
 
             nugetApiServiceMock
                 .Setup(p => p.GetLatestVersionPackageAsync(It.IsAny<string>()))
-                .ReturnsAsync(version);
+                .ReturnsAsync(testVersion);
 
             await nugetService.RefreshLatestVersionOfAllPackagesAsync();
 
@@ -63,23 +62,13 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public async Task RefreshLatestVersionOfNewPackagesAsync_Should_Invokes_UpdateLatestVersionOfNewPackagesAsync_When_Valid_Values()
         {
-            var version = new PackageVersion
-            {
-                Id = 1,
-                Major = 1,
-                Minor = 1,
-                Build = -1,
-                Revision = -1,
-                PackageId = 1
-            };
-
             packageRepositoryMock
                 .Setup(p => p.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()))
                 .ReturnsAsync(GetListPackage);
 
             nugetApiServiceMock
                 .Setup(p => p.GetLatestVersionPackageAsync(It.IsAny<string>()))
-                .ReturnsAsync(version);
+                .ReturnsAsync(testVersion);
             
             await nugetService.RefreshLatestVersionOfNewPackagesAsync();
 
