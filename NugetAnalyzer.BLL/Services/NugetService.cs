@@ -16,8 +16,12 @@ namespace NugetAnalyzer.BLL.Services
 
         public NugetService(INugetApiService nugetApiService, IVersionService versionService, IUnitOfWork uow)
         {
-            this.nugetApiService = nugetApiService;
-            this.versionService = versionService;
+            this.nugetApiService = nugetApiService ?? throw new ArgumentNullException(nameof(nugetApiService));
+            this.versionService = versionService ?? throw new ArgumentNullException(nameof(versionService));
+            if (uow == null)
+            {
+                throw new ArgumentNullException(nameof(uow));
+            }
             packageRepository = uow.GetGenericRepository<Package>();
         }
 

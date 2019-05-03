@@ -58,7 +58,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var publishedDate = await nugetApiService.GetPublishedDateByVersionAsync("NUnit", "3.9.0");
 
             Assert.IsInstanceOf<DateTime?>(publishedDate);
-            Assert.AreEqual(publishedDate, new DateTime(2017,11,11,2,35,19));
+            Assert.AreEqual(publishedDate, new DateTime(2017,11,10,23,35,19));
         }
 
         [Test]

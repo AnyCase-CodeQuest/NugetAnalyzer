@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Helpers;
@@ -16,8 +17,8 @@ namespace NugetAnalyzer.BLL.Services
 
         public VersionService(IUnitOfWork uow, IDateTimeProvider dateTimeProvider)
         {
-            this.uow = uow;
-            this.dateTimeProvider = dateTimeProvider;
+            this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
+            this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
             versionRepository = uow.GetRepository<IVersionRepository>();
         }
 

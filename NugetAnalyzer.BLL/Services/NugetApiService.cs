@@ -17,7 +17,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public NugetApiService(IConfiguration configuration)
         {
-            this.configuration = configuration;
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         private async Task<string> GetPackageMetadataAsync(string packageName, string version)
@@ -99,7 +99,8 @@ namespace NugetAnalyzer.BLL.Services
                             publishedString,
                             "MM/dd/yyyy HH:mm:ss",
                             null,
-                            DateTimeStyles.None,
+                            DateTimeStyles.AdjustToUniversal 
+                            | DateTimeStyles.AssumeLocal,
                             out var published))
             {
                 return published;
