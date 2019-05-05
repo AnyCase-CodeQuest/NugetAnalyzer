@@ -63,10 +63,6 @@ namespace NugetAnalyzer.BLL.Services
             }
 
             var data = jsonObject["data"];
-            if (data == null)
-            {
-                return null;
-            }
 
             var versionString = (string)data[0]["version"];
             if (Version.TryParse(versionString, out var version))

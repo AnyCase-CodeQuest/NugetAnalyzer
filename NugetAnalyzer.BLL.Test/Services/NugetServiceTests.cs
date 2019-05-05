@@ -19,6 +19,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IVersionService> versionServiceMock;
         private Mock<IUnitOfWork> uowMock;
         private INugetService nugetService;
+
         private readonly PackageVersion testVersion = new PackageVersion
         {
             Id = 1,

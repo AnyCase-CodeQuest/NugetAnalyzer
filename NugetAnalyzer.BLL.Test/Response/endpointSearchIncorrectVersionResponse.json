@@ -1,0 +1,31 @@
+﻿{
+  "@context": {
+    "@vocab": "http://schema.nuget.org/schema#",
+    "@base": "https://api.nuget.org/v3/registration3/"
+  },
+  "totalHits": 1,
+  "lastReopen": "2019-05-05T15:09:52.5606034Z",
+  "index": "v3-lucene2-v2v3-20180914",
+  "data": [
+    {
+      "@id": "https://api.nuget.org/v3/registration3/test/index.json",
+      "@type": "Package",
+      "registration": "https://api.nuget.org/v3/registration3/test/index.json",
+      "id": "NUnit",
+      "version": "beta",
+      "title": "Test",
+      "authors": [
+        "Charlie Poole, Rob Prouse"
+      ],
+      "totalDownloads": 40816520,
+      "verified": true,
+      "versions": [
+        {
+          "version": "beta",
+          "downloads": 3421364,
+          "@id": "https://api.nuget.org/v3/registration3/test/beta.json"
+        }
+      ]
+    }
+  ]
+}
