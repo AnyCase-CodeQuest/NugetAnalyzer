@@ -11,5 +11,7 @@ namespace NugetAnalyzer.BLL.Interfaces
         Profile GetProfileByGitHubId(int gitHubId);
 
         Task UpdateGitHubToken(int gitHubId, string gitHubToken);
+
+        string GetGitHubTokenByGitHubId(int gitHubId);
     }
 }
