@@ -1,10 +1,10 @@
 ﻿namespace NugetAnalyzer.BLL.Entities.Enums
 {
-    public enum PackagePublicationDateStatus : byte
+    public enum PackageDateStatus : byte
     {
         Normal = 0,
-        HalfYearOld,
-        Obsolete,
+        Warning,
+        Error,
         Undefined
     }
 }

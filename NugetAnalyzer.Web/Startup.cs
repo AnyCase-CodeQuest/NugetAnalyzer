@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NugetAnalyzer.BLL.Entities;
+using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
@@ -30,8 +33,11 @@ namespace NugetAnalyzer.Web
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
+            services.Configure<PackageVersionConfiguration>(options => Configuration.GetSection("PackageStatus").Bind(options));
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPackageVersionComparerService, PackageVersionComparerService>();
 
             services.AddMvc();
         }

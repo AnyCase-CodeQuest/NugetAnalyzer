@@ -1,54 +1,69 @@
 ﻿using NugetAnalyzer.BLL.Entities;
-using NugetAnalyzer.BLL.Entities.Constants;
 using NugetAnalyzer.BLL.Entities.Enums;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Domain;
 using System;
+using Microsoft.Extensions.Options;
 
 namespace NugetAnalyzer.BLL.Services
 {
     public class PackageVersionComparerService : IPackageVersionComparerService
     {
-        public PackageVersionComparisonResult Compare(PackageVersion actualVersion, PackageVersion currentVersion)
+        private readonly PackageVersionConfiguration packageVersionConfiguration;
+        public PackageVersionComparerService(IOptions<PackageVersionConfiguration> packageVersionConfiguration)
         {
-            if(actualVersion == null)
-                throw new ArgumentNullException(nameof(actualVersion));
+            this.packageVersionConfiguration = packageVersionConfiguration.Value ?? throw new ArgumentNullException(nameof(packageVersionConfiguration));
+        }
+        public PackageVersionComparisonResult Compare(PackageVersion latestVersion, PackageVersion currentVersion)
+        {
+            if(latestVersion == null)
+                throw new ArgumentNullException(nameof(latestVersion));
             if (currentVersion == null)
                 throw new ArgumentNullException(nameof(currentVersion));
 
             var comparisonResult = new PackageVersionComparisonResult
             {
-                VersionStatus = CompareVersion(actualVersion, currentVersion),
-                PublicationDateStatus = CheckPublicationDate(actualVersion.PublishedDate)
+                VersionStatus = CompareVersions(latestVersion, currentVersion),
+                DateStatus = CompareDates(latestVersion.PublishedDate, currentVersion.PublishedDate),
+                IsObsolete = ObsoleteCheck(latestVersion.PublishedDate)
             };
 
             return comparisonResult;
         }
 
-        private PackagePublicationDateStatus CheckPublicationDate(DateTime? publishedDate)
+        private bool ObsoleteCheck(DateTime? publishedDateOfLatestVersion)
         {
-            if (publishedDate == null)
-                return PackagePublicationDateStatus.Undefined;
-
-            var difference = DateTime.Today.Subtract(publishedDate.Value).Days / (365.25 / 12); // TODO: DateTime.Today to TimeProvider
-
-            if (difference < PackagePublicationDateConstants.NormalInMonthsTopBorder)
-                return PackagePublicationDateStatus.Normal;
-            if (difference < PackagePublicationDateConstants.ObsoleteInMonthsBottomBorder)
-                return PackagePublicationDateStatus.HalfYearOld;
-            return PackagePublicationDateStatus.Obsolete;
+            if (publishedDateOfLatestVersion == null)
+                return false;
+            return DateTime.Today.Subtract(publishedDateOfLatestVersion.Value).Days / (365.25 / 12) >=
+                   packageVersionConfiguration.ObsoleteBorderInMonths; // TODO: DateTime.Today to TimeProvider
         }
 
-        private PackageVersionStatus CompareVersion(PackageVersion actualVersion, PackageVersion currentVersion)
+        private PackageDateStatus CompareDates(DateTime? publishedDateOfLatestVersion, DateTime? publishedDateOfCurrentVersion)
         {
-            if (!actualVersion.Major.Equals(currentVersion.Major))
-                return PackageVersionStatus.MajorChanged;
-            if (!actualVersion.Minor.Equals(currentVersion.Minor))
-                return PackageVersionStatus.MinorChanged;
-            if (!actualVersion.Build.Equals(currentVersion.Build))
-                return PackageVersionStatus.BuildChanged;
-            if (!actualVersion.Revision.Equals(currentVersion.Revision))
-                return PackageVersionStatus.RevisionChanged;
+            if (publishedDateOfLatestVersion == null || publishedDateOfCurrentVersion == null)
+                return PackageDateStatus.Undefined;
+
+            var differenceInMonths =
+                publishedDateOfLatestVersion.Value.Subtract(publishedDateOfCurrentVersion.Value).Days / (365.25 / 12);
+
+            if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.WarningBottomBorder)
+                return PackageDateStatus.Normal;
+            if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.ErrorBottomBorder)
+                return PackageDateStatus.Warning;
+            return PackageDateStatus.Error;
+        }
+
+        private PackageVersionStatus CompareVersions(PackageVersion latestVersion, PackageVersion currentVersion)
+        {
+            if (!latestVersion.Major.Equals(currentVersion.Major))
+                return packageVersionConfiguration.VersionStatus.Major;
+            if (!latestVersion.Minor.Equals(currentVersion.Minor))
+                return packageVersionConfiguration.VersionStatus.Minor;
+            if (!latestVersion.Build.Equals(currentVersion.Build))
+                return packageVersionConfiguration.VersionStatus.Build;
+            if (!latestVersion.Revision.Equals(currentVersion.Revision))
+                return packageVersionConfiguration.VersionStatus.Revision;
             return PackageVersionStatus.Actual;
         }
     }
