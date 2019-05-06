@@ -1,17 +1,30 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Xml;
+using System.Collections.Generic;
+using NugetAnalyzer.BLL.Models;
+using NugetAnalyzer.BLL.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryAnalyzerService
+    public class RepositoryAnalyzerService : IRepositoryAnalyzerService
     {
+        private readonly IDirectoryService directoryService;
+
+        public RepositoryAnalyzerService(IDirectoryService directoryService)
+        {
+            this.directoryService = directoryService ?? throw new ArgumentNullException(nameof(directoryService));
+        }
+
         public Repository GetParsedRepository(string repositoryPath)
         {
+            if (!directoryService.IsDirectoryExist(repositoryPath))
+            {
+                return null;
+            }
+
             Repository repository = new Repository
             {
-                Name = GetDirectoryMame(repositoryPath),
+                Name = directoryService.GetDirectoryMame(repositoryPath),
                 Path = repositoryPath,
                 Solutions = new List<Solution>()
             };
@@ -23,95 +36,48 @@ namespace NugetAnalyzer.BLL.Services
 
         private void AddSolutionsToRepository(Repository repository)
         {
-            foreach (var solutionDirectoryPath in GetSolutionsDirectoriesPaths(repository.Path))
+            foreach (var solutionDirectoryPath in directoryService.GetSolutionsDirectoriesPaths(repository.Path))
             {
                 Solution solution = new Solution
                 {
-                    Name = GetDirectoryMame(solutionDirectoryPath),
+                    Name = directoryService.GetDirectoryMame(solutionDirectoryPath),
                     Path = solutionDirectoryPath,
                     Projects = new List<Project>()
                 };
 
-                AddPackagesToSolution(solution);
+                AddProjectsToSolution(solution);
 
                 repository.Solutions.Add(solution);
             }
         }
 
-        private void AddPackagesToSolution(Solution solution)
+        private void AddProjectsToSolution(Solution solution)
         {
-            foreach (var projectDirectoryPath in GetProjectsDirectoriesPaths(solution.Path))
+            foreach (var projectDirectoryPath in directoryService.GetProjectsDirectoriesPaths(solution.Path))
             {
                 Project project = new Project
                 {
-                    Name = GetDirectoryMame(projectDirectoryPath),
+                    Name = directoryService.GetDirectoryMame(projectDirectoryPath),
                     Path = projectDirectoryPath,
                     Packages = new List<Package>()
                 };
 
-                AddpackagesToProject(project);
+                AddPackagesToProject(project);
 
                 solution.Projects.Add(project);
             }
         }
 
-        private void AddpackagesToProject(Project project)
+        private void AddPackagesToProject(Project project)
         {
-            if (GetPackagesConfigPath(project.Path) != null)
+            if (directoryService.GetPackagesConfigFilePath(project.Path) != null)
             {
-                project.Packages = GetPackagesOfFrameworkApp(GetPackagesConfigPath(project.Path));
+                project.Packages = GetPackagesOfFrameworkApp(directoryService.GetPackagesConfigFilePath(project.Path));
             }
             else
             {
-                project.Packages = GetPackagesOfCoreApp(GetCsProjFilePath(project.Path));
+                project.Packages = GetPackagesOfCoreApp(directoryService.GetCsProjFilePath(project.Path));
             }
-        }
-
-        private static string GetDirectoryMame(string directoryPath)
-        {
-            return new DirectoryInfo(directoryPath).Name;
-        }
-
-        private static IList<string> GetSolutionsDirectoriesPaths(string repositoryPath)
-        {
-            string[] solutionsFilesPaths = Directory.GetFiles(repositoryPath, "*.sln", SearchOption.AllDirectories);
-
-            return GetFoldersPaths(solutionsFilesPaths);
-        }
-
-        private static IList<string> GetProjectsDirectoriesPaths(string solutionPath)
-        {
-            string[] projectsFilesPaths = Directory.GetFiles(solutionPath, "*.csproj", SearchOption.AllDirectories);
-
-            return GetFoldersPaths(projectsFilesPaths);
-        }
-
-        private static IList<string> GetFoldersPaths(string[] pathsArray)
-        {
-            IList<string> paths = new List<string>();
-
-            foreach (var path in pathsArray)
-            {
-                FileInfo file = new FileInfo(path);
-
-                paths.Add(file.DirectoryName);
-            }
-
-            return paths;
-        }
-
-        private string GetCsProjFilePath(string projectFolderPath)
-        {
-            var csProjPath = Directory.GetFiles(projectFolderPath, "*.csproj", SearchOption.AllDirectories);
-
-            return csProjPath.Count() == 0 ? null : csProjPath[0];
-        }
-
-        private string GetPackagesConfigPath(string projectPath)
-        {
-            var packageConfigPath = Directory.GetFiles(projectPath, "packages.config", SearchOption.AllDirectories);
-
-            return packageConfigPath.Count() == 0 ? null : packageConfigPath[0];
         }
 
         private IList<Package> GetPackagesOfCoreApp(string csProjFilePath)
@@ -188,39 +154,5 @@ namespace NugetAnalyzer.BLL.Services
 
             return document;
         }
-    }
-
-    public class Repository
-    {
-        public string Name { get; set; }
-
-        public string Path { get; set; }
-
-        public IList<Solution> Solutions { get; set; }
-    }
-
-    public class Solution
-    {
-        public string Name { get; set; }
-
-        public string Path { get; set; }
-
-        public IList<Project> Projects { get; set; }
-    }
-
-    public class Project
-    {
-        public string Name { get; set; }
-
-        public string Path { get; set; }
-
-        public IList<Package> Packages { get; set; }
-    }
-
-    public class Package
-    {
-        public string Name { get; set; }
-
-        public string Version { get; set; }
     }
 }
