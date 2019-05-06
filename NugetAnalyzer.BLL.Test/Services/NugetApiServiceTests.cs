@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Moq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Domain;
@@ -28,8 +30,12 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            nugetApiService = new NugetApiService(configuration);
+            var mockFactory = new Mock<IHttpClientFactory>();
+            mockFactory.Setup(p => p.CreateClient(It.IsAny<string>())).Returns(new HttpClient());
 
+            nugetApiService = new NugetApiService(configuration, mockFactory.Object);
+
+            IHttpClientFactory factory = mockFactory.Object;
             server = FluentMockServer
                 .Start(port: 50000);
         }

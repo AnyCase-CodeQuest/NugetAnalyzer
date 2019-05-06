@@ -41,6 +41,7 @@ namespace NugetAnalyzer.Web
             services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<IDateTimeProvider, UtcDateTimeProvider>();
 
+            services.AddHttpClient();
             services.AddMvc();
         }
 

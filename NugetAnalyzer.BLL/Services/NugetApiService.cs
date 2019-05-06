@@ -15,32 +15,34 @@ namespace NugetAnalyzer.BLL.Services
     {
         private const string publishedDateFormat = "MM/dd/yyyy HH:mm:ss";
         private readonly IConfiguration configuration;
+        private readonly IHttpClientFactory clientFactory;
 
-        public NugetApiService(IConfiguration configuration)
+        public NugetApiService(IConfiguration configuration, IHttpClientFactory clientFactory)
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
         }
 
         private async Task<string> GetPackageMetadataAsync(string packageName, string version)
         {
             var url = $"{configuration["EndpointsNugetApi:PackageMetadata"]}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json";
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetAsync(url);
-                return  await response.Content.ReadAsStringAsync();
-            }
+            var client = clientFactory.CreateClient();
+            
+            var response = await client.SendAsync(request);
+            return  await response.Content.ReadAsStringAsync();
         }
 
         private async Task<string> GetDataOfPackageVersionAsync(string query)
         {
             var url = $"{configuration["EndpointsNugetApi:Search"]}/query?q=PackageId:{WebUtility.UrlEncode(query ?? string.Empty)}&prerelease=false";
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetAsync(url);
-                return await response.Content.ReadAsStringAsync();
-            }
+            var client = clientFactory.CreateClient();
+
+            var response = await client.SendAsync(request);
+            return await response.Content.ReadAsStringAsync();
         }
 
         private PackageVersion ParsePackageVersion(string response)
