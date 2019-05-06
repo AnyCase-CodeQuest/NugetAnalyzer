@@ -1,0 +1,22 @@
+﻿.profile__column_item{
+    margin-bottom: 20px
+}
+.nav__link_profile_tab:hover {
+    color: #586069;
+    border: none;
+    border-bottom: solid;
+    border-bottom-color: #d1d5da;
+}
+
+.nav__link_profile_tab.active {
+    border: none !important;
+    border-bottom: solid !important;
+    border-bottom-color: #e36209 !important;
+    color: #24292e;
+    font-weight: 600;
+}
+.nav__link_profile_tab {
+   color: #586069;
+   border-bottom:solid;
+   border-bottom-color:transparent;
+}
