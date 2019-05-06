@@ -27,7 +27,7 @@ namespace NugetAnalyzer.BLL.Services
 
             Repository repository = new Repository
             {
-                Name = directoryService.GetDirectoryMame(repositoryPath),
+                Name = directoryService.GetDirectoryName(repositoryPath),
                 Path = repositoryPath,
                 Solutions = new List<Solution>()
             };
@@ -43,7 +43,7 @@ namespace NugetAnalyzer.BLL.Services
             {
                 Solution solution = new Solution
                 {
-                    Name = directoryService.GetDirectoryMame(solutionDirectoryPath),
+                    Name = directoryService.GetDirectoryName(solutionDirectoryPath),
                     Path = solutionDirectoryPath,
                     Projects = new List<Project>()
                 };
@@ -60,7 +60,7 @@ namespace NugetAnalyzer.BLL.Services
             {
                 Project project = new Project
                 {
-                    Name = directoryService.GetDirectoryMame(projectDirectoryPath),
+                    Name = directoryService.GetDirectoryName(projectDirectoryPath),
                     Path = projectDirectoryPath,
                     Packages = new List<Package>()
                 };

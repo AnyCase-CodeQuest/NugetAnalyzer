@@ -6,7 +6,7 @@ namespace NugetAnalyzer.BLL.Interfaces
     {
         bool IsDirectoryExist(string repositoryPath);
 
-        string GetDirectoryMame(string directoryPath);
+        string GetDirectoryName(string directoryPath);
 
         IList<string> GetSolutionsDirectoriesPaths(string repositoryPath);
 

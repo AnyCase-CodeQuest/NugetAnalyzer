@@ -18,7 +18,7 @@ namespace NugetAnalyzer.BLL.Services
             return Directory.Exists(repositoryPath);
         }
 
-        public string GetDirectoryMame(string directoryPath)
+        public string GetDirectoryName(string directoryPath)
         {
             if (directoryPath == null)
             {
