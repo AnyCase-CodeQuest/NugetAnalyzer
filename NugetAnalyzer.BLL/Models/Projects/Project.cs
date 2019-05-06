@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using NugetAnalyzer.BLL.Models.Packages;
 
-namespace NugetAnalyzer.BLL.Models
+namespace NugetAnalyzer.BLL.Models.Projects
 {
     public class Project
     {

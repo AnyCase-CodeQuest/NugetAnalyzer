@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Xml;
 using System.Collections.Generic;
-using NugetAnalyzer.BLL.Models;
 using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.BLL.Models.Solutions;
+using NugetAnalyzer.BLL.Models.Projects;
+using NugetAnalyzer.BLL.Models.Packages;
 
 namespace NugetAnalyzer.BLL.Services
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using NugetAnalyzer.BLL.Models.Solutions;
 
-namespace NugetAnalyzer.BLL.Models
+namespace NugetAnalyzer.BLL.Models.Repositories
 {
     public class Repository
     {
