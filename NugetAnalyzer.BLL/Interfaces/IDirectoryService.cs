@@ -8,12 +8,6 @@ namespace NugetAnalyzer.BLL.Interfaces
 
         string GetDirectoryName(string directoryPath);
 
-        IList<string> GetSolutionsDirectoriesPaths(string repositoryPath);
-
-        IList<string> GetProjectsDirectoriesPaths(string solutionPath);
-
-        string GetPackagesConfigFilePath(string projectPath);
-
-        string GetCsProjFilePath(string projectDirectoryPath);
+        IList<string> GetDirectoriesPaths(string[] filesPaths);
     }
 }

@@ -12,10 +12,12 @@ namespace NugetAnalyzer.BLL.Services
     public class RepositoryAnalyzerService : IRepositoryAnalyzerService
     {
         private readonly IDirectoryService directoryService;
+        private readonly IFileService fileService;
 
-        public RepositoryAnalyzerService(IDirectoryService directoryService)
+        public RepositoryAnalyzerService(IDirectoryService directoryService, IFileService fileService)
         {
             this.directoryService = directoryService ?? throw new ArgumentNullException(nameof(directoryService));
+            this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
         }
 
         public Repository GetParsedRepository(string repositoryPath)
@@ -39,7 +41,9 @@ namespace NugetAnalyzer.BLL.Services
 
         private void AddSolutionsToRepository(Repository repository)
         {
-            foreach (var solutionDirectoryPath in directoryService.GetSolutionsDirectoriesPaths(repository.Path))
+            var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, "*.sln");
+            var z = directoryService.GetDirectoriesPaths(solutionsFilesPaths);
+            foreach (var solutionDirectoryPath in directoryService.GetDirectoriesPaths(solutionsFilesPaths))
             {
                 Solution solution = new Solution
                 {
@@ -56,7 +60,9 @@ namespace NugetAnalyzer.BLL.Services
 
         private void AddProjectsToSolution(Solution solution)
         {
-            foreach (var projectDirectoryPath in directoryService.GetProjectsDirectoriesPaths(solution.Path))
+            var projectsFilesPaths = fileService.GetFilesPaths(solution.Path, "*.csproj");
+
+            foreach (var projectDirectoryPath in directoryService.GetDirectoriesPaths(projectsFilesPaths))
             {
                 Project project = new Project
                 {
@@ -73,13 +79,13 @@ namespace NugetAnalyzer.BLL.Services
 
         private void AddPackagesToProject(Project project)
         {
-            if (directoryService.GetPackagesConfigFilePath(project.Path) != null)
+            if (fileService.GetPackagesConfigFilePath(project.Path) != null)
             {
-                project.Packages = GetPackagesOfFrameworkApp(directoryService.GetPackagesConfigFilePath(project.Path));
+                project.Packages = GetPackagesOfFrameworkApp(fileService.GetPackagesConfigFilePath(project.Path));
             }
             else
             {
-                project.Packages = GetPackagesOfCoreApp(directoryService.GetCsProjFilePath(project.Path));
+                project.Packages = GetPackagesOfCoreApp(fileService.GetCsProjFilePath(project.Path));
             }
         }
 
@@ -87,7 +93,9 @@ namespace NugetAnalyzer.BLL.Services
         {
             IList<Package> packages = new List<Package>();
 
-            XmlDocument document = GetXmlDocument(csProjFilePath);
+            XmlDocument document = new XmlDocument();
+
+            document.LoadXml(fileService.GetFileContent(csProjFilePath));
 
             XmlNodeList nodesList = document.SelectNodes("//Project/ItemGroup/PackageReference");
 
@@ -120,7 +128,9 @@ namespace NugetAnalyzer.BLL.Services
         {
             IList<Package> packages = new List<Package>();
 
-            XmlDocument document = GetXmlDocument(packagesConfigFilePath);
+            XmlDocument document = new XmlDocument();
+
+            document.LoadXml(fileService.GetFileContent(packagesConfigFilePath));
 
             XmlNodeList nodesList = document.SelectNodes("//packages/package");
 
@@ -147,15 +157,6 @@ namespace NugetAnalyzer.BLL.Services
             }
 
             return packages;
-        }
-
-        private XmlDocument GetXmlDocument(string filePath)
-        {
-            XmlDocument document = new XmlDocument();
-
-            document.Load(filePath);
-
-            return document;
         }
     }
 }
