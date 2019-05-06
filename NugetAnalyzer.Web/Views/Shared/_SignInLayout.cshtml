@@ -11,23 +11,24 @@
     <link href="~/stylesheets/Shared/SignIn.min.css" rel="stylesheet" />
 </head>
 <body>
-    @RenderBody()
-    <footer class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="footer__link">
-                <a asp-action="About" asp-controller="Home">
-                    About
-                </a>
+    <div class="container mt-5">
+        @RenderBody()
+        <footer class="container mt-5">
+            <div class="row justify-content-center align-items-center">
+                <div class="footer__link">
+                    <a asp-action="About" asp-controller="Home">
+                        About
+                    </a>
+                </div>
+                <div class="footer__link">
+                    <a asp-action="Contacts" asp-controller="Home">
+                        Contacts
+                    </a>
+                </div>
             </div>
-            <div class="footer__link">
-                <a asp-action="Contacts" asp-controller="Home">
-                    Contacts
-                </a>
-            </div>
-        </div>
-            
-        
-    </footer>
+        </footer>
+    </div>
+    
     <script src="~/scripts/jquery-3.4.0.min.js"></script>
     <script src="~/scripts/popper.min.js"></script>
     <script src="~/scripts/bootstrap.min.js"></script>

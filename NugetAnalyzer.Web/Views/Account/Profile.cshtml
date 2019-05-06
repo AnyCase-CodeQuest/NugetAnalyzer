@@ -3,20 +3,20 @@
     ViewData["Title"] = "Profile";
 }
     <link href="~/stylesheets/Account/Profile.css" rel="stylesheet"/>
-    <div class="row mt-4 ml-5">
-        <div class="column ml-5" style="max-width: 230px;">
+    <div class="row ">
+        <div class="column " style="max-width: 230px;">
             <img class="profile__column_item" src=@Model.AvatarUrl width="230px" height="230px"/>
             <h3 class="profile__column_item">@Model.UserName</h3>
             <button class="w-100 profile__column_item">Edit</button>
         </div>
         <div class="column ml-4">
             <ul class="nav nav-tabs">
-                <li class="nav-item"><a class="nav-link nav__link_profile_tab" data-toggle="tab" href="#home">Overview</a></li>
-                <li class="nav-item"><a class="nav-link nav__link_profile_tab" data-toggle="tab" href="#profile">Repositories</a></li>
+                <li class="nav-item"><a class="nav-link nav__link_profile_tab active" data-toggle="tab" href="#overview">Overview</a></li>
+                <li class="nav-item"><a class="nav-link nav__link_profile_tab" data-toggle="tab" href="#repostiories">Repositories</a></li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">Home</div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile</div>
+                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">Overview</div>
+                <div class="tab-pane fade" id="repostiories" role="tabpanel" aria-labelledby="repostiories-tab">Repostiories</div>
             </div>
         </div>
     </div>

@@ -16,6 +16,8 @@ namespace NugetAnalyzer.Domain
 
         public int GitHubId { get; set; }
 
+        public string GitHubToken { get; set; }
+
         public ICollection<Repository> Repositories { get; set; }
     }
 }

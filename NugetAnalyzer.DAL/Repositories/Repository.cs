@@ -13,7 +13,7 @@ namespace NugetAnalyzer.DAL.Repositories
         where T : class
     {
         private readonly NugetAnalyzerDbContext context;
-        private readonly DbSet<T> dbSet;
+        protected readonly DbSet<T> dbSet;
 
         public Repository(NugetAnalyzerDbContext context)
         {
@@ -84,7 +84,6 @@ namespace NugetAnalyzer.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(item));
             }
-
             context.Entry(item).State = EntityState.Modified;
         }
     }

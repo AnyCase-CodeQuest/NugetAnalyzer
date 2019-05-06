@@ -12,10 +12,6 @@
     "inputFile": "wwwroot/stylesheets/Shared/SignIn.scss"
   },
   {
-    "outputFile": "wwwroot/stylesheets/Account/StyleSheet.css",
-    "inputFile": "wwwroot/stylesheets/Account/StyleSheet.scss"
-  },
-  {
     "outputFile": "wwwroot/stylesheets/Account/Profile.css",
     "inputFile": "wwwroot/stylesheets/Account/Profile.scss"
   }

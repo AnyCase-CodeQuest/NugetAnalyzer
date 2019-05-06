@@ -1,5 +1,4 @@
-﻿using System;
-using NugetAnalyzer.BLL.Models;
+﻿using NugetAnalyzer.BLL.Models;
 using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Converters

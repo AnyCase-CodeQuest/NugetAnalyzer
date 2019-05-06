@@ -21,8 +21,7 @@ namespace NugetAnalyzer.Web.Controllers
                 GitHubId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 AvatarUrl = User.FindFirstValue("urn:github:avatar")
             };
-
-            return RedirectToAction("UserGitHubLogin", "Account", profile);
+            return RedirectToAction("GitHubLogin", "Account", profile);
         }
     }
 }

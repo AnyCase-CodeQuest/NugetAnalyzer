@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace NugetAnalyzer.Web.Controllers
 {
@@ -13,15 +14,17 @@ namespace NugetAnalyzer.Web.Controllers
         private readonly IUserService userService;
         public AccountController(IUserService userService)
         {
-            this.userService = userService;
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public IActionResult UserGitHubLogin(Profile profile)
+        public async Task<IActionResult> GitHubLogin(Profile profile)
         {
-            Profile userProfile = userService.GetProfileByGitHubId(profile.GitHubId);
+            var userProfile = userService.GetProfileByGitHubId(profile.GitHubId);
             if (userProfile != null)
             {
-                return View("Profile", userProfile);
+                var gitHubToken = HttpContext.GetTokenAsync("access_token").Result;
+                await userService.UpdateGitHubToken(profile.GitHubId, gitHubToken);
+                return RedirectToAction("Profile", userProfile);
             }
             return RedirectToAction("UserCreationForm", profile);
         }
@@ -35,17 +38,36 @@ namespace NugetAnalyzer.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(Profile profile)
         {
-            await userService.CreateUserAsync(profile);
+            var gitHubToken = await HttpContext.GetTokenAsync("access_token");
+            await userService.CreateUserAsync(profile, gitHubToken);
 
-            var userProfile = userService.GetProfileByGitHubId(profile.GitHubId);
-            return View("Profile", userProfile);
+            profile = userService.GetProfileByGitHubId(profile.GitHubId);
+            return RedirectToAction("Profile", profile);
         }
 
-        public IActionResult Profile()
+        public IActionResult Profile(Profile profile)
         {
-            var userGitHubId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var profile = userService.GetProfileByGitHubId(userGitHubId);
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if(profile.UserName == null)
+            {
+                var userGitHubId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                profile = userService.GetProfileByGitHubId(userGitHubId);
+                if (profile == null)
+                {
+                    return RedirectToAction("Signout");
+                }
+            }
+            
             return View("Profile", profile);
+        }
+
+        public async Task<IActionResult> Signout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

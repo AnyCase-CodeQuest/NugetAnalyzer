@@ -1,22 +1,25 @@
-﻿.profile__column_item{
+﻿$tab-inactive-color: #586069;
+$tab-inactive-text-color: #586069;
+$tab-active-color: #e36209;
+$tab-active-text-color: #24292e;
+
+.profile__column_item{
     margin-bottom: 20px
 }
 .nav__link_profile_tab:hover {
-    color: #586069;
+    color: $tab-inactive-text-color;
     border: none;
     border-bottom: solid;
-    border-bottom-color: #d1d5da;
+    border-bottom-color: $tab-inactive-color;
 }
 
 .nav__link_profile_tab.active {
     border: none !important;
     border-bottom: solid !important;
-    border-bottom-color: #e36209 !important;
-    color: #24292e;
+    border-bottom-color: $tab-active-color !important;
+    color: $tab-active-text-color;
     font-weight: 600;
 }
 .nav__link_profile_tab {
-   color: #586069;
-   border-bottom:solid;
-   border-bottom-color:transparent;
+    color: $tab-inactive-text-color;
 }
