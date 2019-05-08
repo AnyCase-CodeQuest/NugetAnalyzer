@@ -35,6 +35,8 @@ namespace NugetAnalyzer.Web
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
+            services.Configure<NugetSettings>(Configuration.GetSection("NugetEndpoints"));
+
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
             services.AddSingleton<INugetApiService, NugetApiService>();
 
@@ -48,7 +50,7 @@ namespace NugetAnalyzer.Web
                 typeof(IRepository<PackageVersion>),
                 provider => provider.GetService<IVersionRepository>());
 
-            services.AddHttpClient();
+            services.AddHttpClient<INugetHttpService, NugetHttpService>();
             services.AddMvc();
         }
 
