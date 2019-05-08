@@ -9,6 +9,7 @@ using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
+using NugetAnalyzer.Domain;
 using NugetAnalyzer.Web.Middleware;
 using NugetAnalyzer.Web.ServiceCollectionExtensions;
 
@@ -35,9 +36,11 @@ namespace NugetAnalyzer.Web
             });
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped(typeof(IRepository<User>), provider => provider.GetService<IUsersRepository>());
 
             services.AddGitHubOAuth(Configuration.GetSection("GitHubEndPoints"), Configuration.GetSection("GitHubAppSettings"));
 

@@ -11,45 +11,45 @@ namespace NugetAnalyzer.BLL.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IUserRepository userRepository;
+        private readonly IUsersRepository usersRepository;
 
         public UserService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            userRepository = unitOfWork.GetRepository<IUserRepository>();
+            usersRepository = (IUsersRepository)unitOfWork.GetRepository<User>();
         }
 
         public async Task CreateUserAsync(Profile profile, string gitHubToken)
         {
             var user = UserConverter.ConvertProfileToUser(profile);
             user.GitHubToken = gitHubToken;
-            userRepository.Add(user);
+            usersRepository.Add(user);
             await unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateGitHubToken(int gitHubId, string gitHubToken)
         {
-            var user = await userRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId);
+            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId);
             user.GitHubToken = gitHubToken;
-            userRepository.Update(user);
+            usersRepository.Update(user);
             await unitOfWork.SaveChangesAsync();
         }
 
         public Profile GetProfileByGitHubId(int gitHubId)
         {
-            var user = userRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId).Result;
+            var user = usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId).Result;
             return UserConverter.ConvertUserToProfile(user);
         }
 
         public Profile GetProfileByUserName(string userName)
         {
-            var user = userRepository.GetSingleOrDefaultAsync(p => p.UserName == userName).Result;
+            var user = usersRepository.GetSingleOrDefaultAsync(p => p.UserName == userName).Result;
             return UserConverter.ConvertUserToProfile(user);
         }
 
         public string GetGitHubTokenByGitHubId(int gitHubId)
         {
-            return userRepository.GetGitHubTokenByGitHubId(gitHubId);
+            return usersRepository.GetGitHubTokenByGitHubId(gitHubId);
         }
     }
 }

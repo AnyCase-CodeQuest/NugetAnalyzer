@@ -3,7 +3,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUsersRepository : IRepository<User>
     {
         string GetGitHubTokenByGitHubId(int gitHubId);
     }

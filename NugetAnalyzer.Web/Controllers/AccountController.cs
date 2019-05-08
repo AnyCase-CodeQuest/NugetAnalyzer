@@ -20,12 +20,14 @@ namespace NugetAnalyzer.Web.Controllers
         public async Task<IActionResult> GitHubLogin(Profile profile)
         {
             var userProfile = userService.GetProfileByGitHubId(profile.GitHubId);
+
             if (userProfile != null)
             {
                 var gitHubToken = HttpContext.GetTokenAsync("access_token").Result;
                 await userService.UpdateGitHubToken(profile.GitHubId, gitHubToken);
                 return RedirectToAction("Profile", userProfile);
             }
+
             return RedirectToAction("UserCreationForm", profile);
         }
 
@@ -51,16 +53,18 @@ namespace NugetAnalyzer.Web.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            if(profile.UserName == null)
+
+            //countermeasures if user closed our site on profile registration form
+            if (profile.UserName == null)
             {
-                var userGitHubId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userGitHubId);
                 profile = userService.GetProfileByGitHubId(userGitHubId);
                 if (profile == null)
                 {
                     return RedirectToAction("Signout");
                 }
             }
-            
+
             return View("Profile", profile);
         }
 

@@ -4,11 +4,8 @@ namespace NugetAnalyzer.DAL.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepository<T> GetGenericRepository<T>()
+        object GetRepository<T>()
             where T : class;
-
-        T GetRepository<T>()
-            where T : IUserRepository;
 
         Task<int> SaveChangesAsync();
     }

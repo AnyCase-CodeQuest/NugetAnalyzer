@@ -5,9 +5,9 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UsersRepository : Repository<User>, IUsersRepository
     {
-        public UserRepository(NugetAnalyzerDbContext context) : base(context)
+        public UsersRepository(NugetAnalyzerDbContext context) : base(context)
         {
         }
 
