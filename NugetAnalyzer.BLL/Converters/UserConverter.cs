@@ -21,7 +21,9 @@ namespace NugetAnalyzer.BLL.Converters
 
         internal static Profile ConvertUserToProfile(User user)
         {
-            return user == null ? null : new Profile
+            return user == null
+                ? null
+                : new Profile
             {
                 UserName = user.UserName,
                 Email = user.Email,
