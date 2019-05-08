@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using NugetAnalyzer.BLL.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
@@ -21,20 +21,25 @@ namespace NugetAnalyzer.BLL.Services
 
         public string GetPackagesConfigFilePath(string projectPath)
         {
-            var packageConfigFilePaths = GetFilesPaths(projectPath, "packages.config");
+            if (projectPath == null)
+                throw new ArgumentNullException(nameof(projectPath));
 
-            return packageConfigFilePaths.Count() == 0 ? null : packageConfigFilePaths[0];
+            return GetFilePath(GetFilesPaths(projectPath, "packages.config"));
         }
 
         public string GetCsProjFilePath(string projectPath)
         {
-            var csProjFilePaths = GetFilesPaths(projectPath, "*.csproj");
+            if (projectPath == null)
+                throw new ArgumentNullException(nameof(projectPath));
 
-            return csProjFilePaths.Count() == 0 ? null : csProjFilePaths[0];
+            return GetFilePath(GetFilesPaths(projectPath, "*.csproj"));
         }
 
         public string GetFileContent(string filePath)
         {
+            if (filePath == null)
+                throw new ArgumentNullException(nameof(filePath));
+
             using (StreamReader streamReader = new StreamReader(filePath))
             {
                 return streamReader.ReadToEnd();
@@ -43,6 +48,9 @@ namespace NugetAnalyzer.BLL.Services
 
         public IList<string> GetFilesDirectoriesPaths(string[] filesPaths)
         {
+            if (filesPaths == null)
+                throw new ArgumentNullException(nameof(filesPaths));
+
             IList<string> directoriesPaths = new List<string>();
 
             foreach (var filePath in filesPaths)
@@ -53,6 +61,11 @@ namespace NugetAnalyzer.BLL.Services
             }
 
             return directoriesPaths;
+        }
+
+        private string GetFilePath(string[] filesPaths)
+        {
+            return filesPaths.Count() == 0 ? null : filesPaths[0];
         }
     }
 }

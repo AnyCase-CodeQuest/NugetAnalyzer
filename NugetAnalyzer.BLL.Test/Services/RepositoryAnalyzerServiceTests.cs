@@ -85,7 +85,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount4_WhenFrameworkAppType()
+        public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount3_WhenFrameworkAppType()
         {
             // Arrange
             directoryService.Setup(s => s.IsDirectoryExist(TestList[0])).Returns(true);
@@ -101,11 +101,11 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             // Assert
             Assert.IsNotNull(repotitory);
-            Assert.AreEqual(4, repotitory.Solutions[0].Projects[0].Packages.Count);
+            Assert.AreEqual(3, repotitory.Solutions[0].Projects[0].Packages.Count);
         }
 
         [Test]
-        public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount6_WhenCoreAppType()
+        public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount5_WhenCoreAppType()
         {
             // Arrange
             directoryService.Setup(s => s.IsDirectoryExist(TestList[0])).Returns(true);
@@ -122,7 +122,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             // Assert
             Assert.IsNotNull(repotitory);
-            Assert.AreEqual(6, repotitory.Solutions[0].Projects[0].Packages.Count);
+            Assert.AreEqual(5, repotitory.Solutions[0].Projects[0].Packages.Count);
         }
     }
 }

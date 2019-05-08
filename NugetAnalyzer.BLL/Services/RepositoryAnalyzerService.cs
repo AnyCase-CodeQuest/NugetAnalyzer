@@ -23,9 +23,7 @@ namespace NugetAnalyzer.BLL.Services
         public Repository GetParsedRepository(string repositoryPath)
         {
             if (!directoryService.IsDirectoryExist(repositoryPath))
-            {
                 return null;
-            }
 
             Repository repository = new Repository
             {
@@ -110,15 +108,6 @@ namespace NugetAnalyzer.BLL.Services
                             Version = node.Attributes["Version"].Value
                         });
                 }
-                else
-                {
-                    packages.Add(
-                         new Package
-                         {
-                             Name = node.Attributes["Include"].Value,
-                             Version = null
-                         });
-                }
             }
 
             return packages;
@@ -144,15 +133,6 @@ namespace NugetAnalyzer.BLL.Services
                             Name = node.Attributes["id"].Value,
                             Version = node.Attributes["version"].Value
                         });
-                }
-                else
-                {
-                    packages.Add(
-                       new Package
-                       {
-                           Name = node.Attributes["id"].Value,
-                           Version = null
-                       });
                 }
             }
 

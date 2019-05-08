@@ -12,15 +12,13 @@ namespace NugetAnalyzer.BLL.Services
 
         public DirectoryService(IHostingEnvironment hostingEnvironment)
         {
-            this.hostingEnvironment = hostingEnvironment;
+            this.hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
         }
 
         public bool IsDirectoryExist(string repositoryPath)
         {
             if (repositoryPath == null)
-            {
                 throw new ArgumentNullException(nameof(repositoryPath));
-            }
 
             return Directory.Exists(repositoryPath);
         }
@@ -28,41 +26,47 @@ namespace NugetAnalyzer.BLL.Services
         public string GetDirectoryName(string directoryPath)
         {
             if (directoryPath == null)
-            {
                 throw new ArgumentNullException(nameof(directoryPath));
-            }
 
             return new DirectoryInfo(directoryPath).Name;
         }
 
         public string CreateDirectoryForRepository()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder path = new StringBuilder();
+
+            path = this.CreateNewPath(path);
+
+            while (IsDirectoryExist(path.ToString()))
+            {
+                path = this.CreateNewPath(path);
+            }
+
+            Directory.CreateDirectory(path.ToString());
+
+            return path.ToString();
+        }
+
+        public void DeleteRepository(string repositoryPath)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException(nameof(repositoryPath));
+
+            if (Directory.Exists(repositoryPath))
+            {
+                Directory.Delete(repositoryPath, true);
+            }
+        }
+
+        private StringBuilder CreateNewPath(StringBuilder stringBuilder)
+        {
+            stringBuilder.Clear();
 
             stringBuilder.Append(hostingEnvironment.WebRootPath);
             stringBuilder.Append("\\");
             stringBuilder.Append(Guid.NewGuid().ToString());
 
-            while (IsDirectoryExist(stringBuilder.ToString()))
-            {
-                stringBuilder = new StringBuilder();
-
-                stringBuilder.Append(hostingEnvironment.WebRootPath);
-                stringBuilder.Append("\\");
-                stringBuilder.Append(Guid.NewGuid().ToString());
-            }
-
-            Directory.CreateDirectory(stringBuilder.ToString());
-
-            return stringBuilder.ToString();
-        }
-
-        public void DeleteRepository(string path)
-        {
-            if (IsDirectoryExist(path))
-            {
-                Directory.Delete(path, true);
-            }
+            return stringBuilder;
         }
     }
 }
