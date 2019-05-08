@@ -5,7 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
-using NugetAnalyzer.BLL.Utilities;
+using NugetAnalyzer.Common;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
@@ -33,13 +34,14 @@ namespace NugetAnalyzer.Web
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
+            services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
+            services.AddSingleton<INugetApiService, NugetApiService>();
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IVersionRepository, VersionRepository>();
-            services.AddScoped<INugetApiService, NugetApiService>();
             services.AddScoped<INugetService, NugetService>();
             services.AddScoped<IVersionService, VersionService>();
-            services.AddScoped<IDateTimeProvider, UtcDateTimeProvider>();
 
             services.AddHttpClient();
             services.AddMvc();

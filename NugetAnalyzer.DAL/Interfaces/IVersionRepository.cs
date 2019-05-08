@@ -8,7 +8,8 @@ namespace NugetAnalyzer.DAL.Interfaces
 {
     public interface IVersionRepository : IRepository<PackageVersion>
     {
-        Task<IReadOnlyCollection<PackageVersion>> GetLatestVersionAsync(Expression<Func<PackageVersion, bool>> predicate);
-        Task<IReadOnlyCollection<PackageVersion>> GetAllLatestVersionAsync();
+        Task<IReadOnlyCollection<PackageVersion>> GetLatestVersionsAsync(Expression<Func<PackageVersion, bool>> predicate);
+
+        Task<IReadOnlyCollection<PackageVersion>> GetAllLatestVersionsAsync();
     }
 }

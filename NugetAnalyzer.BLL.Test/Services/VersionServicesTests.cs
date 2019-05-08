@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Moq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 using NUnit.Framework;
@@ -36,7 +37,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void UpdateLatestVersionOfNewPackagesAsync_Should_Invoke_Add_And_Update_When_Valid_Values()
         {
             versionRepositoryMock
-                .Setup(p => p.GetLatestVersionAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()))
+                .Setup(p => p.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()))
                 .ReturnsAsync(GetLatestPackageVersions);
 
             versionService.UpdateLatestVersionOfNewPackagesAsync(GetPackageVersions());
@@ -50,7 +51,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void UpdateLatestVersionOfPackagesAsync_Should_Invoke_Add_And_Update_When_Valid_Values()
         {
             versionRepositoryMock
-                .Setup(p => p.GetAllLatestVersionAsync())
+                .Setup(p => p.GetAllLatestVersionsAsync())
                 .ReturnsAsync(GetLatestPackageVersions);
 
             versionService.UpdateLatestVersionOfPackagesAsync(GetPackageVersions());

@@ -7,6 +7,7 @@ namespace NugetAnalyzer.BLL.Interfaces
     public interface INugetApiService
     {
         Task<PackageVersion> GetLatestVersionPackageAsync(string packageName);
+
         Task<DateTime?> GetPublishedDateByVersionAsync(string packageName, string version);
     }
 }

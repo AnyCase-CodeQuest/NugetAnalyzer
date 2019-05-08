@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Helpers;
 using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 
@@ -25,7 +26,7 @@ namespace NugetAnalyzer.BLL.Services
         public async Task UpdateLatestVersionOfNewPackagesAsync(IEnumerable<PackageVersion> versions)
         {
             var latestVersions = await versionRepository
-                .GetLatestVersionAsync(p => versions
+                .GetLatestVersionsAsync(p => versions
                                                         .Select(x => x.PackageId)
                                                         .Contains(p.PackageId));
             
@@ -35,7 +36,7 @@ namespace NugetAnalyzer.BLL.Services
 
                 latestVersion
                     .Package
-                    .LastUpdateTime = dateTimeProvider.CurrentDateAndTime;
+                    .LastUpdateTime = dateTimeProvider.CurrentUtcDateTime;
 
                 if (latestVersion.GetVersion() == packageVersion.GetVersion())
                 {
@@ -53,7 +54,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task UpdateLatestVersionOfPackagesAsync(IEnumerable<PackageVersion> versions)
         {
-            var latestVersions = await versionRepository.GetAllLatestVersionAsync();
+            var latestVersions = await versionRepository.GetAllLatestVersionsAsync();
 
             foreach (var packageVersion in versions)
             {
@@ -61,7 +62,7 @@ namespace NugetAnalyzer.BLL.Services
 
                 latestVersion
                     .Package
-                    .LastUpdateTime = dateTimeProvider.CurrentDateAndTime;
+                    .LastUpdateTime = dateTimeProvider.CurrentUtcDateTime;
 
                 if (latestVersion.GetVersion() == packageVersion.GetVersion())
                 {

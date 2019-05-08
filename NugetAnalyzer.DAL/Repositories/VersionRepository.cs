@@ -16,9 +16,9 @@ namespace NugetAnalyzer.DAL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<PackageVersion>> GetAllLatestVersionAsync()
+        public async Task<IReadOnlyCollection<PackageVersion>> GetAllLatestVersionsAsync()
         {
-            return await dbSet
+            return await DbSet
                 .Include(p => p.Package)
                 .GroupBy(p => p.PackageId)
                 .Select(grp =>
@@ -31,9 +31,9 @@ namespace NugetAnalyzer.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IReadOnlyCollection<PackageVersion>> GetLatestVersionAsync(Expression<Func<PackageVersion, bool>> predicate)
+        public async Task<IReadOnlyCollection<PackageVersion>> GetLatestVersionsAsync(Expression<Func<PackageVersion, bool>> predicate)
         {
-            return await dbSet
+            return await DbSet
                 .Include(p => p.Package)
                 .Where(predicate)
                 .GroupBy(p => p.PackageId)

@@ -7,6 +7,7 @@ namespace NugetAnalyzer.BLL.Interfaces
     public interface IVersionService
     {
         Task UpdateLatestVersionOfNewPackagesAsync(IEnumerable<PackageVersion> versions);
+
         Task UpdateLatestVersionOfPackagesAsync(IEnumerable<PackageVersion> versions);
     }
 }
