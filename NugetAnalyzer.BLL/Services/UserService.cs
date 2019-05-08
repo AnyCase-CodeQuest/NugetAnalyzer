@@ -21,7 +21,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task CreateUserAsync(Profile profile, string gitHubToken)
         {
-            User user = UserConverter.ConvertProfileToUser(profile);
+            var user = UserConverter.ConvertProfileToUser(profile);
             user.GitHubToken = gitHubToken;
             userRepository.Add(user);
             await unitOfWork.SaveChangesAsync();

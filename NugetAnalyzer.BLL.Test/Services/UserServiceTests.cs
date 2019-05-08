@@ -58,9 +58,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void UpdateGitHubToken_Should_Invoke_Update_Save()
         {
             var gitHubId = It.IsAny<int>();
+            var user = new User { GitHubId = gitHubId };
             var gitHubToken = It.IsAny<string>();
             userService.UpdateGitHubToken(gitHubId, gitHubToken);
-            userRepositoryMock.Verify(p => p.GetSingleOrDefaultAsync(x => x.GitHubId == gitHubId));
+            userRepositoryMock
+                .Verify(p =>
+                p.GetSingleOrDefaultAsync(It.Is<Expression<Func<User, bool>>>(func => func.Compile().Invoke(user))));
             userRepositoryMock.Verify(p => p.Update(It.IsAny<User>()));
             unitOfWorkMock.Verify(p => p.SaveChangesAsync());
         }
@@ -68,9 +71,11 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void GetProfileByGitHubId_Should_Invoke_GetSingleOrDefaultAsync()
         {
-            var gitHubId = It.IsAny<int>();
-            userService.GetProfileByGitHubId(gitHubId);
-            userRepositoryMock.Verify(p => p.GetSingleOrDefaultAsync(x => x.GitHubId == gitHubId));
+            var user = new User { GitHubId = 2 };
+            userService.GetProfileByGitHubId(user.GitHubId);
+            userRepositoryMock
+                .Verify(p =>
+                p.GetSingleOrDefaultAsync(It.Is<Expression<Func<User, bool>>>(func => func.Compile().Invoke(user))));
         }
 
         [Test]
@@ -83,11 +88,11 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void GetProfileByUserName_Should_Invoke_GetSingleOrDefaultAsync()
         {
-            var userName = new User { UserName = "kjkj" };
-            userService.GetProfileByUserName(userName.UserName);
+            var user = new User { UserName = "kjkj" };
+            userService.GetProfileByUserName(user.UserName);
             userRepositoryMock
-                .Verify(x => 
-                x.GetSingleOrDefaultAsync(It.Is<Expression<Func<User,bool>>>(func => func.Compile().Invoke(userName))));
+                .Verify(x =>
+                x.GetSingleOrDefaultAsync(It.Is<Expression<Func<User, bool>>>(func => func.Compile().Invoke(user))));
         }
 
         [Test]

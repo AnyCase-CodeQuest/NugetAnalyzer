@@ -23,7 +23,8 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             return serviceProvider.GetRequiredService<IRepository<T>>();
         }
 
-        public T GetRepository<T>() where T : IUserRepository
+        public T GetRepository<T>()
+            where T : IUserRepository
         {
             return serviceProvider.GetRequiredService<T>();
         }
