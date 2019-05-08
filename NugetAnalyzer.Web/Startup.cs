@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NugetAnalyzer.BLL.Entities;
 using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.BLL.Models.Configurations;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
@@ -34,10 +36,12 @@ namespace NugetAnalyzer.Web
             });
 
             services.Configure<PackageVersionConfiguration>(options => Configuration.GetSection("PackageStatus").Bind(options));
+            services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPackageVersionComparerService, PackageVersionComparerService>();
+            services.AddScoped<IPackageVersionService, PackageVersionService>();
+            services.AddScoped<IRepositoryService, RepositoryService>();
 
             services.AddMvc();
         }
