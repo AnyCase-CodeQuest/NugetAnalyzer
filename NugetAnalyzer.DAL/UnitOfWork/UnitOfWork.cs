@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
+using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.UnitOfWork
 {
@@ -17,7 +18,9 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public object GetRepository<T>()
+        public IUsersRepository UsersRepository => (IUsersRepository)GetRepository<User>();
+
+        public IRepository<T> GetRepository<T>()
             where T : class
         {
             return serviceProvider.GetRequiredService<IRepository<T>>();

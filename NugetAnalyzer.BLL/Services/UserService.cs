@@ -4,7 +4,6 @@ using NugetAnalyzer.BLL.Converters;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models;
 using NugetAnalyzer.DAL.Interfaces;
-using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
@@ -16,7 +15,7 @@ namespace NugetAnalyzer.BLL.Services
         public UserService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            usersRepository = (IUsersRepository)unitOfWork.GetRepository<User>();
+            usersRepository = unitOfWork.UsersRepository;
         }
 
         public async Task CreateUserAsync(Profile profile, string gitHubToken)
