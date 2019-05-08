@@ -36,7 +36,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             unitOfWorkMock = new Mock<IUnitOfWork>();
 
             unitOfWorkMock
-                .Setup(p => p.GetRepository<IUsersRepository>())
+                .Setup(p => p.GetRepository<User>())
                 .Returns(userRepositoryMock.Object);
             userRepositoryMock
                 .Setup(p => p.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
