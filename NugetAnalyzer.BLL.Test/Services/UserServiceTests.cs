@@ -27,7 +27,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 Email = @"aaaaa@mail.ru",
                 GitHubId = 46676069,
                 Id = 5,
-                GitHubToken = "93fb96e9f1052e1a04730c25d139b83427f8907c",
+                GitHubToken = "Token",
                 GitHubUrl = @"https://github.com/AntsiferauGodel",
                 UserName = "AntsiferauGodel"
             };
