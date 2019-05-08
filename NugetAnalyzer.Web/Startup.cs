@@ -37,6 +37,7 @@ namespace NugetAnalyzer.Web
             services.AddScoped<IDirectoryService, DirectoryService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
+            services.AddScoped<IRepository, RepositoryService>();
 
             services.AddMvc();
         }
