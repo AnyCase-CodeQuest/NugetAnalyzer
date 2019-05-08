@@ -22,7 +22,7 @@ namespace NugetAnalyzer.BLL.Services
             {
                 throw new ArgumentNullException(nameof(uow));
             }
-            packageRepository = uow.GetGenericRepository<Package>();
+            packageRepository = uow.GetRepository<Package>();
         }
 
         private async Task<PackageVersion> GetLatestVersionOfPackageAsync(Package package)

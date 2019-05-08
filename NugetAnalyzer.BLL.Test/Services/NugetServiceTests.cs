@@ -38,7 +38,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             versionServiceMock = new Mock<IVersionService>();
             uowMock = new Mock<IUnitOfWork>();
             uowMock
-                .Setup(p => p.GetGenericRepository<Package>())
+                .Setup(p => p.GetRepository<Package>())
                 .Returns(packageRepositoryMock.Object);
 
             nugetService = new NugetService(nugetApiServiceMock.Object, versionServiceMock.Object, uowMock.Object);

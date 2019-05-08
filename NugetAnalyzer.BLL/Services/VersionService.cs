@@ -20,7 +20,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
             this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
-            versionRepository = uow.GetRepository<IVersionRepository>();
+            versionRepository = uow.VersionRepository;
         }
 
         public async Task UpdateLatestVersionOfNewPackagesAsync(IEnumerable<PackageVersion> versions)
