@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Helpers;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
@@ -12,17 +11,13 @@ namespace NugetAnalyzer.BLL.Services
     {
         private readonly INugetApiService nugetApiService;
         private readonly IVersionService versionService;
-        private readonly IRepository<Package> packageRepository;
+        private readonly IPackageService packageService;
 
-        public NugetService(INugetApiService nugetApiService, IVersionService versionService, IUnitOfWork uow)
+        public NugetService(INugetApiService nugetApiService, IVersionService versionService, IPackageService packageService)
         {
             this.nugetApiService = nugetApiService ?? throw new ArgumentNullException(nameof(nugetApiService));
             this.versionService = versionService ?? throw new ArgumentNullException(nameof(versionService));
-            if (uow == null)
-            {
-                throw new ArgumentNullException(nameof(uow));
-            }
-            packageRepository = uow.GetRepository<Package>();
+            this.packageService = packageService ?? throw new ArgumentNullException(nameof(packageService));
         }
 
         private async Task<PackageVersion> GetLatestVersionOfPackageAsync(Package package)
@@ -39,7 +34,7 @@ namespace NugetAnalyzer.BLL.Services
        
         public async Task RefreshLatestVersionOfAllPackagesAsync()
         {
-            var newPackages = await packageRepository.GetAllAsync();
+            var newPackages = await packageService.GetAllAsync();
             var packageVersionTasks = newPackages
                                         .Select(GetLatestVersionOfPackageAsync)
                                         .ToArray();
@@ -51,7 +46,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task RefreshLatestVersionOfNewPackagesAsync()
         {
-            var newPackages = await packageRepository.GetAsync(p => p.LastUpdateTime == null);
+            var newPackages = await packageService.GetNewPackagesAsync();
             var packageVersionTasks = newPackages
                                         .Select(GetLatestVersionOfPackageAsync)
                                         .ToArray();

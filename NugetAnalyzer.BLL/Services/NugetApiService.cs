@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NugetAnalyzer.BLL.Interfaces;
