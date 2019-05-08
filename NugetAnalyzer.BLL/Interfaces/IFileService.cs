@@ -1,4 +1,6 @@
-﻿namespace NugetAnalyzer.BLL.Interfaces
+﻿using System.Collections.Generic;
+
+namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IFileService
     {
@@ -9,5 +11,7 @@
         string GetCsProjFilePath(string projectPath);
 
         string GetFileContent(string filePath);
+
+        IList<string> GetFilesDirectoriesPaths(string[] filesPaths);
     }
 }

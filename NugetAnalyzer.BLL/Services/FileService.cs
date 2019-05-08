@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NugetAnalyzer.BLL.Interfaces;
@@ -38,6 +39,20 @@ namespace NugetAnalyzer.BLL.Services
             {
                 return streamReader.ReadToEnd();
             }
+        }
+
+        public IList<string> GetFilesDirectoriesPaths(string[] filesPaths)
+        {
+            IList<string> directoriesPaths = new List<string>();
+
+            foreach (var filePath in filesPaths)
+            {
+                FileInfo file = new FileInfo(filePath);
+
+                directoriesPaths.Add(file.DirectoryName);
+            }
+
+            return directoriesPaths;
         }
     }
 }

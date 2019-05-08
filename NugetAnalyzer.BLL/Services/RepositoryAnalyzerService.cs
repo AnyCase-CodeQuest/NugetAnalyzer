@@ -43,7 +43,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, "*.sln");
 
-            foreach (var solutionDirectoryPath in directoryService.GetDirectoriesPaths(solutionsFilesPaths))
+            foreach (var solutionDirectoryPath in fileService.GetFilesDirectoriesPaths(solutionsFilesPaths))
             {
                 Solution solution = new Solution
                 {
@@ -62,7 +62,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             var projectsFilesPaths = fileService.GetFilesPaths(solution.Path, "*.csproj");
 
-            foreach (var projectDirectoryPath in directoryService.GetDirectoriesPaths(projectsFilesPaths))
+            foreach (var projectDirectoryPath in fileService.GetFilesDirectoriesPaths(projectsFilesPaths))
             {
                 Project project = new Project
                 {

@@ -66,7 +66,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             // Arrange
             directoryService.Setup(s => s.IsDirectoryExist(NullRepositoryPath)).Throws(new ArgumentNullException());
-            
+
             // Assert
             Assert.Throws<ArgumentNullException>(() => repositoryAnalyzerService.GetParsedRepository(NullRepositoryPath));
         }
@@ -91,7 +91,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             directoryService.Setup(s => s.IsDirectoryExist(TestList[0])).Returns(true);
             directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
-            directoryService.Setup(s => s.GetDirectoriesPaths(TestArray)).Returns(TestList);            
+            fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
             fileService.Setup(s => s.GetPackagesConfigFilePath(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFileContent(TestList[0])).Returns(TestPackagesConfigFileContent);
@@ -111,7 +111,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             directoryService.Setup(s => s.IsDirectoryExist(TestList[0])).Returns(true);
             directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
-            directoryService.Setup(s => s.GetDirectoriesPaths(TestArray)).Returns(TestList);
+            fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
             fileService.Setup(s => s.GetPackagesConfigFilePath(TestList[0])).Returns((string)null);
             fileService.Setup(s => s.GetCsProjFilePath(TestList[0])).Returns(TestList[0]);

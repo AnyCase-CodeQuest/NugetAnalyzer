@@ -1,12 +1,20 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Hosting;
 using NugetAnalyzer.BLL.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
 {
     public class DirectoryService : IDirectoryService
     {
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        public DirectoryService(IHostingEnvironment hostingEnvironment)
+        {
+            this.hostingEnvironment = hostingEnvironment;
+        }
+
         public bool IsDirectoryExist(string repositoryPath)
         {
             if (repositoryPath == null)
@@ -27,33 +35,26 @@ namespace NugetAnalyzer.BLL.Services
             return new DirectoryInfo(directoryPath).Name;
         }
 
-        public IList<string> GetDirectoriesPaths(string[] filesPaths)
-        {
-            IList<string> directoriesPaths = new List<string>();
-
-            foreach (var filePath in filesPaths)
-            {
-                FileInfo file = new FileInfo(filePath);
-
-                directoriesPaths.Add(file.DirectoryName);
-            }
-
-            return directoriesPaths;
-        }
-
         public string CreateDirectoryForRepository()
         {
-            var rootDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
-            var repositoryPath = Guid.NewGuid().ToString();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            while (IsDirectoryExist(rootDirectory + "\\" + repositoryPath))
+            stringBuilder.Append(hostingEnvironment.WebRootPath);
+            stringBuilder.Append("\\");
+            stringBuilder.Append(Guid.NewGuid().ToString());
+
+            while (IsDirectoryExist(stringBuilder.ToString()))
             {
-                repositoryPath = Guid.NewGuid().ToString();
+                stringBuilder = new StringBuilder();
+
+                stringBuilder.Append(hostingEnvironment.WebRootPath);
+                stringBuilder.Append("\\");
+                stringBuilder.Append(Guid.NewGuid().ToString());
             }
 
-            Directory.CreateDirectory(rootDirectory + "\\" + repositoryPath);
+            Directory.CreateDirectory(stringBuilder.ToString());
 
-            return repositoryPath;
+            return stringBuilder.ToString();
         }
 
         public void DeleteRepository(string path)
