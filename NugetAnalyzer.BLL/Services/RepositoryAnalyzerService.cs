@@ -42,7 +42,7 @@ namespace NugetAnalyzer.BLL.Services
         private void AddSolutionsToRepository(Repository repository)
         {
             var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, "*.sln");
-            var z = directoryService.GetDirectoriesPaths(solutionsFilesPaths);
+
             foreach (var solutionDirectoryPath in directoryService.GetDirectoriesPaths(solutionsFilesPaths))
             {
                 Solution solution = new Solution
