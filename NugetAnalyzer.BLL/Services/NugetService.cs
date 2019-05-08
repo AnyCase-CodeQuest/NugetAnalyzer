@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Helpers;
@@ -20,6 +21,34 @@ namespace NugetAnalyzer.BLL.Services
             this.packageService = packageService ?? throw new ArgumentNullException(nameof(packageService));
         }
 
+        public async Task RefreshLatestVersionOfAllPackagesAsync()
+        {
+            var newPackages = await packageService.GetAllAsync();
+
+            var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
+
+            await versionService.UpdateLatestVersionsAsync(versions);
+        }
+
+        public async Task RefreshLatestVersionOfNewPackagesAsync()
+        {
+            var newPackages = await packageService.GetNewPackagesAsync();
+
+            var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
+
+            await versionService.UpdateLatestVersionOfNewPackagesAsync(versions);
+        }
+
+
+        private async Task<PackageVersion[]> GetLatestVersionsOfPackagesAsync(IReadOnlyCollection<Package> packages)
+        {
+            var packageVersionTasks = packages
+                .Select(GetLatestVersionOfPackageAsync)
+                .ToArray();
+
+            return await Task.WhenAll(packageVersionTasks);
+        }
+
         private async Task<PackageVersion> GetLatestVersionOfPackageAsync(Package package)
         {
             var version = await nugetApiService.GetLatestVersionPackageAsync(package.Name);
@@ -30,30 +59,6 @@ namespace NugetAnalyzer.BLL.Services
             version.PackageId = package.Id;
 
             return version;
-        }
-       
-        public async Task RefreshLatestVersionOfAllPackagesAsync()
-        {
-            var newPackages = await packageService.GetAllAsync();
-            var packageVersionTasks = newPackages
-                                        .Select(GetLatestVersionOfPackageAsync)
-                                        .ToArray();
-
-            var versions = await Task.WhenAll(packageVersionTasks);
-
-            await versionService.UpdateLatestVersionsAsync(versions);
-        }
-
-        public async Task RefreshLatestVersionOfNewPackagesAsync()
-        {
-            var newPackages = await packageService.GetNewPackagesAsync();
-            var packageVersionTasks = newPackages
-                                        .Select(GetLatestVersionOfPackageAsync)
-                                        .ToArray();
-
-            var versions = await Task.WhenAll(packageVersionTasks);
-
-            await versionService.UpdateLatestVersionOfNewPackagesAsync(versions);
         }
     }
 }
