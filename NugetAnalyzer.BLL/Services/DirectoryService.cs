@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 using NugetAnalyzer.BLL.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
@@ -39,6 +40,29 @@ namespace NugetAnalyzer.BLL.Services
             }
 
             return directoriesPaths;
+        }
+
+        public string CreateDirectoryForRepository()
+        {
+            var rootDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
+            var repositoryPath = Guid.NewGuid().ToString();
+
+            while (IsDirectoryExist(rootDirectory + "\\" + repositoryPath))
+            {
+                repositoryPath = Guid.NewGuid().ToString();
+            }
+
+            Directory.CreateDirectory(rootDirectory + "\\" + repositoryPath);
+
+            return repositoryPath;
+        }
+
+        public void DeleteRepository(string path)
+        {
+            if (IsDirectoryExist(path))
+            {
+                Directory.Delete(path, true);
+            }
         }
     }
 }
