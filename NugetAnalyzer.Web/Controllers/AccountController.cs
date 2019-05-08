@@ -54,15 +54,12 @@ namespace NugetAnalyzer.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userGitHubId);
+            profile = userService.GetProfileByGitHubId(userGitHubId);
             //countermeasures if user closed our site on profile registration form
-            if (profile.UserName == null)
+            if (profile == null)
             {
-                int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userGitHubId);
-                profile = userService.GetProfileByGitHubId(userGitHubId);
-                if (profile == null)
-                {
-                    return RedirectToAction("Signout");
-                }
+                return RedirectToAction("Signout");
             }
 
             return View("Profile", profile);

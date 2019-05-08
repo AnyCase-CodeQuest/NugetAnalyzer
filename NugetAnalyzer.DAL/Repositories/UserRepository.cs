@@ -13,7 +13,7 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public string GetGitHubTokenByGitHubId(int gitHubId)
         {
-            return dbSet.Where(p => p.GitHubId == gitHubId).Select(p => p.GitHubToken).FirstOrDefault();
+            return DbSet.Where(p => p.GitHubId == gitHubId).Select(p => p.GitHubToken).FirstOrDefault();
         }
     }
 }
