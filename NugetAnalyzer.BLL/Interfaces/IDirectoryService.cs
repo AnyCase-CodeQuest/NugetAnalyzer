@@ -9,5 +9,9 @@ namespace NugetAnalyzer.BLL.Interfaces
         string GetDirectoryName(string directoryPath);
 
         IList<string> GetDirectoriesPaths(string[] filesPaths);
+
+        string CreateDirectoryForRepository();
+
+        void DeleteRepository(string path);
     }
 }
