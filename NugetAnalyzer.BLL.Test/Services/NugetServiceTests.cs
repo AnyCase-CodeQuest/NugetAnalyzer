@@ -57,7 +57,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             await nugetService.RefreshLatestVersionOfAllPackagesAsync();
 
-            versionServiceMock.Verify(x => x.UpdateLatestVersionOfPackagesAsync(It.IsAny<IEnumerable<PackageVersion>>()));
+            versionServiceMock.Verify(x => x.UpdateLatestVersionsAsync(It.IsAny<IEnumerable<PackageVersion>>()));
         }
 
         [Test]

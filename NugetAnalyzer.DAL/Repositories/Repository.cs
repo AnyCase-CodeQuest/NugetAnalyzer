@@ -87,5 +87,15 @@ namespace NugetAnalyzer.DAL.Repositories
 
             context.Entry(item).State = EntityState.Modified;
         }
+
+        public void Attach(T item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            context.Attach(item);
+        }
     }
 }

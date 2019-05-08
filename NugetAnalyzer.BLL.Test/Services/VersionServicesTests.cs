@@ -54,7 +54,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(p => p.GetAllLatestVersionsAsync())
                 .ReturnsAsync(GetLatestPackageVersions);
 
-            versionService.UpdateLatestVersionOfPackagesAsync(GetPackageVersions());
+            versionService.UpdateLatestVersionsAsync(GetPackageVersions());
 
             versionRepositoryMock.Verify(x => x.Add(It.IsAny<PackageVersion>()));
             versionRepositoryMock.Verify(x => x.Update(It.IsAny<PackageVersion>()));

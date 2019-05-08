@@ -45,6 +45,7 @@ namespace NugetAnalyzer.Web
             services.AddScoped<IVersionRepository, VersionRepository>();
             services.AddScoped<INugetService, NugetService>();
             services.AddScoped<IVersionService, VersionService>();
+            services.AddScoped<IPackageService, PackageService>();
 
             services.AddScoped(
                 typeof(IRepository<PackageVersion>),

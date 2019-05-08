@@ -29,44 +29,32 @@ namespace NugetAnalyzer.BLL.Services
                 .GetLatestVersionsAsync(p => versions
                                                         .Select(x => x.PackageId)
                                                         .Contains(p.PackageId));
-            
+
+            await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
+        }
+
+        public async Task UpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions)
+        {
+            var latestVersions = await versionRepository.GetAllLatestVersionsAsync();
+
+            await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
+        }
+
+        private async Task AddOrUpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions, IReadOnlyCollection<PackageVersion> latestVersions)
+        {
             foreach (var packageVersion in versions)
             {
                 var latestVersion = latestVersions.First(p => p.PackageId == packageVersion.PackageId);
 
+                versionRepository.Attach(latestVersion);
+
                 latestVersion
-                    .Package
-                    .LastUpdateTime = dateTimeProvider.CurrentUtcDateTime;
+                        .Package
+                        .LastUpdateTime = dateTimeProvider.CurrentUtcDateTime;
 
                 if (latestVersion.GetVersion() == packageVersion.GetVersion())
                 {
                     latestVersion.PublishedDate = packageVersion.PublishedDate;
-                    versionRepository.Update(latestVersion);
-                }
-                else
-                {
-                    versionRepository.Add(packageVersion);
-                }
-            }
-
-            await uow.SaveChangesAsync();
-        }
-
-        public async Task UpdateLatestVersionOfPackagesAsync(IEnumerable<PackageVersion> versions)
-        {
-            var latestVersions = await versionRepository.GetAllLatestVersionsAsync();
-
-            foreach (var packageVersion in versions)
-            {
-                var latestVersion = latestVersions.First(p => p.PackageId == packageVersion.PackageId);
-
-                latestVersion
-                    .Package
-                    .LastUpdateTime = dateTimeProvider.CurrentUtcDateTime;
-
-                if (latestVersion.GetVersion() == packageVersion.GetVersion())
-                {
-                    versionRepository.Update(latestVersion);
                 }
                 else
                 {

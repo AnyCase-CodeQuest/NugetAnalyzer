@@ -21,5 +21,7 @@ namespace NugetAnalyzer.DAL.Interfaces
         void Delete(int id);
 
         void Update(T item);
+
+        void Attach(T item);
     }
 }

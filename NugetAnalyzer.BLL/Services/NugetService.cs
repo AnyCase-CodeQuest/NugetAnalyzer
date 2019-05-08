@@ -41,7 +41,7 @@ namespace NugetAnalyzer.BLL.Services
 
             var versions = await Task.WhenAll(packageVersionTasks);
 
-            await versionService.UpdateLatestVersionOfPackagesAsync(versions);
+            await versionService.UpdateLatestVersionsAsync(versions);
         }
 
         public async Task RefreshLatestVersionOfNewPackagesAsync()

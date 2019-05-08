@@ -8,6 +8,6 @@ namespace NugetAnalyzer.BLL.Interfaces
     {
         Task UpdateLatestVersionOfNewPackagesAsync(IEnumerable<PackageVersion> versions);
 
-        Task UpdateLatestVersionOfPackagesAsync(IEnumerable<PackageVersion> versions);
+        Task UpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions);
     }
 }
