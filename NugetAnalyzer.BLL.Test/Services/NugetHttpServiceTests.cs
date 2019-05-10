@@ -55,7 +55,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public async Task GetPackageMetadataAsync()
+        public async Task GetPackageMetadataAsync_Should_Invoke_SendAsync()
         {
             var packageName = "NUnit";
             var version = "4.0.1";
@@ -64,18 +64,20 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             var expectedUri = new Uri($"{EndpointPackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json");
 
-            handlerMock.Protected().Verify(
-                "SendAsync",
-                Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req =>
-                        req.Method == HttpMethod.Get 
-                        && req.RequestUri == expectedUri
-                ),
-                ItExpr.IsAny<CancellationToken>());
+            handlerMock
+                .Protected()
+                .Verify(
+                    "SendAsync",
+                    Times.Exactly(1),
+                    ItExpr.Is<HttpRequestMessage>(req =>
+                            req.Method == HttpMethod.Get 
+                            && req.RequestUri == expectedUri
+                    ),
+                    ItExpr.IsAny<CancellationToken>());
         }
 
         [Test]
-        public async Task GetDataOfPackageVersionAsync()
+        public async Task GetDataOfPackageVersionAsync_Should_Invoke_SendAsync()
         {
             var packageName = "NUnit";
 
@@ -88,7 +90,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Verify(
                     "SendAsync",
                     Times.Exactly(1),
-              ItExpr.Is<HttpRequestMessage>(req =>
+                    ItExpr.Is<HttpRequestMessage>(req =>
                         req.Method == HttpMethod.Get
                         && req.RequestUri == expectedUri
                     ),
