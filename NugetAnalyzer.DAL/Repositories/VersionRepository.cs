@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NugetAnalyzer.DAL.Context;
+using NugetAnalyzer.DAL.Helpers;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 
@@ -18,18 +19,10 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public async Task<IReadOnlyCollection<PackageVersion>> GetAllLatestVersionsAsync()
         {
-           return await DbSet
+            return await DbSet
                 .AsNoTracking()
                 .Include(p => p.Package)
-                .GroupBy(p => p.PackageId)
-                .Select(grp =>
-                    grp
-                        .OrderByDescending(p => p.Major)
-                        .ThenByDescending(p => p.Minor)
-                        .ThenByDescending(p => p.Build)
-                        .ThenByDescending(p => p.Revision)
-                        .First())
-                .ToListAsync();
+                .GroupByVersionAsync();
         }
 
         public async Task<IReadOnlyCollection<PackageVersion>> GetLatestVersionsAsync(Expression<Func<PackageVersion, bool>> predicate)
@@ -38,15 +31,7 @@ namespace NugetAnalyzer.DAL.Repositories
                 .AsNoTracking()
                 .Include(p => p.Package)
                 .Where(predicate)
-                .GroupBy(p => p.PackageId)
-                .Select(grp =>
-                    grp
-                        .OrderByDescending(p => p.Major)
-                        .ThenByDescending(p => p.Minor)
-                        .ThenByDescending(p => p.Build)
-                        .ThenByDescending(p => p.Revision)
-                        .First())
-                .ToListAsync();
+                .GroupByVersionAsync();
         }
     }
 }
