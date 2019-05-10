@@ -17,15 +17,15 @@ namespace NugetAnalyzer.DAL.Repositories
         public async Task<IReadOnlyCollection<PackageVersion>> GetLatestPackageVersionsWithPackageNameAsync(ICollection<int> packageIds)
         {
             return await dbSet
-                .Where(pv => packageIds.Contains(pv.Package.Id))
-                .GroupBy(pv => pv.Package.Name)
+                .Where(pv => packageIds.Contains(pv.PackageId))
+                .GroupBy(p => p.PackageId)
                 .Select(grp => grp
-                    .OrderByDescending(pv => pv.Major)
-                    .ThenByDescending(pv => pv.Minor)
-                    .ThenByDescending(pv => pv.Build)
-                    .ThenByDescending(pv => pv.Revision)
+                    .OrderByDescending(p => p.Major)
+                    .ThenByDescending(p => p.Minor)
+                    .ThenByDescending(p => p.Build)
+                    .ThenByDescending(p => p.Revision)
                     .First())
-                .Include(pv => pv.Package.Name)
+                .Include(p => p.Package.Name)
                 .AsNoTracking()
                 .ToListAsync();
         }

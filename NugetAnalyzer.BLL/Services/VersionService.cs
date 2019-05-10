@@ -41,24 +41,24 @@ namespace NugetAnalyzer.BLL.Services
             return comparisonResult;
         }
 
-        public PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> packageVersionComparisonReport)
+        public PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> reports)
         {
-            return new PackageVersionComparisonReport
+            return reports.Count == 0 ? new PackageVersionComparisonReport() : new PackageVersionComparisonReport
             {
-                DateStatus = CalculateMaxDateStatusLevel(packageVersionComparisonReport),
-                VersionStatus = CalculateMaxVersionStatusLevel(packageVersionComparisonReport),
-                IsObsolete = packageVersionComparisonReport.Cast<PackageVersionComparisonReport?>().FirstOrDefault(r => r.Value.IsObsolete) == null
+                DateStatus = CalculateMaxDateStatusLevel(reports),
+                VersionStatus = CalculateMaxVersionStatusLevel(reports),
+                IsObsolete = reports.Cast<PackageVersionComparisonReport?>().FirstOrDefault(r => r.Value.IsObsolete) != null
             };
         }
 
-        private PackageVersionStatus CalculateMaxVersionStatusLevel(ICollection<PackageVersionComparisonReport> packageVersionComparisonReport)
+        private PackageVersionStatus CalculateMaxVersionStatusLevel(ICollection<PackageVersionComparisonReport> reports)
         {
-            return packageVersionComparisonReport.Select(r => r.VersionStatus).Max();
+            return reports.Select(r => r.VersionStatus).Max();
         }
 
-        private PackageDateStatus CalculateMaxDateStatusLevel(ICollection<PackageVersionComparisonReport> packageVersionComparisonReport)
+        private PackageDateStatus CalculateMaxDateStatusLevel(ICollection<PackageVersionComparisonReport> reports)
         {
-            return packageVersionComparisonReport.Select(r => r.DateStatus).Max();
+            return reports.Select(r => r.DateStatus).Max();
         }
 
         private bool ObsoleteCheck(DateTime? publishedDateOfLatestVersion)

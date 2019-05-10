@@ -20,8 +20,8 @@ namespace NugetAnalyzer.BLL.Interfaces
         /// <summary>
         /// Calculates the maximum level of the status of the date, version and obsolete status
         /// </summary>
-        /// <param name="packageVersionComparisonReports">list of reports from which to calculate</param>
+        /// <param name="reports">list of reports from which to calculate</param>
         /// <returns>Report which consisting maximum level of the status of the date, version and obsolete status</returns>
-        PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> packageVersionComparisonReports);
+        PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> reports);
     }
 }

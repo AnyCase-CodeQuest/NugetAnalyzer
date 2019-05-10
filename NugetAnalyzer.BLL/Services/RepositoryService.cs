@@ -27,17 +27,17 @@ namespace NugetAnalyzer.BLL.Services
         {
             var repositories = await repositoryRepository.GetUserRepositoriesWithIncludesAsync(userId);
 
-            var packageVersionIds = GetAllPackagesVersionsIdsFromRepositories(repositories);
-            var latestPackageVersions = await versionRepository.GetLatestPackageVersionsWithPackageNameAsync(packageVersionIds);
+            var packageIds = GetAllPackagesIdsFromRepositories(repositories);
+            var latestPackageVersions = await versionRepository.GetLatestPackageVersionsWithPackageNameAsync(packageIds);
 
             var repositoriesWithVersionReport = Analyze(repositories, latestPackageVersions);
 
             return repositoriesWithVersionReport;
         }
 
-        private HashSet<int> GetAllPackagesVersionsIdsFromRepositories(IEnumerable<Repository> repositories)
+        private HashSet<int> GetAllPackagesIdsFromRepositories(IEnumerable<Repository> repositories)
         {
-            var packageVersionIds = new HashSet<int>();
+            var packageIds = new HashSet<int>();
             foreach (var repository in repositories)
             {
                 foreach (var solution in repository.Solutions)
@@ -46,13 +46,13 @@ namespace NugetAnalyzer.BLL.Services
                     {
                         foreach (var projectPackageVersion in project.ProjectPackageVersions)
                         {
-                            packageVersionIds.Add(projectPackageVersion.PackageVersion.Id);
+                            packageIds.Add(projectPackageVersion.PackageVersion.PackageId);
                         }
                     }
                 }
             }
 
-            return packageVersionIds;
+            return packageIds;
         }
 
         private ICollection<RepositoryWithVersionReport> Analyze(IReadOnlyCollection<Repository> repositories, IReadOnlyCollection<PackageVersion> latestPackageVersions)
@@ -80,11 +80,11 @@ namespace NugetAnalyzer.BLL.Services
                             .ProjectPackageVersions
                             .Select(ppv => versionService
                                 .Compare(latestPackageVersions
-                                    .First(lpv => lpv.Package.Name == ppv.PackageVersion.Package.Name), ppv.PackageVersion));
+                                    .First(lpv => lpv.PackageId == ppv.PackageVersion.PackageId), ppv.PackageVersion)).ToList();
 
                         repositoriesWithVersionReport[i]
                             .Solutions[j]
-                            .Projects[k].Report = versionService.CalculateMaxReportLevelStatus(reports.ToList());
+                            .Projects[k].Report = versionService.CalculateMaxReportLevelStatus(reports);
                     }
 
                     repositoriesWithVersionReport[i]

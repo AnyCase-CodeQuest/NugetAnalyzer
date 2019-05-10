@@ -42,6 +42,8 @@ namespace NugetAnalyzer.Web
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
+            services.AddScoped<IRepositoryRepository, RepositoryRepository>();
+            services.AddScoped<IVersionRepository, VersionRepository>();
 
             services.AddMvc();
         }

@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.Extensions.Options;
-using NugetAnalyzer.BLL.Models.Configurations;
+﻿using NugetAnalyzer.BLL.Models.Configurations;
 using NugetAnalyzer.BLL.Models.Enums;
 using NugetAnalyzer.BLL.Services;
-using NugetAnalyzer.Common.Interfaces;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
