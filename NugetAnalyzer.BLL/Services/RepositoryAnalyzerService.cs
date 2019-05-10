@@ -11,6 +11,12 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryAnalyzerService : IRepositoryAnalyzerService
     {
+        private enum FrameworkType
+        {
+            Core,
+            Framework
+        }
+
         private readonly IDirectoryService directoryService;
         private readonly IFileService fileService;
 
@@ -22,7 +28,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public Repository GetParsedRepository(string repositoryPath)
         {
-            if (!directoryService.IsDirectoryExist(repositoryPath))
+            if (!directoryService.IsDirectoryExists(repositoryPath))
                 return null;
 
             Repository repository = new Repository
@@ -77,26 +83,68 @@ namespace NugetAnalyzer.BLL.Services
 
         private void AddPackagesToProject(Project project)
         {
-            if (fileService.GetPackagesConfigFilePath(project.Path) != null)
+            if (fileService.GetFilePath(project.Path, "packages.config") != null)
             {
-                project.Packages = GetPackagesOfFrameworkApp(fileService.GetPackagesConfigFilePath(project.Path));
+                var filePath = fileService.GetFilePath(project.Path, "packages.config");
+
+                project.Packages = GetPackages(FrameworkType.Framework, filePath);
             }
             else
             {
-                project.Packages = GetPackagesOfCoreApp(fileService.GetCsProjFilePath(project.Path));
+                var filePath = fileService.GetFilePath(project.Path, "*.csproj");
+
+                project.Packages = GetPackages(FrameworkType.Core, filePath);
             }
         }
 
-        private IList<Package> GetPackagesOfCoreApp(string csProjFilePath)
+        private IList<Package> GetPackages(FrameworkType frameworkType, string filePath)
         {
-            IList<Package> packages = new List<Package>();
+            var packages = new List<Package>();
+            var document = new XmlDocument();
 
-            XmlDocument document = new XmlDocument();
+            document.LoadXml(fileService.GetFileContent(filePath));
 
-            document.LoadXml(fileService.GetFileContent(csProjFilePath));
+            var nodesList = GetXmlNodeList(document, frameworkType);
 
-            XmlNodeList nodesList = document.SelectNodes("//Project/ItemGroup/PackageReference");
+            AddPackagesToPackagesList(frameworkType, packages, nodesList);
 
+            return packages;
+        }
+
+        private XmlNodeList GetXmlNodeList(XmlDocument document, FrameworkType frameworkType)
+        {
+            switch (frameworkType)
+            {
+                case FrameworkType.Core:
+                    return document.SelectNodes("//Project/ItemGroup/PackageReference");
+
+                case FrameworkType.Framework:
+                    return document.SelectNodes("//packages/package");
+
+                default:
+                    return null;
+            }
+        }
+
+        private void AddPackagesToPackagesList(FrameworkType frameworkType, IList<Package> packages, XmlNodeList nodesList)
+        {
+            switch (frameworkType)
+            {
+                case FrameworkType.Core:
+                {
+                    AddPackagesToPackagesListForCoreApp(packages, nodesList);
+                    break;
+                }
+                case FrameworkType.Framework:
+                {
+                    AddPackagesToPackagesListForFrameworkApp(packages, nodesList);
+                    break;
+                }
+            }
+        }
+
+        private void AddPackagesToPackagesListForCoreApp(IList<Package> packages, XmlNodeList nodesList)
+        {
             foreach (XmlNode node in nodesList)
             {
                 if (node.Attributes["Version"] != null)
@@ -109,20 +157,10 @@ namespace NugetAnalyzer.BLL.Services
                         });
                 }
             }
-
-            return packages;
         }
 
-        private IList<Package> GetPackagesOfFrameworkApp(string packagesConfigFilePath)
+        private void AddPackagesToPackagesListForFrameworkApp(IList<Package> packages, XmlNodeList nodesList)
         {
-            IList<Package> packages = new List<Package>();
-
-            XmlDocument document = new XmlDocument();
-
-            document.LoadXml(fileService.GetFileContent(packagesConfigFilePath));
-
-            XmlNodeList nodesList = document.SelectNodes("//packages/package");
-
             foreach (XmlNode node in nodesList)
             {
                 if (node.Attributes["version"] != null)
@@ -135,8 +173,6 @@ namespace NugetAnalyzer.BLL.Services
                         });
                 }
             }
-
-            return packages;
         }
     }
 }

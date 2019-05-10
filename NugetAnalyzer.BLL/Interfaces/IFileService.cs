@@ -6,9 +6,7 @@ namespace NugetAnalyzer.BLL.Interfaces
     {
         string[] GetFilesPaths(string directoryPath, string searchPattern);
 
-        string GetPackagesConfigFilePath(string projectPath);
-
-        string GetCsProjFilePath(string projectPath);
+        string GetFilePath(string directoryPath, string fileSearchPattern);
 
         string GetFileContent(string filePath);
 

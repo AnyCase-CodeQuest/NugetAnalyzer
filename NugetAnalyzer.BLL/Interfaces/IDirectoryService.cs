@@ -2,12 +2,12 @@
 {
     public interface IDirectoryService
     {
-        bool IsDirectoryExist(string repositoryPath);
+        bool IsDirectoryExists(string path);
 
         string GetDirectoryName(string directoryPath);
 
-        string CreateDirectoryForRepository();
+        void CreateDirectory(string path);
 
-        void Delete(string path);
+        void DeleteDirectory(string path);
     }
 }

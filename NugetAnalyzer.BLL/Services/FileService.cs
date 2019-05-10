@@ -19,20 +19,17 @@ namespace NugetAnalyzer.BLL.Services
             return Directory.GetFiles(directoryPath, searchPattern, SearchOption.AllDirectories);
         }
 
-        public string GetPackagesConfigFilePath(string projectPath)
+        public string GetFilePath(string directoryPath, string searchPattern)
         {
-            if (projectPath == null)
-                throw new ArgumentNullException(nameof(projectPath));
+            if (directoryPath == null)
+                throw new ArgumentNullException(nameof(directoryPath));
 
-            return GetFilePath(GetFilesPaths(projectPath, "packages.config"));
-        }
+            if (searchPattern == null)
+                throw new ArgumentNullException(nameof(searchPattern));
 
-        public string GetCsProjFilePath(string projectPath)
-        {
-            if (projectPath == null)
-                throw new ArgumentNullException(nameof(projectPath));
+            var filesPaths = GetFilesPaths(directoryPath, searchPattern);
 
-            return GetFilePath(GetFilesPaths(projectPath, "*.csproj"));
+            return filesPaths.Count() == 0 ? null : filesPaths[0];
         }
 
         public string GetFileContent(string filePath)
@@ -61,11 +58,6 @@ namespace NugetAnalyzer.BLL.Services
             }
 
             return directoriesPaths;
-        }
-
-        private string GetFilePath(string[] filesPaths)
-        {
-            return filesPaths.Count() == 0 ? null : filesPaths[0];
         }
     }
 }

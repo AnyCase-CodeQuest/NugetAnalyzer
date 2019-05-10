@@ -1,26 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using Microsoft.AspNetCore.Hosting;
 using NugetAnalyzer.BLL.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
 {
     public class DirectoryService : IDirectoryService
     {
-        private readonly IHostingEnvironment hostingEnvironment;
-
-        public DirectoryService(IHostingEnvironment hostingEnvironment)
+        public bool IsDirectoryExists(string path)
         {
-            this.hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
-        }
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
 
-        public bool IsDirectoryExist(string repositoryPath)
-        {
-            if (repositoryPath == null)
-                throw new ArgumentNullException(nameof(repositoryPath));
-
-            return Directory.Exists(repositoryPath);
+            return Directory.Exists(path);
         }
 
         public string GetDirectoryName(string directoryPath)
@@ -31,23 +22,15 @@ namespace NugetAnalyzer.BLL.Services
             return new DirectoryInfo(directoryPath).Name;
         }
 
-        public string CreateDirectoryForRepository()
+        public void CreateDirectory(string path)
         {
-            StringBuilder path = new StringBuilder();
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
 
-            path = this.CreateNewPath(path);
-
-            while (IsDirectoryExist(path.ToString()))
-            {
-                path = this.CreateNewPath(path);
-            }
-
-            Directory.CreateDirectory(path.ToString());
-
-            return path.ToString();
+            Directory.CreateDirectory(path);
         }
 
-        public void Delete(string path)
+        public void DeleteDirectory(string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -56,17 +39,6 @@ namespace NugetAnalyzer.BLL.Services
             {
                 Directory.Delete(path, true);
             }
-        }
-
-        private StringBuilder CreateNewPath(StringBuilder stringBuilder)
-        {
-            stringBuilder.Clear();
-
-            stringBuilder.Append(hostingEnvironment.WebRootPath);
-            stringBuilder.Append("\\");
-            stringBuilder.Append(Guid.NewGuid().ToString());
-
-            return stringBuilder;
         }
     }
 }

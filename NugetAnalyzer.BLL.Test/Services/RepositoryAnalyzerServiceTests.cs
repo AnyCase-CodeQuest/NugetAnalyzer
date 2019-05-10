@@ -65,7 +65,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetParsedRepository_ShouldThrowArgumentNullException_WhenRepositoryPathNull()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExist(NullRepositoryPath)).Throws(new ArgumentNullException());
+            directoryService.Setup(s => s.IsDirectoryExists(NullRepositoryPath)).Throws(new ArgumentNullException());
 
             // Assert
             Assert.Throws<ArgumentNullException>(() => repositoryAnalyzerService.GetParsedRepository(NullRepositoryPath));
@@ -75,7 +75,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetParsedRepository_ShouldRepositoryNull_WhenRepositoryPathNotExist()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExist(EmptyRepositoryPath)).Returns(false);
+            directoryService.Setup(s => s.IsDirectoryExists(EmptyRepositoryPath)).Returns(false);
 
             // Act
             var repotitory = repositoryAnalyzerService.GetParsedRepository(EmptyRepositoryPath);
@@ -88,12 +88,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount3_WhenFrameworkAppType()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExist(TestList[0])).Returns(true);
+            directoryService.Setup(s => s.IsDirectoryExists(TestList[0])).Returns(true);
             directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
             fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
-            fileService.Setup(s => s.GetPackagesConfigFilePath(TestList[0])).Returns(TestList[0]);
+            fileService.Setup(s => s.GetFilePath(TestList[0], "packages.config")).Returns(TestList[0]);
             fileService.Setup(s => s.GetFileContent(TestList[0])).Returns(TestPackagesConfigFileContent);
 
             // Act
@@ -108,13 +108,13 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount5_WhenCoreAppType()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExist(TestList[0])).Returns(true);
+            directoryService.Setup(s => s.IsDirectoryExists(TestList[0])).Returns(true);
             directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
             fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
-            fileService.Setup(s => s.GetPackagesConfigFilePath(TestList[0])).Returns((string)null);
-            fileService.Setup(s => s.GetCsProjFilePath(TestList[0])).Returns(TestList[0]);
+            fileService.Setup(s => s.GetFilePath(TestList[0], "packages.config")).Returns((string)null);
+            fileService.Setup(s => s.GetFilePath(TestList[0], "*.csproj")).Returns(TestList[0]);
             fileService.Setup(s => s.GetFileContent(TestList[0])).Returns(TestCsProjFileContent);
 
             // Act
