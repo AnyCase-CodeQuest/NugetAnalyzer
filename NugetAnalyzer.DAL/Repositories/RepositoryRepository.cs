@@ -14,14 +14,15 @@ namespace NugetAnalyzer.DAL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<Repository>> GetUserRepositoriesWithIncludes(int userId)
+        public async Task<IReadOnlyCollection<Repository>> GetUserRepositoriesWithIncludesAsync(int userId)
         {
             return await dbSet.Where(r => r.UserId == userId)
                 .Include(r => r.Solutions)
                 .ThenInclude(s => s.Projects)
                 .ThenInclude(p => p.ProjectPackageVersions)
                 .ThenInclude(ppv => ppv.PackageVersion)
-                .AsNoTracking().ToListAsync();
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

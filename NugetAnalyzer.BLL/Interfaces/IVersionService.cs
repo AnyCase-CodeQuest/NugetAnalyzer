@@ -7,7 +7,7 @@ namespace NugetAnalyzer.BLL.Interfaces
     /// <summary>
     /// Service for comparing versions of packages and calculating the maximum in importance report of reports
     /// </summary>
-    public interface IPackageVersionService
+    public interface IVersionService
     {
         /// <summary>
         /// Comparing the current version of the package with the latest version and publication date of the current package with the publication date of latest package
@@ -22,6 +22,6 @@ namespace NugetAnalyzer.BLL.Interfaces
         /// </summary>
         /// <param name="packageVersionComparisonReports">list of reports from which to calculate</param>
         /// <returns>Report which consisting maximum level of the status of the date, version and obsolete status</returns>
-        PackageVersionComparisonReport CalculateMaxReportLevelStatus(IList<PackageVersionComparisonReport> packageVersionComparisonReports);
+        PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> packageVersionComparisonReports);
     }
 }

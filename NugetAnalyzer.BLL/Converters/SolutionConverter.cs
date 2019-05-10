@@ -13,6 +13,7 @@ namespace NugetAnalyzer.BLL.Converters
                 ? null
                 : new SolutionWithVersionReport
                 {
+                    Id = solution.Id,
                     Name = solution.Name,
                     Report = new PackageVersionComparisonReport(),
                     Projects = solution.Projects.Select(ProjectConverter.ProjectToProjectWithVersionReport).ToList()

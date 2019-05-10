@@ -11,14 +11,14 @@ using NugetAnalyzer.Common.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class PackageVersionService : IPackageVersionService
+    public class VersionService : IVersionService
     {
         private const double daysInTheMonth = 365.25 / 12;
 
         private readonly PackageVersionConfiguration packageVersionConfiguration;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public PackageVersionService(IOptions<PackageVersionConfiguration> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
+        public VersionService(IOptions<PackageVersionConfiguration> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
         {
             this.packageVersionConfiguration = packageVersionConfiguration.Value ?? throw new ArgumentNullException(nameof(packageVersionConfiguration));
             this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
@@ -41,7 +41,7 @@ namespace NugetAnalyzer.BLL.Services
             return comparisonResult;
         }
 
-        public PackageVersionComparisonReport CalculateMaxReportLevelStatus(IList<PackageVersionComparisonReport> packageVersionComparisonReport)
+        public PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> packageVersionComparisonReport)
         {
             return new PackageVersionComparisonReport
             {
@@ -51,12 +51,12 @@ namespace NugetAnalyzer.BLL.Services
             };
         }
 
-        private PackageVersionStatus CalculateMaxVersionStatusLevel(IList<PackageVersionComparisonReport> packageVersionComparisonReport)
+        private PackageVersionStatus CalculateMaxVersionStatusLevel(ICollection<PackageVersionComparisonReport> packageVersionComparisonReport)
         {
             return packageVersionComparisonReport.Select(r => r.VersionStatus).Max();
         }
 
-        private PackageDateStatus CalculateMaxDateStatusLevel(IList<PackageVersionComparisonReport> packageVersionComparisonReport)
+        private PackageDateStatus CalculateMaxDateStatusLevel(ICollection<PackageVersionComparisonReport> packageVersionComparisonReport)
         {
             return packageVersionComparisonReport.Select(r => r.DateStatus).Max();
         }

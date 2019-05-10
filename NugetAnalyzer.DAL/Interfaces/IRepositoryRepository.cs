@@ -6,6 +6,6 @@ namespace NugetAnalyzer.DAL.Interfaces
 {
     public interface IRepositoryRepository
     {
-        Task<IReadOnlyCollection<Repository>> GetUserRepositoriesWithIncludes(int userId);
+        Task<IReadOnlyCollection<Repository>> GetUserRepositoriesWithIncludesAsync(int userId);
     }
 }

@@ -13,6 +13,7 @@ namespace NugetAnalyzer.BLL.Converters
                 ? null
                 : new RepositoryWithVersionReport
                 {
+                    Id = repository.Id,
                     Name = repository.Name,
                     Report = new PackageVersionComparisonReport(),
                     Solutions = repository.Solutions.Select(SolutionConverter.SolutionToSolutionWithVersionReport).ToList()

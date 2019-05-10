@@ -5,8 +5,9 @@ namespace NugetAnalyzer.BLL.Models.Solutions
 {
     public class SolutionWithVersionReport
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<ProjectWithVersionReport> Projects { get; set; }
+        public List<ProjectWithVersionReport> Projects { get; set; }
         public PackageVersionComparisonReport Report { get; set; }
     }
 }
