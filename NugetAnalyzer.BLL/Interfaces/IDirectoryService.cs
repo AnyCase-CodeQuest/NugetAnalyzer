@@ -8,6 +8,6 @@
 
         string CreateDirectoryForRepository();
 
-        void DeleteRepository(string repositoryPath);
+        void Delete(string path);
     }
 }

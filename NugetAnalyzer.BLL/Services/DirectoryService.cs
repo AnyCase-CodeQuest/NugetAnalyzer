@@ -47,14 +47,14 @@ namespace NugetAnalyzer.BLL.Services
             return path.ToString();
         }
 
-        public void DeleteRepository(string repositoryPath)
+        public void Delete(string path)
         {
-            if (repositoryPath == null)
-                throw new ArgumentNullException(nameof(repositoryPath));
+            if (path == null)
+                throw new ArgumentNullException(nameof(path));
 
-            if (Directory.Exists(repositoryPath))
+            if (Directory.Exists(path))
             {
-                Directory.Delete(repositoryPath, true);
+                Directory.Delete(path, true);
             }
         }
 
