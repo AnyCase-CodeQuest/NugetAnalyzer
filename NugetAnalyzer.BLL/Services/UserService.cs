@@ -26,7 +26,7 @@ namespace NugetAnalyzer.BLL.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateGitHubToken(int gitHubId, string gitHubToken)
+        public async Task UpdateGitHubTokenAsync(int gitHubId, string gitHubToken)
         {
             var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId);
             user.GitHubToken = gitHubToken;
@@ -34,19 +34,19 @@ namespace NugetAnalyzer.BLL.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public Profile GetProfileByGitHubId(int gitHubId)
+        public async Task<Profile> GetProfileByGitHubIdAsync(int gitHubId)
         {
-            var user = usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId).Result;
+            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId);
             return UserConverter.ConvertUserToProfile(user);
         }
 
-        public Profile GetProfileByUserName(string userName)
+        public async Task<Profile> GetProfileByUserNameAsync(string userName)
         {
-            var user = usersRepository.GetSingleOrDefaultAsync(p => p.UserName == userName).Result;
+            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.UserName == userName);
             return UserConverter.ConvertUserToProfile(user);
         }
 
-        public string GetGitHubTokenByGitHubId(int gitHubId)
+        public Task<string> GetGitHubTokenByGitHubIdAsync(int gitHubId)
         {
             return usersRepository.GetGitHubTokenByGitHubId(gitHubId);
         }

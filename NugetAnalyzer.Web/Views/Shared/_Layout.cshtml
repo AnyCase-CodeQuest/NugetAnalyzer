@@ -25,12 +25,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item small font-weight-bold">
-                    <a asp-action="About" asp-controller="Home" class="nav-link nav__link_layout text-white navbar__link_text">
+                    <a asp-action="About" asp-controller="Home" class="nav-link nav__link_navbar text-white navbar__link_text">
                         About
                     </a>
                 </li>
                 <li class="nav-item small font-weight-bold">
-                    <a asp-action="Contacts" asp-controller="Home" class="nav-link nav__link_layout text-white navbar__link_text">
+                    <a asp-action="Contacts" asp-controller="Home" class="nav-link nav__link_navbar text-white navbar__link_text">
                         Contacts
                     </a>
                 </li>
@@ -38,7 +38,7 @@
             @if (!User.Identity.IsAuthenticated)
             {
                 <div class="nav-item small float-right border border-white rounded">
-                    <a asp-action="SourceChoice" asp-controller="OAuthSignIn" class="nav-link nav__link_layout text-white navbar__link_text">
+                    <a asp-action="SourceChoice" asp-controller="OAuthSignIn" class="nav-link nav__link_navbar text-white navbar__link_text">
                         Sign In
                     </a>
                 </div>
@@ -52,7 +52,7 @@
                     </button>
                     <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenuRepositories">
                         <li>
-                            <a asp-action="About" asp-controller="Home" class="nav-link nav__link_layout navbar__li">
+                            <a asp-action="About" asp-controller="Home" class="nav-link nav__link_navbar navbar__li">
                                 Add repository
                             </a>
                         </li>
@@ -69,13 +69,13 @@
                     </button>
                     <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenuProfile">
                         <li>
-                            <a asp-action="Profile" asp-controller="Account" class="nav-link nav__link_layout navbar__li">
+                            <a asp-action="Profile" asp-controller="Account" class="nav-link nav__link_navbar navbar__li">
                                 Profile
                             </a>
                         </li>
                         <li class="dropdown-divider"></li>
                         <li>
-                            <a asp-action="Signout" asp-controller="Account" class="nav-link nav__link_layout navbar__li">
+                            <a asp-action="Signout" asp-controller="Account" class="nav-link nav__link_navbar navbar__li">
                                 Sign out
                             </a>
                         </li>

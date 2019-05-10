@@ -14,5 +14,9 @@
   {
     "outputFile": "wwwroot/stylesheets/Account/Profile.css",
     "inputFile": "wwwroot/stylesheets/Account/Profile.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/OAuthSignIn/SourceChoice.css",
+    "inputFile": "wwwroot/stylesheets/OAuthSignIn/SourceChoice.scss"
   }
 ]

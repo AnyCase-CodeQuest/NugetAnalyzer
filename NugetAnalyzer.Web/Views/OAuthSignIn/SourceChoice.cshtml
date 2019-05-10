@@ -2,7 +2,7 @@
     ViewData["Title"] = "SourceChoice";
     Layout = "_SignInLayout";
 }
-
+    <link href="~/stylesheets/OAuthSignIn/SourceChoice.min.css" rel="stylesheet" />
     <div class="row h-100 justify-content-center align-items-center">
         <a asp-controller="Home" asp-action="Index" class="mt-5 mb-4">
             <svg height="64" viewBox="0 0 16 16" version="1.1" width="64" aria-hidden="true">
@@ -16,7 +16,7 @@
     <div class="row justify-content-center align-items-center">
         <div class="card border-secondary">
             <a asp-action="Login" asp-controller="GitHubAuth">
-                <img src="~/images/GitHubLogo.png" width="180" />
+                <img class="source__control_source_image" src="~/images/GitHubLogo.png"/>
             </a>
         </div>
     </div>

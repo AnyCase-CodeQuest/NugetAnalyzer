@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
@@ -11,9 +13,12 @@ namespace NugetAnalyzer.DAL.Repositories
         {
         }
 
-        public string GetGitHubTokenByGitHubId(int gitHubId)
+        public Task<string> GetGitHubTokenByGitHubId(int gitHubId)
         {
-            return DbSet.Where(p => p.GitHubId == gitHubId).Select(p => p.GitHubToken).FirstOrDefault();
+            return DbSet
+                .Where(p => p.GitHubId == gitHubId)
+                .Select(p => p.GitHubToken)
+                .FirstOrDefaultAsync();
         }
     }
 }

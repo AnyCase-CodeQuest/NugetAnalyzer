@@ -7,13 +7,20 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
+using NugetAnalyzer.Web.Options;
 
 namespace NugetAnalyzer.Web.ServiceCollectionExtensions
 {
     public static class GitHubOAuthExtension
     {
-        public static void AddGitHubOAuth(this IServiceCollection services, IConfigurationSection GitHubEndPoints, IConfigurationSection userSecrets)
+        public static void AddGitHubOAuth(this IServiceCollection services, IConfigurationSection endPointsSection, IConfigurationSection secretsSection)
         {
+            services.Configure<GitHubSecretsOptions>(endPointsSection);
+            services.Configure<GitHubEndPointsOptions>(secretsSection);
+
+            var endPoints = endPointsSection.Get<GitHubEndPointsOptions>();
+            var secrets = secretsSection.Get<GitHubSecretsOptions>();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -23,13 +30,13 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
            .AddCookie()
            .AddOAuth("GitHub", options =>
            {
-               options.ClientId = userSecrets.GetSection("ClientId").Value;
-               options.ClientSecret = userSecrets.GetSection("ClientSecret").Value;
-               options.CallbackPath = userSecrets.GetSection("CallbackPath").Value;
+               options.ClientId = secrets.ClientId;
+               options.ClientSecret = secrets.ClientSecret;
+               options.CallbackPath = secrets.CallbackPath;
 
-               options.AuthorizationEndpoint = GitHubEndPoints.GetSection("AuthorizationEndpoint").Value;
-               options.TokenEndpoint = GitHubEndPoints.GetSection("TokenEndpoint").Value;
-               options.UserInformationEndpoint = GitHubEndPoints.GetSection("UserInformationEndpoint").Value;
+               options.AuthorizationEndpoint = endPoints.AuthorizationEndpoint;
+               options.TokenEndpoint = endPoints.TokenEndpoint;
+               options.UserInformationEndpoint = endPoints.UserInformationEndpoint;
 
                options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
                options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
@@ -51,8 +58,8 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
 
                        var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
                        response.EnsureSuccessStatusCode();
-
-                       var user = JObject.Parse(await response.Content.ReadAsStringAsync());
+                       var jObjectResponse = await response.Content.ReadAsStringAsync();
+                       var user = JObject.Parse(jObjectResponse);
                        context.RunClaimActions(user);
                    }
                };

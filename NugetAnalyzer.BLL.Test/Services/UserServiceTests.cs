@@ -42,7 +42,6 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(p => p.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
                 .ReturnsAsync(userMock);
 
-
             userService = new UserService(unitOfWorkMock.Object);
         }
 
@@ -60,7 +59,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var gitHubId = It.IsAny<int>();
             var user = new User { GitHubId = gitHubId };
             var gitHubToken = It.IsAny<string>();
-            userService.UpdateGitHubToken(gitHubId, gitHubToken);
+            userService.UpdateGitHubTokenAsync(gitHubId, gitHubToken);
             userRepositoryMock
                 .Verify(p =>
                 p.GetSingleOrDefaultAsync(It.Is<Expression<Func<User, bool>>>(expr => expr.Compile().Invoke(user))));
@@ -72,7 +71,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetProfileByGitHubId_Should_Invoke_GetSingleOrDefaultAsync()
         {
             var user = new User { GitHubId = 5 };
-            userService.GetProfileByGitHubId(user.GitHubId);
+            userService.GetProfileByGitHubIdAsync(user.GitHubId);
             userRepositoryMock
                 .Verify(p =>
                 p.GetSingleOrDefaultAsync(It.Is<Expression<Func<User, bool>>>(expr => expr.Compile().Invoke(user))));
@@ -81,7 +80,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void GetProfileByGitHubId_Should_Return_Profile()
         {
-            var result = userService.GetProfileByGitHubId(5);
+            var result = userService.GetProfileByGitHubIdAsync(5);
             Assert.NotNull(result);
         }
 
@@ -89,7 +88,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetProfileByUserName_Should_Invoke_GetSingleOrDefaultAsync()
         {
             var user = new User { UserName = "AntsiferauGodel" };
-            userService.GetProfileByUserName(user.UserName);
+            userService.GetProfileByUserNameAsync(user.UserName);
             userRepositoryMock
                 .Verify(x =>
                 x.GetSingleOrDefaultAsync(It.Is<Expression<Func<User, bool>>>(func => func.Compile().Invoke(user))));
@@ -98,7 +97,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void GetProfileByUserName_Should_Return_Profile()
         {
-            var result = userService.GetProfileByUserName(It.IsAny<string>());
+            var result = userService.GetProfileByUserNameAsync(It.IsAny<string>());
             Assert.NotNull(result);
         }
 
@@ -106,7 +105,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetGitHubTokenByGitHubId_Should_Invoke_GetGitHubTokenByGitHubId()
         {
             var gitHubId = It.IsAny<int>();
-            userService.GetGitHubTokenByGitHubId(gitHubId);
+            userService.GetGitHubTokenByGitHubIdAsync(gitHubId);
             userRepositoryMock.Verify(p => p.GetGitHubTokenByGitHubId(gitHubId));
         }
     }

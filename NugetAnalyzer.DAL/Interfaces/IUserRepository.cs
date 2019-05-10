@@ -5,6 +5,6 @@ namespace NugetAnalyzer.DAL.Interfaces
 {
     public interface IUsersRepository : IRepository<User>
     {
-        string GetGitHubTokenByGitHubId(int gitHubId);
+        Task<string> GetGitHubTokenByGitHubId(int gitHubId);
     }
 }

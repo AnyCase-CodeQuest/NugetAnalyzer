@@ -4,8 +4,8 @@
 }
     <link href="~/stylesheets/Account/Profile.css" rel="stylesheet"/>
     <div class="row ">
-        <div class="column " style="max-width: 230px;">
-            <img class="profile__column_item" src=@Model.AvatarUrl width="230px" height="230px"/>
+        <div class="column profile__column">
+            <img class="profile__column_item profile__avatar" src=@Model.AvatarUrl/>
             <h3 class="profile__column_item">@Model.UserName</h3>
             <button class="w-100 profile__column_item">Edit</button>
         </div>

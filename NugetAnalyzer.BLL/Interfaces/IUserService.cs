@@ -7,11 +7,12 @@ namespace NugetAnalyzer.BLL.Interfaces
     {
         Task CreateUserAsync(Profile profile, string gitHubToken);
 
-        Profile GetProfileByUserName(string userName);
-        Profile GetProfileByGitHubId(int gitHubId);
+        Task<Profile> GetProfileByUserNameAsync(string userName);
 
-        Task UpdateGitHubToken(int gitHubId, string gitHubToken);
+        Task<Profile> GetProfileByGitHubIdAsync(int gitHubId);
 
-        string GetGitHubTokenByGitHubId(int gitHubId);
+        Task UpdateGitHubTokenAsync(int gitHubId, string gitHubToken);
+
+        Task<string> GetGitHubTokenByGitHubIdAsync(int gitHubId);
     }
 }

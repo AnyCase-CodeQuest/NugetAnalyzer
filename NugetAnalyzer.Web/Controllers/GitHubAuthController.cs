@@ -7,6 +7,10 @@ namespace NugetAnalyzer.Web.Controllers
 {
     public class GitHubAuthController : Controller
     {
+        private const string userName = "urn:github:login";
+        private const string githubUrl = "urn:github:url";
+        private const string avatarUrl = "urn:github:avatar";
+
         public IActionResult Login()
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "/GitHubAuth/Authenticate" }, "GitHub");
@@ -16,10 +20,10 @@ namespace NugetAnalyzer.Web.Controllers
         {
             var profile = new Profile
             {
-                UserName = User.FindFirstValue("urn:github:login"),
-                GitHubUrl = User.FindFirstValue("urn:github:url"),
+                UserName = User.FindFirstValue(userName),
+                GitHubUrl = User.FindFirstValue(githubUrl),
                 GitHubId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                AvatarUrl = User.FindFirstValue("urn:github:avatar")
+                AvatarUrl = User.FindFirstValue(avatarUrl)
             };
             return RedirectToAction("GitHubLogin", "Account", profile);
         }
