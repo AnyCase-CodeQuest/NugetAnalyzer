@@ -1,6 +1,4 @@
-﻿using NugetAnalyzer.Domain;
-
-namespace NugetAnalyzer.BLL.Models.Projects
+﻿namespace NugetAnalyzer.BLL.Models.Projects
 {
     public class ProjectWithVersionReport
     {

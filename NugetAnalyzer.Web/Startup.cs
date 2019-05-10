@@ -40,7 +40,7 @@ namespace NugetAnalyzer.Web
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPackageVersionService, PackageVersionService>();
+            services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
 
             services.AddMvc();
