@@ -5,7 +5,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Converters
 {
-    internal class RepositoryConverter
+    public class RepositoryConverter
     {
         public static RepositoryWithVersionReport RepositoryToRepositoryWithVersionReport(Repository repository)
         {

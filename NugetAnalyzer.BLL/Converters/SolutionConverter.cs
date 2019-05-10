@@ -5,7 +5,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Converters
 {
-    internal class SolutionConverter
+    public class SolutionConverter
     {
         public static SolutionWithVersionReport SolutionToSolutionWithVersionReport(Solution solution)
         {

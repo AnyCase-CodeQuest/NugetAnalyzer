@@ -31,18 +31,19 @@ namespace NugetAnalyzer.BLL.Services
             if (currentVersion == null)
                 throw new ArgumentNullException(nameof(currentVersion));
 
-            var comparisonResult = new PackageVersionComparisonReport
+            return new PackageVersionComparisonReport
             {
                 VersionStatus = CompareVersions(latestVersion, currentVersion),
                 DateStatus = CompareDates(latestVersion.PublishedDate, currentVersion.PublishedDate),
                 IsObsolete = ObsoleteCheck(latestVersion.PublishedDate)
             };
-
-            return comparisonResult;
         }
 
         public PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> reports)
         {
+            if(reports == null)
+                throw new ArgumentNullException(nameof(reports));
+
             return reports.Count == 0 ? new PackageVersionComparisonReport() : new PackageVersionComparisonReport
             {
                 DateStatus = CalculateMaxDateStatusLevel(reports),

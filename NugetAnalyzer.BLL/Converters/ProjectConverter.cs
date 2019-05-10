@@ -4,7 +4,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Converters
 {
-    internal class ProjectConverter
+    public class ProjectConverter
     {
         public static ProjectWithVersionReport ProjectToProjectWithVersionReport(Project project)
         {
