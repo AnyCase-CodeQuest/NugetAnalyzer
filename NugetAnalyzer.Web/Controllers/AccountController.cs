@@ -20,6 +20,7 @@ namespace NugetAnalyzer.Web.Controllers
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
+        [HttpGet]
         public async Task<IActionResult> GitHubLogin(ProfileViewModel profile)
         {
             var userProfile = await userService.GetProfileByGitHubIdAsync(profile.GitHubId);
@@ -46,11 +47,9 @@ namespace NugetAnalyzer.Web.Controllers
             return RedirectToAction("Profile");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
-            // Culture contains the information of the requested culture
-            var culture = rqf.RequestCulture.Culture;
             int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userGitHubId);
             var profile = await userService.GetProfileByGitHubIdAsync(userGitHubId);
             //countermeasures if user closed our site on profile registration form
@@ -62,6 +61,7 @@ namespace NugetAnalyzer.Web.Controllers
             return View(profile);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Signout()
         {
             await HttpContext.SignOutAsync();

@@ -13,11 +13,13 @@ namespace NugetAnalyzer.Web.Controllers
         private const string AvatarUrlClaimType = "urn:github:avatar";
         private const string GithubIdClaimType = ClaimTypes.NameIdentifier;
 
+        [HttpGet]
         public IActionResult Login()
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "/GitHubAuth/Authenticate" }, "GitHub");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Authenticate()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
