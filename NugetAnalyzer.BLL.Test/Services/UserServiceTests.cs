@@ -15,7 +15,7 @@ namespace NugetAnalyzer.BLL.Test.Services
     {
         private IUserService userService;
         private Mock<IUnitOfWork> unitOfWorkMock;
-        private Mock<IUsersRepository> userRepositoryMock;
+        private Mock<IRepository<User>> userRepositoryMock;
         private User userMock;
 
         [OneTimeSetUp]
@@ -32,11 +32,11 @@ namespace NugetAnalyzer.BLL.Test.Services
                 UserName = "AntsiferauGodel"
             };
 
-            userRepositoryMock = new Mock<IUsersRepository>();
+            userRepositoryMock = new Mock<IRepository<User>>();
             unitOfWorkMock = new Mock<IUnitOfWork>();
 
             unitOfWorkMock
-                .SetupGet(p => p.UsersRepository)
+                .Setup(p => p.GetRepository<User>())
                 .Returns(userRepositoryMock.Object);
             userRepositoryMock
                 .Setup(p => p.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
@@ -48,7 +48,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void CreateUserAsync_Should_Invoke_Add_Save()
         {
-            userService.CreateUserAsync(new Profile(), It.IsAny<string>());
+            userService.CreateUserAsync(new ProfileViewModel());
             userRepositoryMock.Verify(p => p.Add(It.IsAny<User>()));
             unitOfWorkMock.Verify(p => p.SaveChangesAsync());
         }
@@ -59,7 +59,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var gitHubId = It.IsAny<int>();
             var user = new User { GitHubId = gitHubId };
             var gitHubToken = It.IsAny<string>();
-            userService.UpdateGitHubTokenAsync(gitHubId, gitHubToken);
+            userService.UpdateUserAsync(new ProfileViewModel());
             userRepositoryMock
                 .Verify(p =>
                 p.GetSingleOrDefaultAsync(It.Is<Expression<Func<User, bool>>>(expr => expr.Compile().Invoke(user))));
@@ -99,14 +99,6 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             var result = userService.GetProfileByUserNameAsync(It.IsAny<string>());
             Assert.NotNull(result);
-        }
-
-        [Test]
-        public void GetGitHubTokenByGitHubId_Should_Invoke_GetGitHubTokenByGitHubId()
-        {
-            var gitHubId = It.IsAny<int>();
-            userService.GetGitHubTokenByGitHubIdAsync(gitHubId);
-            userRepositoryMock.Verify(p => p.GetGitHubTokenByGitHubId(gitHubId));
         }
     }
 }

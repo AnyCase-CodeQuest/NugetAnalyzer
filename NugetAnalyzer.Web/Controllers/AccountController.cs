@@ -2,12 +2,15 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models;
 
 namespace NugetAnalyzer.Web.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IUserService userService;
@@ -17,42 +20,37 @@ namespace NugetAnalyzer.Web.Controllers
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public async Task<IActionResult> GitHubLogin(Profile profile)
+        public async Task<IActionResult> GitHubLogin(ProfileViewModel profile)
         {
-            var userProfile = userService.GetProfileByGitHubIdAsync(profile.GitHubId);
+            var userProfile = await userService.GetProfileByGitHubIdAsync(profile.GitHubId);
 
             if (userProfile != null)
             {
-                var gitHubToken = await HttpContext.GetTokenAsync("access_token");
-                await userService.UpdateGitHubTokenAsync(profile.GitHubId, gitHubToken);
+                await userService.UpdateUserAsync(profile);
                 return RedirectToAction("Profile");
             }
-
             return RedirectToAction("UserCreationForm", profile);
         }
 
         [HttpGet]
-        public IActionResult UserCreationForm(Profile profile)
+        public IActionResult UserCreationForm(ProfileViewModel profile)
         {
             return View(profile);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(Profile profile)
+        public async Task<IActionResult> CreateUser(ProfileViewModel profile)
         {
-            var gitHubToken = await HttpContext.GetTokenAsync("access_token");
-            await userService.CreateUserAsync(profile, gitHubToken);
+            await userService.CreateUserAsync(profile);
 
             return RedirectToAction("Profile");
         }
 
         public async Task<IActionResult> Profile()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
+            var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+            // Culture contains the information of the requested culture
+            var culture = rqf.RequestCulture.Culture;
             int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userGitHubId);
             var profile = await userService.GetProfileByGitHubIdAsync(userGitHubId);
             //countermeasures if user closed our site on profile registration form

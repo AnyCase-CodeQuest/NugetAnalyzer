@@ -4,51 +4,46 @@ using NugetAnalyzer.BLL.Converters;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models;
 using NugetAnalyzer.DAL.Interfaces;
+using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IUsersRepository usersRepository;
+        private readonly IRepository<User> usersRepository;
 
         public UserService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            usersRepository = unitOfWork.UsersRepository;
+            usersRepository = unitOfWork.GetRepository<User>();
         }
 
-        public async Task CreateUserAsync(Profile profile, string gitHubToken)
+        public async Task CreateUserAsync(ProfileViewModel profile)
         {
             var user = UserConverter.ConvertProfileToUser(profile);
-            user.GitHubToken = gitHubToken;
             usersRepository.Add(user);
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateGitHubTokenAsync(int gitHubId, string gitHubToken)
+        public async Task UpdateUserAsync(ProfileViewModel profile)
         {
-            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId);
-            user.GitHubToken = gitHubToken;
+            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == profile.GitHubId);
+            user.GitHubToken = profile.AccessToken;
             usersRepository.Update(user);
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<Profile> GetProfileByGitHubIdAsync(int gitHubId)
+        public async Task<ProfileViewModel> GetProfileByGitHubIdAsync(int gitHubId)
         {
             var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId);
             return UserConverter.ConvertUserToProfile(user);
         }
 
-        public async Task<Profile> GetProfileByUserNameAsync(string userName)
+        public async Task<ProfileViewModel> GetProfileByUserNameAsync(string userName)
         {
             var user = await usersRepository.GetSingleOrDefaultAsync(p => p.UserName == userName);
             return UserConverter.ConvertUserToProfile(user);
-        }
-
-        public Task<string> GetGitHubTokenByGitHubIdAsync(int gitHubId)
-        {
-            return usersRepository.GetGitHubTokenByGitHubId(gitHubId);
         }
     }
 }

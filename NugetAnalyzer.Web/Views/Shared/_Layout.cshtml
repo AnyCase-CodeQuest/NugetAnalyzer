@@ -26,12 +26,12 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item small font-weight-bold">
                     <a asp-action="About" asp-controller="Home" class="nav-link nav__link_navbar text-white navbar__link_text">
-                        About
+                        @Localizer["About"]
                     </a>
                 </li>
                 <li class="nav-item small font-weight-bold">
                     <a asp-action="Contacts" asp-controller="Home" class="nav-link nav__link_navbar text-white navbar__link_text">
-                        Contacts
+                        @Localizer["Contacts"]
                     </a>
                 </li>
             </ul>
@@ -39,7 +39,7 @@
             {
                 <div class="nav-item small float-right border border-white rounded">
                     <a asp-action="SourceChoice" asp-controller="OAuthSignIn" class="nav-link nav__link_navbar text-white navbar__link_text">
-                        Sign In
+                        @Localizer["SignIn"]
                     </a>
                 </div>
             }
@@ -53,7 +53,7 @@
                     <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenuRepositories">
                         <li>
                             <a asp-action="About" asp-controller="Home" class="nav-link nav__link_navbar navbar__li">
-                                Add repository
+                                @Localizer["Add repository"]
                             </a>
                         </li>
                     </ul>
@@ -70,13 +70,13 @@
                     <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenuProfile">
                         <li>
                             <a asp-action="Profile" asp-controller="Account" class="nav-link nav__link_navbar navbar__li">
-                                Profile
+                                @Localizer["Profile"]
                             </a>
                         </li>
                         <li class="dropdown-divider"></li>
                         <li>
                             <a asp-action="Signout" asp-controller="Account" class="nav-link nav__link_navbar navbar__li">
-                                Sign out
+                                @Localizer["SignOut"]
                             </a>
                         </li>
                     </ul>
@@ -102,17 +102,17 @@
                 </div>
                 <div class="col text-right small">
                     <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text">
-                        About
+                        @Localizer["About"]
                     </a>
                     <a asp-action="Contacts" asp-controller="Home" class="text-primary navbar__link_text footer__link_margin">
-                        Contacts
+                        @Localizer["Contacts"]
                     </a>
                 </div>
             </div>
         </footer>
     </div>
 
-    
+
 
     <script src="~/scripts/jquery-3.4.0.min.js"></script>
     <script src="~/scripts/popper.min.js"></script>

@@ -9,7 +9,7 @@ using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
-using NugetAnalyzer.Domain;
+using NugetAnalyzer.Web.ApplicationBuilderExtensions;
 using NugetAnalyzer.Web.Middleware;
 using NugetAnalyzer.Web.ServiceCollectionExtensions;
 
@@ -17,6 +17,7 @@ namespace NugetAnalyzer.Web
 {
     public class Startup
     {
+        private const string ResourcePath = "Resources";
         public Startup(IHostingEnvironment environment)
         {
             Configuration = new ConfigurationBuilder()
@@ -36,17 +37,14 @@ namespace NugetAnalyzer.Web
             });
             
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped(typeof(IRepository<User>), provider => provider.GetService<IUsersRepository>());
 
             var secretsSection = Configuration.GetSection("GitHubAppSettings");
             var endPointsSection = Configuration.GetSection("GitHubEndPoints");
             services.AddGitHubOAuth(endPointsSection, secretsSection);
 
-            services.AddMvc();
+            services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -55,6 +53,8 @@ namespace NugetAnalyzer.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseConfiguredLocalization();
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseStaticFiles();

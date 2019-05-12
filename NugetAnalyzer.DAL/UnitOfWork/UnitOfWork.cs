@@ -18,8 +18,6 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public IUsersRepository UsersRepository => (IUsersRepository)GetRepository<User>();
-
         public IRepository<T> GetRepository<T>()
             where T : class
         {

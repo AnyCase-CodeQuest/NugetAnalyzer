@@ -13,6 +13,11 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
 {
     public static class GitHubOAuthExtension
     {
+        private const string UserNameClaimType = "urn:github:login";
+        private const string GithubUrlClaimType = "urn:github:url";
+        private const string AvatarUrlClaimType = "urn:github:avatar";
+        private const string GithubIdClaimType = ClaimTypes.NameIdentifier;
+
         public static void AddGitHubOAuth(this IServiceCollection services, IConfigurationSection endPointsSection, IConfigurationSection secretsSection)
         {
             services.Configure<GitHubSecretsOptions>(endPointsSection);
@@ -38,11 +43,10 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
                options.TokenEndpoint = endPoints.TokenEndpoint;
                options.UserInformationEndpoint = endPoints.UserInformationEndpoint;
 
-               options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
-               options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-               options.ClaimActions.MapJsonKey("urn:github:login", "login");
-               options.ClaimActions.MapJsonKey("urn:github:url", "html_url");
-               options.ClaimActions.MapJsonKey("urn:github:avatar", "avatar_url");
+               options.ClaimActions.MapJsonKey(GithubIdClaimType, "id");
+               options.ClaimActions.MapJsonKey(UserNameClaimType, "login");
+               options.ClaimActions.MapJsonKey(GithubUrlClaimType, "html_url");
+               options.ClaimActions.MapJsonKey(AvatarUrlClaimType, "avatar_url");
 
                options.Scope.Add("repo");
 

@@ -5,7 +5,7 @@ namespace NugetAnalyzer.BLL.Converters
 {
     internal class UserConverter
     {
-        internal static User ConvertProfileToUser(Profile profile)
+        internal static User ConvertProfileToUser(ProfileViewModel profile)
         {
             return profile == null
                 ? null
@@ -15,23 +15,26 @@ namespace NugetAnalyzer.BLL.Converters
                 Email = profile.Email,
                 GitHubId = profile.GitHubId,
                 GitHubUrl = profile.GitHubUrl,
-                AvatarUrl = profile.AvatarUrl
+                AvatarUrl = profile.AvatarUrl,
+                GitHubToken = profile.AccessToken,
+                Id = profile.Id
             };
         }
 
-        internal static Profile ConvertUserToProfile(User user)
+        internal static ProfileViewModel ConvertUserToProfile(User user)
         {
             return user == null
                 ? null
-                : new Profile
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                GitHubId = user.GitHubId,
-                GitHubUrl = user.GitHubUrl,
-                AvatarUrl = user.AvatarUrl,
-                Id = user.Id
-            };
+                : new ProfileViewModel
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    GitHubId = user.GitHubId,
+                    GitHubUrl = user.GitHubUrl,
+                    AvatarUrl = user.AvatarUrl,
+                    Id = user.Id,
+                    AccessToken = user.GitHubToken
+                };
         }
     }
 }

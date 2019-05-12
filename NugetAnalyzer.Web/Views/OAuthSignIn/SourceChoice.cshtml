@@ -1,8 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "SourceChoice";
+    ViewData["Title"] = Localizer["SourceChoice"];
     Layout = "_SignInLayout";
 }
     <link href="~/stylesheets/OAuthSignIn/SourceChoice.min.css" rel="stylesheet" />
+
     <div class="row h-100 justify-content-center align-items-center">
         <a asp-controller="Home" asp-action="Index" class="mt-5 mb-4">
             <svg height="64" viewBox="0 0 16 16" version="1.1" width="64" aria-hidden="true">
@@ -11,7 +12,7 @@
         </a>
     </div>
     <div class="row justify-content-center align-items-center">
-        <label>Sign in with</label>
+        <label>@Localizer["Choice"]</label>
     </div>
     <div class="row justify-content-center align-items-center">
         <div class="card border-secondary">

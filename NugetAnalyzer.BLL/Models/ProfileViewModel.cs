@@ -1,6 +1,6 @@
 ﻿namespace NugetAnalyzer.BLL.Models
 {
-    public class Profile
+    public class ProfileViewModel
     {
         public int Id { get; set; }
 
@@ -13,5 +13,7 @@
         public string GitHubUrl { get; set; }
 
         public int GitHubId { get; set; }
+
+        public string AccessToken { get; set; }
     }
 }   
