@@ -3,9 +3,9 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Converters
 {
-    internal class UserConverter
+    public class UserConverter
     {
-        internal static User ConvertProfileToUser(ProfileViewModel profile)
+        public static User ConvertProfileToUser(ProfileViewModel profile)
         {
             return profile == null
                 ? null
@@ -21,7 +21,7 @@ namespace NugetAnalyzer.BLL.Converters
             };
         }
 
-        internal static ProfileViewModel ConvertUserToProfile(User user)
+        public static ProfileViewModel ConvertUserToProfile(User user)
         {
             return user == null
                 ? null
