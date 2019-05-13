@@ -12,6 +12,7 @@ using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
+using NugetAnalyzer.Domain;
 using NugetAnalyzer.Web.Middleware;
 
 namespace NugetAnalyzer.Web
@@ -40,10 +41,13 @@ namespace NugetAnalyzer.Web
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IVersionRepository, VersionRepository>();
+            services.AddScoped<IRepositoryRepository, RepositoryRepository>();
             services.AddScoped<IVersionAnalyzerService, VersionAnalyzerService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
-            services.AddScoped<IRepositoryRepository, RepositoryRepository>();
-            services.AddScoped<IVersionRepository, VersionRepository>();
+
+            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IVersionRepository>());
+            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoryRepository>());
 
             services.AddMvc();
         }

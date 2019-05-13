@@ -14,22 +14,20 @@ namespace NugetAnalyzer.BLL.Services
     public class RepositoryService : IRepositoryService
     {
         private readonly IVersionAnalyzerService versionService;
-        private readonly IRepositoryRepository repositoryRepository;
-        private readonly IVersionRepository versionRepository;
+        private readonly IUnitOfWork uow;
 
-        public RepositoryService(IVersionAnalyzerService versionService, IRepositoryRepository repositoryRepository, IVersionRepository versionRepository)
+        public RepositoryService(IVersionAnalyzerService versionService, IUnitOfWork uow)
         {
             this.versionService = versionService ?? throw new ArgumentNullException(nameof(versionService));
-            this.repositoryRepository = repositoryRepository ?? throw new ArgumentNullException(nameof(repositoryRepository));
-            this.versionRepository = versionRepository ?? throw new ArgumentNullException(nameof(versionRepository));
+            this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
 
         public async Task<ICollection<RepositoryWithVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
         {
-            var repositories = await repositoryRepository.GetRepositoriesWithIncludesAsync(expression);
+            var repositories = await uow.RepositoryRepository.GetRepositoriesWithIncludesAsync(expression);
 
             var packageIds = GetAllPackagesIdsFromRepositories(repositories);
-            var latestPackageVersions = await versionRepository.GetLatestPackageVersionsAsync(packageIds);
+            var latestPackageVersions = await uow.VersionRepository.GetLatestPackageVersionsAsync(packageIds);
 
             var repositoriesWithVersionReport = Analyze(repositories, latestPackageVersions);
 

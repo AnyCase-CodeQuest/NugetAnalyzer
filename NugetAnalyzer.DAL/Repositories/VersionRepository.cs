@@ -16,7 +16,7 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public async Task<IReadOnlyCollection<PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds)
         {
-            return await dbSet
+            return await DbSet
                 .Where(pv => packageIds.Contains(pv.PackageId))
                 .GroupBy(p => p.PackageId)
                 .Select(grp => grp

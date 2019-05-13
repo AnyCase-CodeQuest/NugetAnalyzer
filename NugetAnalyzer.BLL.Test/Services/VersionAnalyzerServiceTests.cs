@@ -97,27 +97,26 @@ namespace NugetAnalyzer.BLL.Test.Services
             versionService = new VersionAnalyzerService(packageVersionConfiguration, dateTimeProvider.Object);
         }
 
-        [Test]
-        public void Constructor_Check_AllNullArgumentsThrowsArgumentNullException()
+        [Test] public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumetIsNull()
         {
             Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(null, dateTimeProvider.Object));
             Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(packageVersionConfiguration,null));
         }
 
         [Test]
-        public void Compare_When_LatestVersionArgumentIsNull_Should_ThrowsArgumentNullException()
+        public void Compare_Should_ThrowsArgumentNullException_When_LatestVersionArgumentIsNull()
         {
             Assert.Throws<ArgumentNullException>(() => versionService.Compare(null, actualPackageVersion));
         }
 
         [Test]
-        public void Compare_When_CurrentVersionArgumentIsNull_Should_ThrowsArgumentNullException()
+        public void Compare_Should_ThrowsArgumentNullException_When_CurrentVersionArgumentIsNull()
         {
             Assert.Throws<ArgumentNullException>(() => versionService.Compare(latestPackageVersion, null));
         }
 
         [Test]
-        public void Compare_When_LatestVersionIsObsolete_Should_ReturnsReportWithObsoleteTrueValue()
+        public void Compare_Should_ReturnsReportWithObsoleteTrueValue_When_LatestVersionIsObsolete()
         {
             var report = versionService.Compare(obsoletePackageVersion, packageVersionWithErrorDateStatus);
 
@@ -125,7 +124,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void Compare_When_DateOfVersionIsUndefined_Should_ReturnsReportWithUndefinedDateValueAndFalseObsoleteValue()
+        public void Compare_Should_ReturnsReportWithUndefinedDateValueAndFalseObsoleteValue_When_DateOfVersionIsUndefined()
         {
             var report = versionService.Compare(packageVersionWithUndefinedDate, packageVersionWithUndefinedDate);
 
@@ -134,7 +133,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void Compare_When_DateOfCurrentVersionIsOld_Should_ReturnsReportWithDateErrorValue()
+        public void Compare_Should_ReturnsReportWithDateErrorValue_When_DateOfCurrentVersionIsOld()
         {
             var report = versionService.Compare(latestPackageVersion, packageVersionWithErrorDateStatus);
 
@@ -143,7 +142,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void Compare_When_MajorVersionOfCurrentVersionIsChanged_Should_ReturnsReportWithVersionErrorValue()
+        public void Compare_Should_ReturnsReportWithVersionErrorValue_When_MajorVersionOfCurrentVersionIsChanged()
         {
             var report = versionService.Compare(latestPackageVersion, packageVersionWithErrorVersionStatus);
 
@@ -152,13 +151,13 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void CalculateMaxReportLevelStatus_When_ReportsArgumentIsNull_Should_ThrowsArgumentNullException()
+        public void CalculateMaxReportLevelStatus_Should_ThrowsArgumentNullException_When_ReportsArgumentIsNull()
         {
             Assert.Throws<ArgumentNullException>(() => versionService.CalculateMaxReportLevelStatus(null));
         }
 
         [Test]
-        public void CalculateMaxReportLevelStatus_When_ReportsCountIsZero_Should_ReturnsReportWithAllGoodValues()
+        public void CalculateMaxReportLevelStatus_Should_ReturnsReportWithAllGoodValues_When_ReportsCountIsZero()
         {
             var report = versionService.CalculateMaxReportLevelStatus(new List<PackageVersionComparisonReport>(0));
 

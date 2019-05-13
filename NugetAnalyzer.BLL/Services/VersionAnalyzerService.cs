@@ -21,7 +21,9 @@ namespace NugetAnalyzer.BLL.Services
         public VersionAnalyzerService(IOptions<PackageVersionConfiguration> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
         {
             if (packageVersionConfiguration == null)
+            {
                 throw new ArgumentNullException(nameof(packageVersionConfiguration));
+            }
             this.packageVersionConfiguration = packageVersionConfiguration.Value;
             this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
@@ -29,9 +31,13 @@ namespace NugetAnalyzer.BLL.Services
         public PackageVersionComparisonReport Compare(PackageVersion latestVersion, PackageVersion currentVersion)
         {
             if (latestVersion == null)
+            {
                 throw new ArgumentNullException(nameof(latestVersion));
+            }
             if (currentVersion == null)
+            {
                 throw new ArgumentNullException(nameof(currentVersion));
+            }
 
             return new PackageVersionComparisonReport
             {
@@ -44,7 +50,9 @@ namespace NugetAnalyzer.BLL.Services
         public PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> reports)
         {
             if (reports == null)
+            {
                 throw new ArgumentNullException(nameof(reports));
+            }
 
             return reports.Count == 0 ? new PackageVersionComparisonReport() : new PackageVersionComparisonReport
             {
@@ -69,7 +77,10 @@ namespace NugetAnalyzer.BLL.Services
         private bool ObsoleteCheck(DateTime? publishedDateOfLatestVersion)
         {
             if (publishedDateOfLatestVersion == null)
+            {
                 return false;
+            }
+
             return dateTimeProvider
                        .CurrentUtcDateTime
                        .Subtract(publishedDateOfLatestVersion.Value)
@@ -79,28 +90,44 @@ namespace NugetAnalyzer.BLL.Services
         private PackageDateStatus CompareDates(DateTime? publishedDateOfLatestVersion, DateTime? publishedDateOfCurrentVersion)
         {
             if (publishedDateOfLatestVersion == null || publishedDateOfCurrentVersion == null)
+            {
                 return PackageDateStatus.Undefined;
+            }
 
-            var differenceInMonths =
-                publishedDateOfLatestVersion.Value.Subtract(publishedDateOfCurrentVersion.Value).Days / daysInTheMonth;
+            var differenceInMonths = publishedDateOfLatestVersion.Value
+                    .Subtract(publishedDateOfCurrentVersion.Value).Days / daysInTheMonth;
 
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.WarningBottomBorder)
+            {
                 return PackageDateStatus.Normal;
+            }
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.ErrorBottomBorder)
+            {
                 return PackageDateStatus.Warning;
+            }
+
             return PackageDateStatus.Error;
         }
 
         private PackageVersionStatus CompareVersions(PackageVersion latestVersion, PackageVersion currentVersion)
         {
             if (!latestVersion.Major.Equals(currentVersion.Major))
+            {
                 return packageVersionConfiguration.VersionStatus.Major;
+            }
             if (!latestVersion.Minor.Equals(currentVersion.Minor))
+            {
                 return packageVersionConfiguration.VersionStatus.Minor;
+            }
             if (!latestVersion.Build.Equals(currentVersion.Build))
+            {
                 return packageVersionConfiguration.VersionStatus.Build;
+            }
             if (!latestVersion.Revision.Equals(currentVersion.Revision))
+            {
                 return packageVersionConfiguration.VersionStatus.Revision;
+            }
+
             return PackageVersionStatus.Actual;
         }
     }

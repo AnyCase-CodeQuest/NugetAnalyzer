@@ -18,7 +18,8 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public async Task<IReadOnlyCollection<Repository>> GetRepositoriesWithIncludesAsync(Expression<Func<Repository, bool>> expression)
         {
-            return await dbSet.Where(expression)
+            return await DbSet
+                .Where(expression)
                 .Include(r => r.Solutions)
                 .ThenInclude(s => s.Projects)
                 .ThenInclude(p => p.ProjectPackageVersions)

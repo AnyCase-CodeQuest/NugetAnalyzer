@@ -23,6 +23,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IVersionAnalyzerService> versionService;
         private Mock<IRepositoryRepository> repositoryRepository;
         private Mock<IVersionRepository> versionRepository;
+        private Mock<IUnitOfWork> uow;
 
         private RepositoryService repositoryService;
 
@@ -41,16 +42,18 @@ namespace NugetAnalyzer.BLL.Test.Services
             versionService = new Mock<IVersionAnalyzerService>();
             repositoryRepository = new Mock<IRepositoryRepository>();
             versionRepository = new Mock<IVersionRepository>();
+            uow = new Mock<IUnitOfWork>();
+            uow.SetupGet(uow => uow.RepositoryRepository).Returns(repositoryRepository.Object);
+            uow.SetupGet(uow => uow.VersionRepository).Returns(versionRepository.Object);
 
-            repositoryService = new RepositoryService(versionService.Object, repositoryRepository.Object, versionRepository.Object);
+            repositoryService = new RepositoryService(versionService.Object, uow.Object);
         }
 
         [Test]
-        public void Constructor_Check_AllNullArgumentsThrowsArgumentNullException()
+        public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(null, repositoryRepository.Object, versionRepository.Object));
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionService.Object, null, versionRepository.Object));
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionService.Object, repositoryRepository.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new RepositoryService(null, uow.Object));
+            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionService.Object, null));
         }
 
         [Test]
@@ -70,7 +73,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public async Task GetAnalyzedRepositoriesAsync_CheckReturnsValue()
+        public async Task GetAnalyzedRepositoriesAsync_Check_ReturnsValue()
         {
             repositoryRepository
                 .Setup(r => r.GetRepositoriesWithIncludesAsync(It.IsAny<Expression<Func<Repository, bool>>>()))

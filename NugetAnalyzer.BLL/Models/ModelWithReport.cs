@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NugetAnalyzer.BLL.Models
+﻿namespace NugetAnalyzer.BLL.Models
 {
     public abstract class ModelWithReport
     {
