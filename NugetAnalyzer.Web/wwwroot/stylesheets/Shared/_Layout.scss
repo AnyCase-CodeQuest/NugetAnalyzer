@@ -17,18 +17,6 @@ $logo-fill-color: rgba(0,0,0,.2);
     }
 }
 
-.navbar__logo {
-    svg {
-        fill: #fff;
-    }
-
-    &:hover {
-        svg {
-            fill: $link-hover-color;
-        }
-    }
-}
-
 .navbar__li {
     color: #24292e;
 
@@ -70,18 +58,6 @@ $logo-fill-color: rgba(0,0,0,.2);
 .footer__container {
     border-top: 1px solid $logo-fill-color;
     margin-top: 20px;
-}
-
-.footer__logo {
-    svg {
-        fill: $logo-fill-color;
-    }
-
-    &:hover {
-        svg {
-            fill: rgba(0,0,0,.4);
-        }
-    }
 }
 
 .footer__row_margin {
