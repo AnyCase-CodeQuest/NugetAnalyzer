@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using NugetAnalyzer.BLL.Interfaces;
 
@@ -32,14 +33,14 @@ namespace NugetAnalyzer.BLL.Services
             return filesPaths.Count() == 0 ? null : filesPaths[0];
         }
 
-        public string GetFileContent(string filePath)
+        public Task<string> GetFileContentAsync(string filePath)
         {
             if (filePath == null)
                 throw new ArgumentNullException(nameof(filePath));
 
             using (StreamReader streamReader = new StreamReader(filePath))
             {
-                return streamReader.ReadToEnd();
+                return streamReader.ReadToEndAsync();
             }
         }
 

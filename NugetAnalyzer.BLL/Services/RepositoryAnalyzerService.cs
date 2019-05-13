@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models.Repositories;
@@ -26,7 +27,7 @@ namespace NugetAnalyzer.BLL.Services
             this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
         }
 
-        public Repository GetParsedRepository(string repositoryPath)
+        public async Task<Repository> GetParsedRepositoryAsync(string repositoryPath)
         {
             if (!directoryService.IsDirectoryExists(repositoryPath))
                 return null;
@@ -38,12 +39,12 @@ namespace NugetAnalyzer.BLL.Services
                 Solutions = new List<Solution>()
             };
 
-            AddSolutionsToRepository(repository);
+            await AddSolutionsToRepositoryAsync(repository);
 
             return repository;
         }
 
-        private void AddSolutionsToRepository(Repository repository)
+        private async Task AddSolutionsToRepositoryAsync(Repository repository)
         {
             var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, "*.sln");
 
@@ -56,13 +57,13 @@ namespace NugetAnalyzer.BLL.Services
                     Projects = new List<Project>()
                 };
 
-                AddProjectsToSolution(solution);
+                await AddProjectsToSolutionAsync(solution);
 
                 repository.Solutions.Add(solution);
             }
         }
 
-        private void AddProjectsToSolution(Solution solution)
+        private async Task AddProjectsToSolutionAsync(Solution solution)
         {
             var projectsFilesPaths = fileService.GetFilesPaths(solution.Path, "*.csproj");
 
@@ -75,34 +76,36 @@ namespace NugetAnalyzer.BLL.Services
                     Packages = new List<Package>()
                 };
 
-                AddPackagesToProject(project);
+                await AddPackagesToProjectAsync(project);
 
                 solution.Projects.Add(project);
             }
         }
 
-        private void AddPackagesToProject(Project project)
+        private async Task AddPackagesToProjectAsync(Project project)
         {
             if (fileService.GetFilePath(project.Path, "packages.config") != null)
             {
                 var filePath = fileService.GetFilePath(project.Path, "packages.config");
 
-                project.Packages = GetPackages(FrameworkType.Framework, filePath);
+                project.Packages = await GetPackagesAsync(FrameworkType.Framework, filePath);
             }
             else
             {
                 var filePath = fileService.GetFilePath(project.Path, "*.csproj");
 
-                project.Packages = GetPackages(FrameworkType.Core, filePath);
+                project.Packages = await GetPackagesAsync(FrameworkType.Core, filePath);
             }
         }
 
-        private IList<Package> GetPackages(FrameworkType frameworkType, string filePath)
+        private async Task<IList<Package>> GetPackagesAsync(FrameworkType frameworkType, string filePath)
         {
             var packages = new List<Package>();
             var document = new XmlDocument();
 
-            document.LoadXml(fileService.GetFileContent(filePath));
+            var fileContent = await fileService.GetFileContentAsync(filePath);
+
+            document.LoadXml(fileContent);
 
             var nodesList = GetXmlNodeList(document, frameworkType);
 

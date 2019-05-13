@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
@@ -8,7 +9,7 @@ namespace NugetAnalyzer.BLL.Interfaces
 
         string GetFilePath(string directoryPath, string fileSearchPattern);
 
-        string GetFileContent(string filePath);
+        Task<string> GetFileContentAsync(string filePath);
 
         IList<string> GetFilesDirectoriesPaths(string[] filesPaths);
     }
