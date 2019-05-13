@@ -2,6 +2,7 @@
 using System.Xml;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models.Repositories;
 using NugetAnalyzer.BLL.Models.Solutions;
@@ -35,8 +36,7 @@ namespace NugetAnalyzer.BLL.Services
             Repository repository = new Repository
             {
                 Name = directoryService.GetDirectoryName(repositoryPath),
-                Path = repositoryPath,
-                Solutions = new List<Solution>()
+                Path = repositoryPath
             };
 
             await AddSolutionsToRepositoryAsync(repository);
@@ -53,8 +53,7 @@ namespace NugetAnalyzer.BLL.Services
                 Solution solution = new Solution
                 {
                     Name = directoryService.GetDirectoryName(solutionDirectoryPath),
-                    Path = solutionDirectoryPath,
-                    Projects = new List<Project>()
+                    Path = solutionDirectoryPath
                 };
 
                 await AddProjectsToSolutionAsync(solution);
@@ -72,8 +71,7 @@ namespace NugetAnalyzer.BLL.Services
                 Project project = new Project
                 {
                     Name = directoryService.GetDirectoryName(projectDirectoryPath),
-                    Path = projectDirectoryPath,
-                    Packages = new List<Package>()
+                    Path = projectDirectoryPath
                 };
 
                 await AddPackagesToProjectAsync(project);

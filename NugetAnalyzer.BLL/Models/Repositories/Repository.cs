@@ -7,7 +7,9 @@ namespace NugetAnalyzer.BLL.Models.Repositories
     {
         public Repository()
             : base()
-        { }
+        {
+            Solutions = new List<Solution>();
+        }
 
         public Repository(string name, string path, IList<Solution> solutions)
             : base(name, path)

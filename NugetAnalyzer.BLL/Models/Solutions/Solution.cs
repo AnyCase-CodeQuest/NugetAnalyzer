@@ -7,7 +7,9 @@ namespace NugetAnalyzer.BLL.Models.Solutions
     {
         public Solution()
             : base()
-        { }
+        {
+            Projects = new List<Project>();
+        }
 
         public Solution(string name, string path, IList<Project> projects)
             : base(name, path)

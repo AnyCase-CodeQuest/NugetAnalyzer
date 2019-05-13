@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.Common.Interfaces;
 
-namespace NugetAnalyzer.BLL.Services
+namespace NugetAnalyzer.Common.Services
 {
     public class DirectoryService : IDirectoryService
     {

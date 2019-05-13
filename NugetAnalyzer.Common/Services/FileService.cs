@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.Common.Interfaces;
 
-namespace NugetAnalyzer.BLL.Services
+namespace NugetAnalyzer.Common.Services
 {
     public class FileService : IFileService
     {

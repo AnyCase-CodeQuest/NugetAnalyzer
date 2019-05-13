@@ -7,7 +7,9 @@ namespace NugetAnalyzer.BLL.Models.Projects
     {
         public Project()
             : base()
-        { }
+        {
+            Packages = new List<Package>();
+        }
 
         public Project(string name, string path, IList<Package> packages)
             : base(name, path)

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NugetAnalyzer.Common.Services;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Context;

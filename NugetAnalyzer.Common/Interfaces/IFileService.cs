@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace NugetAnalyzer.BLL.Interfaces
+namespace NugetAnalyzer.Common.Interfaces
 {
     public interface IFileService
     {
         string[] GetFilesPaths(string directoryPath, string searchPattern);
 
-        string GetFilePath(string directoryPath, string fileSearchPattern);
+        string GetFilePath(string directoryPath, string searchPattern);
 
         Task<string> GetFileContentAsync(string filePath);
 

@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.BLL.Interfaces
+﻿namespace NugetAnalyzer.Common.Interfaces
 {
     public interface IDirectoryService
     {

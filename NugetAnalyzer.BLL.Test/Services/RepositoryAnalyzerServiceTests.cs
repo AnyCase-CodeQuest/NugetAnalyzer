@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common.Interfaces;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
@@ -62,30 +64,30 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void GetParsedRepository_ShouldThrowArgumentNullException_WhenRepositoryPathNull()
+        public void GetParsedRepositoryAsync_ShouldThrowArgumentNullException_WhenRepositoryPathNull()
         {
             // Arrange
             directoryService.Setup(s => s.IsDirectoryExists(NullRepositoryPath)).Throws(new ArgumentNullException());
 
             // Assert
-            Assert.Throws<ArgumentNullException>(() => repositoryAnalyzerService.GetParsedRepository(NullRepositoryPath));
+            Assert.ThrowsAsync<ArgumentNullException>(() => repositoryAnalyzerService.GetParsedRepositoryAsync(NullRepositoryPath));
         }
 
         [Test]
-        public void GetParsedRepository_ShouldRepositoryNull_WhenRepositoryPathNotExist()
+        public async Task GetParsedRepositoryAsync_ShouldRepositoryNull_WhenRepositoryPathNotExist()
         {
             // Arrange
             directoryService.Setup(s => s.IsDirectoryExists(EmptyRepositoryPath)).Returns(false);
 
             // Act
-            var repotitory = repositoryAnalyzerService.GetParsedRepository(EmptyRepositoryPath);
+            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(EmptyRepositoryPath);
 
             // Assert
             Assert.IsNull(repotitory);
         }
 
         [Test]
-        public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount3_WhenFrameworkAppType()
+        public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount3_WhenFrameworkAppType()
         {
             // Arrange
             directoryService.Setup(s => s.IsDirectoryExists(TestList[0])).Returns(true);
@@ -94,10 +96,10 @@ namespace NugetAnalyzer.BLL.Test.Services
             fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
             fileService.Setup(s => s.GetFilePath(TestList[0], "packages.config")).Returns(TestList[0]);
-            fileService.Setup(s => s.GetFileContent(TestList[0])).Returns(TestPackagesConfigFileContent);
+            fileService.Setup(s => s.GetFileContentAsync(TestList[0])).ReturnsAsync(TestPackagesConfigFileContent);
 
             // Act
-            var repotitory = repositoryAnalyzerService.GetParsedRepository(TestList[0]);
+            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList[0]);
 
             // Assert
             Assert.IsNotNull(repotitory);
@@ -105,7 +107,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void GetParsedRepository_ShouldRepositoryNotNullAndPackagesCount5_WhenCoreAppType()
+        public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount5_WhenCoreAppType()
         {
             // Arrange
             directoryService.Setup(s => s.IsDirectoryExists(TestList[0])).Returns(true);
@@ -115,10 +117,10 @@ namespace NugetAnalyzer.BLL.Test.Services
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
             fileService.Setup(s => s.GetFilePath(TestList[0], "packages.config")).Returns((string)null);
             fileService.Setup(s => s.GetFilePath(TestList[0], "*.csproj")).Returns(TestList[0]);
-            fileService.Setup(s => s.GetFileContent(TestList[0])).Returns(TestCsProjFileContent);
+            fileService.Setup(s => s.GetFileContentAsync(TestList[0])).ReturnsAsync(TestCsProjFileContent);
 
             // Act
-            var repotitory = repositoryAnalyzerService.GetParsedRepository(TestList[0]);
+            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList[0]);
 
             // Assert
             Assert.IsNotNull(repotitory);
