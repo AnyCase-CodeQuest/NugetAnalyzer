@@ -1,9 +1,6 @@
 ﻿namespace NugetAnalyzer.BLL.Models.Projects
 {
-    public class ProjectWithVersionReport
+    public class ProjectWithVersionReport : ModelWithReport
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public PackageVersionComparisonReport Report { get; set; }
     }
 }
