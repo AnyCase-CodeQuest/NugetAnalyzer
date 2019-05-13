@@ -8,4 +8,8 @@
     <ProjectReference Include="..\NugetAnalyzer.DAL\NugetAnalyzer.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Octokit" Version="0.32.0" />
+  </ItemGroup>
+
 </Project>
