@@ -17,7 +17,8 @@ namespace NugetAnalyzer.BLL.Test.Services
     {
         private VersionService versionService;
         private Mock<IDateTimeProvider> dateTimeProvider;
-        private readonly PackageVersionConfiguration packageVersionConfiguration = new PackageVersionConfiguration
+
+        private readonly IOptions<PackageVersionConfiguration> packageVersionConfiguration = Options.Create(new PackageVersionConfiguration
         {
             VersionStatus = new VersionConfigs
             {
@@ -32,7 +33,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 ErrorBottomBorder = 12
             },
             ObsoleteBorderInMonths = 12
-        };
+        });
 
         private readonly PackageVersion latestPackageVersion = new PackageVersion
         {
@@ -93,7 +94,14 @@ namespace NugetAnalyzer.BLL.Test.Services
             dateTimeProvider = new Mock<IDateTimeProvider>();
             dateTimeProvider.SetupGet(p => p.CurrentUtcDateTime).Returns(DateTime.UtcNow);
 
-            versionService = new VersionService(Options.Create(packageVersionConfiguration), dateTimeProvider.Object);
+            versionService = new VersionService(packageVersionConfiguration, dateTimeProvider.Object);
+        }
+
+        [Test]
+        public void Constructor_Check_AllNullArgumentsThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => new VersionService(null, dateTimeProvider.Object));
+            Assert.Throws<ArgumentNullException>(() => new VersionService(packageVersionConfiguration,null));
         }
 
         [Test]

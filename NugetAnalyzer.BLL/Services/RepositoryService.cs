@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Converters;
 using NugetAnalyzer.BLL.Interfaces;
@@ -23,12 +24,12 @@ namespace NugetAnalyzer.BLL.Services
             this.versionRepository = versionRepository ?? throw new ArgumentNullException(nameof(versionRepository));
         }
 
-        public async Task<ICollection<RepositoryWithVersionReport>> GetUserAnalyzedRepositoriesAsync(int userId)
+        public async Task<ICollection<RepositoryWithVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
         {
-            var repositories = await repositoryRepository.GetUserRepositoriesWithIncludesAsync(userId);
+            var repositories = await repositoryRepository.GetRepositoriesWithIncludesAsync(expression);
 
             var packageIds = GetAllPackagesIdsFromRepositories(repositories);
-            var latestPackageVersions = await versionRepository.GetLatestPackageVersionsWithPackageNameAsync(packageIds);
+            var latestPackageVersions = await versionRepository.GetLatestPackageVersionsAsync(packageIds);
 
             var repositoriesWithVersionReport = Analyze(repositories, latestPackageVersions);
 

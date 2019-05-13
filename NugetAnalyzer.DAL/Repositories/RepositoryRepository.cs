@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NugetAnalyzer.DAL.Context;
@@ -14,9 +16,9 @@ namespace NugetAnalyzer.DAL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<Repository>> GetUserRepositoriesWithIncludesAsync(int userId)
+        public async Task<IReadOnlyCollection<Repository>> GetRepositoriesWithIncludesAsync(Expression<Func<Repository, bool>> expression)
         {
-            return await dbSet.Where(r => r.UserId == userId)
+            return await dbSet.Where(expression)
                 .Include(r => r.Solutions)
                 .ThenInclude(s => s.Projects)
                 .ThenInclude(p => p.ProjectPackageVersions)

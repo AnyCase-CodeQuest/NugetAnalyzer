@@ -20,7 +20,9 @@ namespace NugetAnalyzer.BLL.Services
 
         public VersionService(IOptions<PackageVersionConfiguration> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
         {
-            this.packageVersionConfiguration = packageVersionConfiguration.Value ?? throw new ArgumentNullException(nameof(packageVersionConfiguration));
+            if (packageVersionConfiguration == null)
+                throw new ArgumentNullException(nameof(packageVersionConfiguration));
+            this.packageVersionConfiguration = packageVersionConfiguration.Value;
             this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
 
@@ -41,7 +43,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public PackageVersionComparisonReport CalculateMaxReportLevelStatus(ICollection<PackageVersionComparisonReport> reports)
         {
-            if(reports == null)
+            if (reports == null)
                 throw new ArgumentNullException(nameof(reports));
 
             return reports.Count == 0 ? new PackageVersionComparisonReport() : new PackageVersionComparisonReport
