@@ -54,6 +54,7 @@ namespace NugetAnalyzer.BLL.Services
             return packageIds;
         }
 
+        // TODO: give me an advice on this method, please =)
         private ICollection<RepositoryWithVersionReport> Analyze(IReadOnlyCollection<Repository> repositories, IReadOnlyCollection<PackageVersion> latestPackageVersions)
         {
             var repositoriesWithVersionReport = repositories.Select(RepositoryConverter.RepositoryToRepositoryWithVersionReport).ToList();

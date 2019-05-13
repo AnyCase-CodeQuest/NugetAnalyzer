@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using NugetAnalyzer.BLL.Models;
 using NugetAnalyzer.BLL.Models.Repositories;
-using NugetAnalyzer.BLL.Models.Solutions;
 using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Converters
@@ -19,9 +18,8 @@ namespace NugetAnalyzer.BLL.Converters
                     Name = repository.Name,
                     Report = new PackageVersionComparisonReport(),
                     Solutions = repository.Solutions == null
-                        ? new List<SolutionWithVersionReport>()
-                        : repository
-                            .Solutions
+                        ? throw new ArgumentNullException(nameof(repository.Solutions))
+                        : repository.Solutions
                             .Select(SolutionConverter.SolutionToSolutionWithVersionReport)
                             .ToList()
                 };
