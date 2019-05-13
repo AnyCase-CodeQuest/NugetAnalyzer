@@ -2,7 +2,7 @@
 
 namespace NugetAnalyzer.Web.TagHelpers
 {
-    [HtmlTargetElement("custom-logo")]
+    [HtmlTargetElement("logo")]
     public class CustomLogoTagHelper : TagHelper
     {
         public string Color { get; set; }
