@@ -22,8 +22,8 @@ namespace NugetAnalyzer.Web
         {
             Configuration = new ConfigurationBuilder()
                                 .SetBasePath(environment.ContentRootPath)
-                                .AddJsonFile("appsettings.json")
-                                .AddUserSecrets<Startup>()
+                                .AddJsonFile("appsettings.json", optional: false)
+                                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
                                 .Build();
         }
 
