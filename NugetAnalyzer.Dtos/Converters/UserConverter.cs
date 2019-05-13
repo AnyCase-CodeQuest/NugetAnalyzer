@@ -1,7 +1,7 @@
-﻿using NugetAnalyzer.BLL.Models;
+﻿using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Domain;
 
-namespace NugetAnalyzer.BLL.Converters
+namespace NugetAnalyzer.Dtos.Converters
 {
     public class UserConverter
     {

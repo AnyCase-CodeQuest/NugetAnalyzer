@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.Models;
+using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;

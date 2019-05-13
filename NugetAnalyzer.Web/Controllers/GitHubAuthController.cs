@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using NugetAnalyzer.BLL.Models;
+using NugetAnalyzer.Dtos.Models;
 
 namespace NugetAnalyzer.Web.Controllers
 {

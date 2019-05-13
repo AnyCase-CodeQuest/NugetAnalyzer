@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using NugetAnalyzer.BLL.Models;
+using NugetAnalyzer.Dtos.Models;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {

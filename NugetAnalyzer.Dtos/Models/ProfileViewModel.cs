@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.BLL.Models
+﻿namespace NugetAnalyzer.Dtos.Models
 {
     public class ProfileViewModel
     {
