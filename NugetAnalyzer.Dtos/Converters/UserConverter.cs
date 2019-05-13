@@ -1,11 +1,13 @@
 ﻿using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Domain;
+using System;
+using System.Collections.Generic;
 
 namespace NugetAnalyzer.Dtos.Converters
 {
     public class UserConverter
     {
-        public static User ConvertProfileToUser(ProfileViewModel profile)
+        public static User ConvertProfileToUser(UserViewModel profile)
         {
             return profile == null
                 ? null
@@ -13,28 +15,52 @@ namespace NugetAnalyzer.Dtos.Converters
             {
                 UserName = profile.UserName,
                 Email = profile.Email,
-                GitHubId = profile.GitHubId,
-                GitHubUrl = profile.GitHubUrl,
                 AvatarUrl = profile.AvatarUrl,
-                GitHubToken = profile.AccessToken,
                 Id = profile.Id
             };
         }
 
-        public static ProfileViewModel ConvertUserToProfile(User user)
+        public static UserViewModel ConvertUserToProfile(User user)
         {
             return user == null
                 ? null
-                : new ProfileViewModel
+                : new UserViewModel
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    GitHubId = user.GitHubId,
-                    GitHubUrl = user.GitHubUrl,
                     AvatarUrl = user.AvatarUrl,
-                    Id = user.Id,
-                    AccessToken = user.GitHubToken
+                    Id = user.Id
                 };
+        }
+
+        public static User ConvertRegisterModelToUser(UserRegisterModel user)
+        {
+            //TODO: REFACTOR
+            if( user == null)
+            {
+                return null;
+            }
+
+            var newUser = new User
+            {
+                AvatarUrl = user.AvatarUrl,
+                Email = user.Email,
+                UserName = user.UserName,
+                Profiles = new List<Profile>()
+            };
+
+            var profile = new Profile
+            {
+                AccessToken = user.AccessToken,
+                IdOnSource = user.IdOnSource,
+                SourceId = user.SourceId,
+                Url = user.Url,
+                User = newUser
+            };
+
+            newUser.Profiles.Add(profile);
+
+            return newUser;
         }
     }
 }

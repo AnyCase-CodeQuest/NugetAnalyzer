@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -12,52 +13,63 @@ namespace NugetAnalyzer.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly IUserService userService;
+        private const string AvatarUrlClaimType = "avatarUrl";
+        private const string AuthenticationTypeScheme = "Cookies";
+        private const string GitHubSourceName = "GitHub";
+        private const string UserIdClaimType = "userId";
 
-        public AccountController(IUserService userService)
+        private readonly IUserService userService;
+        private readonly IProfileService profileService;
+        private readonly ISourceService sourceService;
+
+        public AccountController(IUserService userService, IProfileService profileService, ISourceService sourceService)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
+            this.sourceService = sourceService ?? throw new ArgumentNullException(nameof(sourceService));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GitHubLogin(ProfileViewModel profile)
+        public async Task<IActionResult> GitHubLogin(UserRegisterModel user)
         {
-            var userProfile = await userService.GetProfileByGitHubIdAsync(profile.GitHubId);
+            var sourceList = await sourceService.GetSourceList();
+            var sourceId = sourceList.First(p => p.Name == GitHubSourceName).Id;
+            var gitHubId = user.IdOnSource;
 
-            if (userProfile != null)
+            var profile = await profileService.GetProfileBySourceIdAsync(sourceId, gitHubId);
+
+            if (profile != null)
             {
-                await userService.UpdateUserAsync(profile);
+                profile.AccessToken = user.AccessToken;
+                await profileService.UpdateProfileAsync(profile);
+                var currentUser = await userService.GetUserByIdAsync(profile.UserId);
+                await ReloginAsync(currentUser);
                 return RedirectToAction("Profile");
             }
-            return RedirectToAction("UserCreationForm", profile);
-        }
-
-        [HttpGet]
-        public IActionResult UserCreationForm(ProfileViewModel profile)
-        {
-            return View(profile);
+            return View("UserCreationForm", user);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(ProfileViewModel profile)
+        public async Task<IActionResult> CreateUser(UserRegisterModel user)
         {
-            await userService.CreateUserAsync(profile);
-
+            var createdUser = await userService.CreateUserAsync(user);
+            await ReloginAsync(createdUser);
             return RedirectToAction("Profile");
         }
 
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userGitHubId);
-            var profile = await userService.GetProfileByGitHubIdAsync(userGitHubId);
+            var stringUserId = User.FindFirstValue(UserIdClaimType);
+            int.TryParse(stringUserId, out var userId);
+            var user = await userService.GetUserByIdAsync(userId);
             //countermeasures if user closed our site on profile registration form
-            if (profile == null)
+            if (user == null)
             {
                 return RedirectToAction("Signout");
             }
 
-            return View(profile);
+            return View(user);
         }
 
         [HttpGet]
@@ -65,6 +77,16 @@ namespace NugetAnalyzer.Web.Controllers
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        private async Task ReloginAsync(UserViewModel user)
+        {
+            await HttpContext.SignOutAsync();
+            var claimsIdentity = new ClaimsIdentity(AuthenticationTypeScheme);
+            claimsIdentity.AddClaim(new Claim(UserIdClaimType, user.Id.ToString()));
+            claimsIdentity.AddClaim(new Claim(AvatarUrlClaimType, user.AvatarUrl));
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            await HttpContext.SignInAsync(AuthenticationTypeScheme, claimsPrincipal);
         }
     }
 }

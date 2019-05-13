@@ -12,12 +12,13 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
 
             builder
                 .Property(p => p.Email)
-                .HasMaxLength(256);
+                .HasMaxLength(256)
+                .IsRequired();
 
             builder
                 .Property(p => p.UserName)
-                .IsRequired()
-                .HasMaxLength(256);
+                .HasMaxLength(256)
+                .IsRequired();
         }
     }
 }

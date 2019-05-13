@@ -22,6 +22,8 @@ namespace NugetAnalyzer.DAL.Context
             builder.ApplyConfiguration(new RepositoryConfiguration());
             builder.ApplyConfiguration(new SolutionConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new SourceConfiguration());
+            builder.ApplyConfiguration(new ProfileConfiguration());
         }
     }
 }

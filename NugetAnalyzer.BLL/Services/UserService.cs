@@ -19,30 +19,17 @@ namespace NugetAnalyzer.BLL.Services
             usersRepository = unitOfWork.GetRepository<User>();
         }
 
-        public async Task CreateUserAsync(ProfileViewModel profile)
+        public async Task<UserViewModel> CreateUserAsync(UserRegisterModel profile)
         {
-            var user = UserConverter.ConvertProfileToUser(profile);
+            var user = UserConverter.ConvertRegisterModelToUser(profile);
             usersRepository.Add(user);
             await unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task UpdateUserAsync(ProfileViewModel profile)
-        {
-            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == profile.GitHubId);
-            user.GitHubToken = profile.AccessToken;
-            usersRepository.Update(user);
-            await unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task<ProfileViewModel> GetProfileByGitHubIdAsync(int gitHubId)
-        {
-            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.GitHubId == gitHubId);
             return UserConverter.ConvertUserToProfile(user);
         }
 
-        public async Task<ProfileViewModel> GetProfileByUserNameAsync(string userName)
+        public async Task<UserViewModel> GetUserByIdAsync(int userId)
         {
-            var user = await usersRepository.GetSingleOrDefaultAsync(p => p.UserName == userName);
+            var user = await usersRepository.GetByIdAsync(userId);
             return UserConverter.ConvertUserToProfile(user);
         }
     }

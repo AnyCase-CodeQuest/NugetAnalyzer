@@ -39,6 +39,8 @@ namespace NugetAnalyzer.Web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<ISourceService, SourceService>();
 
             var secretsSection = Configuration.GetSection("GitHubAppSettings");
             var endPointsSection = Configuration.GetSection("GitHubEndPoints");

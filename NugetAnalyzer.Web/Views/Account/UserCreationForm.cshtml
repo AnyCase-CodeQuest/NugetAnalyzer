@@ -1,4 +1,4 @@
-﻿@model NugetAnalyzer.Dtos.Models.ProfileViewModel
+﻿@model NugetAnalyzer.Dtos.Models.UserRegisterModel
 @{
     ViewData["Title"] = Localizer["UserCreationForm"];
     Layout = "_SignInLayout";
@@ -7,10 +7,11 @@
 <div class="row h-100 justify-content-center align-items-center">
 
     <form asp-controller="Account" asp-action="CreateUser" method="post" class="col-md-3">
-        <input type="text" asp-for="GitHubId" hidden="hidden" />
-        <input type="text" asp-for="GitHubUrl" hidden="hidden" />
+        <input type="text" asp-for="SourceId" hidden="hidden" />
+        <input type="text" asp-for="Url" hidden="hidden" />
         <input type="text" asp-for="AvatarUrl" hidden="hidden" />
         <input type="text" asp-for="AccessToken" hidden="hidden" />
+        <input type="text" asp-for="IdOnSource" hidden="hidden" />
         <div class="text-center mt-5">
             <a asp-controller="Home" asp-action="Index" class="mb-4">
                 <svg height="64" viewBox="0 0 16 16" version="1.1" width="64" aria-hidden="true" class="mb-2">

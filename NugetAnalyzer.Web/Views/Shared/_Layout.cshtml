@@ -62,7 +62,7 @@
                 <div class="dropdown float-right  dropdown__menu_float">
                     <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenuProfile" data-toggle="dropdown">
                         <span class="navbar__dropdown_button">
-                            <img src=@User.Claims.FirstOrDefault(p => p.Type == "urn:github:avatar")?.Value width="24px" height="24px" alt="Alternate Text" />
+                            <img src=@User.Claims.FirstOrDefault(p => p.Type == "avatarUrl")?.Value width="24px" height="24px" alt="Alternate Text" />
                         </span>
 
                         <span class="caret align-middle"></span>

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace NugetAnalyzer.Domain
+namespace NugetAnalyzer.Dtos.Models
 {
-    public class User
+    public class UserViewModel
     {
         public int Id { get; set; }
 
@@ -12,8 +12,6 @@ namespace NugetAnalyzer.Domain
 
         public string AvatarUrl { get; set; }
 
-        public ICollection<Profile> Profiles { get; set; }
-
-        public ICollection<Repository> Repositories { get; set; }
+        public ICollection<ProfileViewModel> Profiles { get; set; }
     }
-}
+}   

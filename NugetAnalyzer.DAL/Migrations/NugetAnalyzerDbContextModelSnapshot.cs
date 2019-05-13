@@ -61,6 +61,33 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.ToTable("PackageVersions");
                 });
 
+            modelBuilder.Entity("NugetAnalyzer.Domain.Profile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired();
+
+                    b.Property<int>("IdOnSource");
+
+                    b.Property<int>("SourceId");
+
+                    b.Property<string>("Url")
+                        .IsRequired();
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SourceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Profiles");
+                });
+
             modelBuilder.Entity("NugetAnalyzer.Domain.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -131,6 +158,21 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.ToTable("Solutions");
                 });
 
+            modelBuilder.Entity("NugetAnalyzer.Domain.Source", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sources");
+                });
+
             modelBuilder.Entity("NugetAnalyzer.Domain.User", b =>
                 {
                     b.Property<int>("Id")
@@ -140,13 +182,8 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.Property<string>("AvatarUrl");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256);
-
-                    b.Property<int>("GitHubId");
-
-                    b.Property<string>("GitHubToken");
-
-                    b.Property<string>("GitHubUrl");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -162,6 +199,19 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.HasOne("NugetAnalyzer.Domain.Package", "Package")
                         .WithMany("Versions")
                         .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NugetAnalyzer.Domain.Profile", b =>
+                {
+                    b.HasOne("NugetAnalyzer.Domain.Source", "Source")
+                        .WithMany("Profiles")
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("NugetAnalyzer.Domain.User", "User")
+                        .WithMany("Profiles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
