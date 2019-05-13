@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Moq;
@@ -14,7 +13,7 @@ namespace NugetAnalyzer.BLL.Test.Services
     [TestFixture]
     public class PackageServiceTests
     {
-        private Mock<DAL.Interfaces.IUnitOfWork> uowMock;
+        private Mock<IUnitOfWork> uowMock;
         private Mock<IRepository<Package>> packageRepository;
         private PackageService packageService;
 
@@ -29,7 +28,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .ReturnsAsync(It.IsAny<IReadOnlyCollection<Package>>());
 
             uowMock
-                .Setup(p => p.GetRepository<Package>())
+                .Setup(uow => uow.GetRepository<Package>())
                 .Returns(packageRepository.Object);
 
             packageService = new PackageService(uowMock.Object);
@@ -50,7 +49,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(p => p.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()))
                 .ReturnsAsync(It.IsAny<IReadOnlyCollection<Package>>());
 
-            await packageService.GetNewPackagesAsync();
+            await packageService.GetNewlyAddedPackagesAsync();
 
             packageRepository.Verify(p => p.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()));
         }

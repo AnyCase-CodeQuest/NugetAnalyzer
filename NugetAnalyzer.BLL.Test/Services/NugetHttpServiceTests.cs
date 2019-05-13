@@ -32,7 +32,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             var optionsMock = new Mock<IOptions<NugetSettings>>();
             optionsMock
-                .Setup(p => p.Value)
+                .Setup(o => o.Value)
                 .Returns(settings);
 
             handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -60,7 +60,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var packageName = "NUnit";
             var version = "4.0.1";
 
-            await nugetHttpService.GetPackageMetadataAsync(packageName, version);
+            await nugetHttpService.GetPackageVersionMetadataAsync(packageName, version);
 
             var expectedUri = new Uri($"{EndpointPackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json");
 
@@ -81,7 +81,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             var packageName = "NUnit";
 
-            await nugetHttpService.GetDataOfPackageVersionAsync(packageName);
+            await nugetHttpService.GetPackageMetadataAsync(packageName);
 
             var expectedUri = new Uri($"{EndpointSearch}/query?q=PackageId:{WebUtility.UrlEncode(packageName)}&prerelease=false");
 

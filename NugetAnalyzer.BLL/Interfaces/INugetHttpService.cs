@@ -4,8 +4,8 @@ namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface INugetHttpService
     {
-        Task<string> GetPackageMetadataAsync(string packageName, string version);
+        Task<string> GetPackageVersionMetadataAsync(string packageName, string version);
 
-        Task<string> GetDataOfPackageVersionAsync(string query);
+        Task<string> GetPackageMetadataAsync(string query);
     }
 }

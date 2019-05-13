@@ -26,9 +26,9 @@ namespace NugetAnalyzer.BLL.Services
         public async Task UpdateLatestVersionOfNewPackagesAsync(IEnumerable<PackageVersion> versions)
         {
             var latestVersions = await versionRepository
-                .GetLatestVersionsAsync(p => versions
-                                                        .Select(x => x.PackageId)
-                                                        .Contains(p.PackageId));
+                .GetLatestVersionsAsync(lpv => versions
+                                                        .Select(pv => pv.PackageId)
+                                                        .Contains(lpv.PackageId));
 
             await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
         }

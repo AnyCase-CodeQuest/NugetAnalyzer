@@ -42,11 +42,11 @@ namespace NugetAnalyzer.BLL.Test.Services
            var response = await File.ReadAllTextAsync(Path.GetFullPath(configuration["EndpointSearch:NUnit:Response"]));
 
            nugetHttpServiceMock
-               .Setup(p => p.GetDataOfPackageVersionAsync(It.IsAny<string>()))
+               .Setup(n => n.GetPackageMetadataAsync(It.IsAny<string>()))
                .ReturnsAsync(response);
 
             var packageVersion = await nugetApiService
-                .GetLatestVersionPackageAsync(packageName);
+                .GetLatestPackageVersionAsync(packageName);
 
             var expectedVersion = new Likeness<PackageVersion, PackageVersion>(packageVersion);
 
@@ -58,7 +58,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 Revision = -1
             });
 
-            nugetHttpServiceMock.Verify(p => p.GetDataOfPackageVersionAsync(packageName));
+            nugetHttpServiceMock.Verify(n => n.GetPackageMetadataAsync(packageName));
         }
 
         [Test]
@@ -68,14 +68,14 @@ namespace NugetAnalyzer.BLL.Test.Services
             var response = await File.ReadAllTextAsync(Path.GetFullPath(configuration["EndpointSearch:NotExist:Response"]));
 
             nugetHttpServiceMock
-                .Setup(p => p.GetDataOfPackageVersionAsync(It.IsAny<string>()))
+                .Setup(n => n.GetPackageMetadataAsync(It.IsAny<string>()))
                 .ReturnsAsync(response);
 
             var packageVersion = await nugetApiService
-                .GetLatestVersionPackageAsync(packageName);
+                .GetLatestPackageVersionAsync(packageName);
 
             Assert.AreEqual(packageVersion, null);
-            nugetHttpServiceMock.Verify(p => p.GetDataOfPackageVersionAsync(packageName));
+            nugetHttpServiceMock.Verify(n => n.GetPackageMetadataAsync(packageName));
         }
 
         [Test]
@@ -85,14 +85,14 @@ namespace NugetAnalyzer.BLL.Test.Services
             var response = string.Empty;
 
             nugetHttpServiceMock
-                .Setup(p => p.GetDataOfPackageVersionAsync(It.IsAny<string>()))
+                .Setup(n => n.GetPackageMetadataAsync(It.IsAny<string>()))
                 .ReturnsAsync(response);
 
             var packageVersion = await nugetApiService
-                .GetLatestVersionPackageAsync(packageName);
+                .GetLatestPackageVersionAsync(packageName);
 
             Assert.AreEqual(packageVersion, null);
-            nugetHttpServiceMock.Verify(p => p.GetDataOfPackageVersionAsync(packageName));
+            nugetHttpServiceMock.Verify(n => n.GetPackageMetadataAsync(packageName));
         }
 
         [Test]
@@ -102,21 +102,21 @@ namespace NugetAnalyzer.BLL.Test.Services
             var response = await File.ReadAllTextAsync(Path.GetFullPath(configuration["EndpointSearch:VersionIncorrect:Response"]));
 
             nugetHttpServiceMock
-                .Setup(p => p.GetDataOfPackageVersionAsync(It.IsAny<string>()))
+                .Setup(n => n.GetPackageMetadataAsync(It.IsAny<string>()))
                 .ReturnsAsync(response);
 
             var packageVersion = await nugetApiService
-                .GetLatestVersionPackageAsync(packageName);
+                .GetLatestPackageVersionAsync(packageName);
 
             Assert.AreEqual(packageVersion, null);
-            nugetHttpServiceMock.Verify(p => p.GetDataOfPackageVersionAsync(packageName));
+            nugetHttpServiceMock.Verify(n => n.GetPackageMetadataAsync(packageName));
         }
 
         [Test]
         public void GetLatestVersionPackageAsync_Should_Throw_ArgumentNullException_When_Package_Name_Null()
         {
             Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await nugetApiService.GetLatestVersionPackageAsync(null));
+                async () => await nugetApiService.GetLatestPackageVersionAsync(null));
         }
 
         [Test]
@@ -128,17 +128,17 @@ namespace NugetAnalyzer.BLL.Test.Services
             var response = await File.ReadAllTextAsync(Path.GetFullPath(configuration["EndpointPackageMetadata:NUnit:Response"]));
 
             nugetHttpServiceMock
-                .Setup(p => p.GetPackageMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(n => n.GetPackageVersionMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(response);
 
             var publishedDate = await nugetApiService
-                .GetPublishedDateByVersionAsync(packageName, version);
+                .GetPackagePublishedDateByVersionAsync(packageName, version);
 
             Assert.IsInstanceOf<DateTime?>(publishedDate);
             Assert.AreEqual(publishedDate, DateTime
                 .Parse(configuration["EndpointPackageMetadata:NUnit:Published"])
                 .ToUniversalTime());
-            nugetHttpServiceMock.Verify(p => p.GetPackageMetadataAsync(packageName, version));
+            nugetHttpServiceMock.Verify(n => n.GetPackageVersionMetadataAsync(packageName, version));
 
         }
 
@@ -151,14 +151,14 @@ namespace NugetAnalyzer.BLL.Test.Services
             var response = await File.ReadAllTextAsync(Path.GetFullPath(configuration["EndpointPackageMetadata:NotFound:Response"]));
 
             nugetHttpServiceMock
-                .Setup(p => p.GetPackageMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(n => n.GetPackageVersionMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(response);
 
             var publishedDate = await nugetApiService
-                .GetPublishedDateByVersionAsync(packageName, version);
+                .GetPackagePublishedDateByVersionAsync(packageName, version);
 
             Assert.AreEqual(publishedDate, null);
-            nugetHttpServiceMock.Verify(p => p.GetPackageMetadataAsync(packageName, version));
+            nugetHttpServiceMock.Verify(n => n.GetPackageVersionMetadataAsync(packageName, version));
         }
 
         [Test]
@@ -170,24 +170,24 @@ namespace NugetAnalyzer.BLL.Test.Services
             var response = await File.ReadAllTextAsync(Path.GetFullPath(configuration["EndpointPackageMetadata:DateFormatIncorrect:Response"]));
 
             nugetHttpServiceMock
-                .Setup(p => p.GetPackageMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(n => n.GetPackageVersionMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(response);
 
             var publishedDate = await nugetApiService
-                .GetPublishedDateByVersionAsync(packageName, version);
+                .GetPackagePublishedDateByVersionAsync(packageName, version);
 
             Assert.AreEqual(publishedDate, null);
-            nugetHttpServiceMock.Verify(p => p.GetPackageMetadataAsync(packageName, version));
+            nugetHttpServiceMock.Verify(n => n.GetPackageVersionMetadataAsync(packageName, version));
         }
 
         [Test]
         public void GetPublishedDateByVersionAsync_Should_Throw_ArgumentNullException_When_Parameters_Null()
         {
             Assert.ThrowsAsync<ArgumentNullException>(async () =>
-                await nugetApiService.GetPublishedDateByVersionAsync(null, string.Empty));
+                await nugetApiService.GetPackagePublishedDateByVersionAsync(null, string.Empty));
 
             Assert.ThrowsAsync<ArgumentNullException>(async () =>
-                await nugetApiService.GetPublishedDateByVersionAsync(String.Empty, null));
+                await nugetApiService.GetPackagePublishedDateByVersionAsync(string.Empty, null));
         }
     }
 }

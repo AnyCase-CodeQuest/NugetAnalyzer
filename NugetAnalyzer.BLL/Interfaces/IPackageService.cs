@@ -8,6 +8,6 @@ namespace NugetAnalyzer.BLL.Interfaces
     {
         Task<IReadOnlyCollection<Package>> GetAllAsync();
 
-        Task<IReadOnlyCollection<Package>> GetNewPackagesAsync();
+        Task<IReadOnlyCollection<Package>> GetNewlyAddedPackagesAsync();
     }
 }

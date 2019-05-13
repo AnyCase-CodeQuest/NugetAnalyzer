@@ -30,9 +30,9 @@ namespace NugetAnalyzer.BLL.Services
             await versionService.UpdateLatestVersionsAsync(versions);
         }
 
-        public async Task RefreshLatestVersionOfNewPackagesAsync()
+        public async Task RefreshLatestVersionOfNewlyAddedPackagesAsync()
         {
-            var newPackages = await packageService.GetNewPackagesAsync();
+            var newPackages = await packageService.GetNewlyAddedPackagesAsync();
 
             var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
@@ -51,10 +51,10 @@ namespace NugetAnalyzer.BLL.Services
 
         private async Task<PackageVersion> GetLatestVersionOfPackageAsync(Package package)
         {
-            var version = await nugetApiService.GetLatestVersionPackageAsync(package.Name);
+            var version = await nugetApiService.GetLatestPackageVersionAsync(package.Name);
 
             version.PublishedDate = await nugetApiService
-                .GetPublishedDateByVersionAsync(package.Name, version.GetVersion().ToString());
+                .GetPackagePublishedDateByVersionAsync(package.Name, version.GetVersion().ToString());
 
             version.PackageId = package.Id;
 

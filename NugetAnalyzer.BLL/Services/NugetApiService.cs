@@ -11,26 +11,26 @@ namespace NugetAnalyzer.BLL.Services
     public class NugetApiService : INugetApiService
     {
         private const string publishedDateFormat = "MM/dd/yyyy HH:mm:ss";
-        private readonly INugetHttpService httpService;
+        private readonly INugetHttpService nugetHttpService;
 
-        public NugetApiService(INugetHttpService httpService)
+        public NugetApiService(INugetHttpService nugetHttpService)
         {
-            this.httpService = httpService ?? throw new ArgumentNullException(nameof(httpService));
+            this.nugetHttpService = nugetHttpService ?? throw new ArgumentNullException(nameof(nugetHttpService));
         }
 
-        public async Task<PackageVersion> GetLatestVersionPackageAsync(string packageName)
+        public async Task<PackageVersion> GetLatestPackageVersionAsync(string packageName)
         {
             if (packageName == null)
             {
                 throw new ArgumentNullException(nameof(packageName));
             }
 
-            var data = await httpService.GetDataOfPackageVersionAsync(packageName);
+            var data = await nugetHttpService.GetPackageMetadataAsync(packageName);
 
             return ParsePackageVersion(data);
         }
 
-        public async Task<DateTime?> GetPublishedDateByVersionAsync(string packageName, string version)
+        public async Task<DateTime?> GetPackagePublishedDateByVersionAsync(string packageName, string version)
         {
             if (packageName == null)
             {
@@ -42,7 +42,7 @@ namespace NugetAnalyzer.BLL.Services
                 throw new ArgumentNullException(nameof(packageName));
             }
 
-            var data = await httpService.GetPackageMetadataAsync(packageName, version);
+            var data = await nugetHttpService.GetPackageVersionMetadataAsync(packageName, version);
 
             return ParsePublishedDate(data);
         }

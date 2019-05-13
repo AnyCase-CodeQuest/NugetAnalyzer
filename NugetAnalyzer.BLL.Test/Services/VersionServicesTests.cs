@@ -28,7 +28,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             dateTimeProviderMock = new Mock<IDateTimeProvider>();
 
             uowMock
-                .Setup(p => p.VersionRepository)
+                .Setup(uow => uow.VersionRepository)
                 .Returns(versionRepositoryMock.Object);
 
             versionService = new VersionService(uowMock.Object, dateTimeProviderMock.Object);
@@ -41,18 +41,18 @@ namespace NugetAnalyzer.BLL.Test.Services
             var versions = GetPackageVersions();
 
             versionRepositoryMock
-                .Setup(p => p.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()))
+                .Setup(v => v.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()))
                 .ReturnsAsync(latestVersions);
 
             versionService.UpdateLatestVersionOfNewPackagesAsync(versions);
 
-            latestVersions.ForEach(p =>
-                    versionRepositoryMock.Verify(x => x.Attach(p)));
+            latestVersions.ForEach(pv =>
+                    versionRepositoryMock.Verify(repo => repo.Attach(pv)));
 
-            versionRepositoryMock.Verify(x => 
-                x.Add(It.Is<PackageVersion>(i => i == versions.FirstOrDefault(p => p.Id == 2))));
+            versionRepositoryMock.Verify(repo => 
+                repo.Add(It.Is<PackageVersion>(pv => pv == versions.FirstOrDefault(v => v.Id == 2))));
 
-            uowMock.Verify(p => p.SaveChangesAsync());
+            uowMock.Verify(uow => uow.SaveChangesAsync());
         }
 
         [Test]
@@ -62,18 +62,18 @@ namespace NugetAnalyzer.BLL.Test.Services
             var versions = GetPackageVersions();
 
             versionRepositoryMock
-                .Setup(p => p.GetAllLatestVersionsAsync())
+                .Setup(v => v.GetAllLatestVersionsAsync())
                 .ReturnsAsync(latestVersions);
 
             versionService.UpdateLatestVersionsAsync(versions);
 
-            latestVersions.ForEach(p =>
-                versionRepositoryMock.Verify(x => x.Attach(p)));
+            latestVersions.ForEach(pv =>
+                versionRepositoryMock.Verify(repo => repo.Attach(pv)));
 
-            versionRepositoryMock.Verify(x => 
-                x.Add(It.Is<PackageVersion>(i => i == versions.FirstOrDefault(p => p.Id == 2))));
+            versionRepositoryMock.Verify(repo => 
+                repo.Add(It.Is<PackageVersion>(pv => pv == versions.FirstOrDefault(v => v.Id == 2))));
 
-            uowMock.Verify(p => p.SaveChangesAsync());
+            uowMock.Verify(uow => uow.SaveChangesAsync());
         }
 
         private List<PackageVersion> GetPackageVersions()

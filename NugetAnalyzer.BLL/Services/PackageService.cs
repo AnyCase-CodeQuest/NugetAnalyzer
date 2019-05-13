@@ -9,25 +9,35 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class PackageService : IPackageService
     {
-        private readonly IRepository<Package> packageRepository;
+        private readonly IUnitOfWork uow;
+        private IRepository<Package> packageRepository;
 
         public PackageService(IUnitOfWork uow)
         {
-            if (uow == null)
+            this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
+        }
+
+        private IRepository<Package> PackageRepository
+        {
+            get
             {
-                throw new ArgumentNullException(nameof(uow));
+                if (packageRepository == null)
+                {
+                    packageRepository = uow.GetRepository<Package>();
+                }
+
+                return packageRepository;
             }
-            packageRepository = uow.GetRepository<Package>();
         }
 
         public Task<IReadOnlyCollection<Package>> GetAllAsync()
         {
-            return packageRepository.GetAllAsync();
+            return PackageRepository.GetAllAsync();
         }
 
-        public Task<IReadOnlyCollection<Package>> GetNewPackagesAsync()
+        public Task<IReadOnlyCollection<Package>> GetNewlyAddedPackagesAsync()
         {
-            return packageRepository.GetAsync(p => p.LastUpdateTime == null);
+            return PackageRepository.GetAsync(p => p.LastUpdateTime == null);
         }
     }
 }

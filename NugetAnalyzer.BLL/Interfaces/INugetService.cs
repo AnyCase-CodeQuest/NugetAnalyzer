@@ -6,6 +6,6 @@ namespace NugetAnalyzer.BLL.Interfaces
     {
         Task RefreshLatestVersionOfAllPackagesAsync();
 
-        Task RefreshLatestVersionOfNewPackagesAsync();
+        Task RefreshLatestVersionOfNewlyAddedPackagesAsync();
     }
 }
