@@ -20,7 +20,7 @@ namespace NugetAnalyzer.BLL.Test.Services
     [TestFixture(Category = "UnitTests")]
     public class RepositoryServiceTests
     {
-        private Mock<IVersionService> versionService;
+        private Mock<IVersionAnalyzerService> versionService;
         private Mock<IRepositoryRepository> repositoryRepository;
         private Mock<IVersionRepository> versionRepository;
 
@@ -38,7 +38,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [OneTimeSetUp]
         public void Init()
         {
-            versionService = new Mock<IVersionService>();
+            versionService = new Mock<IVersionAnalyzerService>();
             repositoryRepository = new Mock<IRepositoryRepository>();
             versionRepository = new Mock<IVersionRepository>();
 

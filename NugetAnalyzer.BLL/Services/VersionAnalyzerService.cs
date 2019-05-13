@@ -11,14 +11,14 @@ using NugetAnalyzer.Common.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class VersionService : IVersionService
+    public class VersionAnalyzerService : IVersionAnalyzerService
     {
         private const double daysInTheMonth = 365.25 / 12;
 
         private readonly PackageVersionConfiguration packageVersionConfiguration;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public VersionService(IOptions<PackageVersionConfiguration> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
+        public VersionAnalyzerService(IOptions<PackageVersionConfiguration> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
         {
             if (packageVersionConfiguration == null)
                 throw new ArgumentNullException(nameof(packageVersionConfiguration));

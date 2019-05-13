@@ -13,11 +13,11 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryService : IRepositoryService
     {
-        private readonly IVersionService versionService;
+        private readonly IVersionAnalyzerService versionService;
         private readonly IRepositoryRepository repositoryRepository;
         private readonly IVersionRepository versionRepository;
 
-        public RepositoryService(IVersionService versionService, IRepositoryRepository repositoryRepository, IVersionRepository versionRepository)
+        public RepositoryService(IVersionAnalyzerService versionService, IRepositoryRepository repositoryRepository, IVersionRepository versionRepository)
         {
             this.versionService = versionService ?? throw new ArgumentNullException(nameof(versionService));
             this.repositoryRepository = repositoryRepository ?? throw new ArgumentNullException(nameof(repositoryRepository));

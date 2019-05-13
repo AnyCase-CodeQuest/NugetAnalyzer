@@ -13,9 +13,9 @@ using NUnit.Framework;
 namespace NugetAnalyzer.BLL.Test.Services
 {
     [TestFixture(Category = "UnitTests")]
-    public class VersionServiceTests
+    public class VersionAnalyzerServiceTests
     {
-        private VersionService versionService;
+        private VersionAnalyzerService versionService;
         private Mock<IDateTimeProvider> dateTimeProvider;
 
         private readonly IOptions<PackageVersionConfiguration> packageVersionConfiguration = Options.Create(new PackageVersionConfiguration
@@ -94,14 +94,14 @@ namespace NugetAnalyzer.BLL.Test.Services
             dateTimeProvider = new Mock<IDateTimeProvider>();
             dateTimeProvider.SetupGet(p => p.CurrentUtcDateTime).Returns(DateTime.UtcNow);
 
-            versionService = new VersionService(packageVersionConfiguration, dateTimeProvider.Object);
+            versionService = new VersionAnalyzerService(packageVersionConfiguration, dateTimeProvider.Object);
         }
 
         [Test]
         public void Constructor_Check_AllNullArgumentsThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new VersionService(null, dateTimeProvider.Object));
-            Assert.Throws<ArgumentNullException>(() => new VersionService(packageVersionConfiguration,null));
+            Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(null, dateTimeProvider.Object));
+            Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(packageVersionConfiguration,null));
         }
 
         [Test]
