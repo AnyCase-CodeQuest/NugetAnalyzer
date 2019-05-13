@@ -50,7 +50,9 @@ namespace NugetAnalyzer.BLL.Services
             {
                 DateStatus = CalculateMaxDateStatusLevel(reports),
                 VersionStatus = CalculateMaxVersionStatusLevel(reports),
-                IsObsolete = reports.Cast<PackageVersionComparisonReport?>().FirstOrDefault(r => r.Value.IsObsolete) != null
+                IsObsolete = reports
+                                 .Cast<PackageVersionComparisonReport?>()
+                                 .FirstOrDefault(r => r.Value.IsObsolete) != null
             };
         }
 
@@ -68,8 +70,10 @@ namespace NugetAnalyzer.BLL.Services
         {
             if (publishedDateOfLatestVersion == null)
                 return false;
-            return dateTimeProvider.CurrentUtcDateTime.Subtract(publishedDateOfLatestVersion.Value).Days / daysInTheMonth >=
-                   packageVersionConfiguration.ObsoleteBorderInMonths;
+            return dateTimeProvider
+                       .CurrentUtcDateTime
+                       .Subtract(publishedDateOfLatestVersion.Value)
+                       .Days / daysInTheMonth >= packageVersionConfiguration.ObsoleteBorderInMonths;
         }
 
         private PackageDateStatus CompareDates(DateTime? publishedDateOfLatestVersion, DateTime? publishedDateOfCurrentVersion)

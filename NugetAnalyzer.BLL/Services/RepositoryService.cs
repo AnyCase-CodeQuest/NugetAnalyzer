@@ -81,7 +81,8 @@ namespace NugetAnalyzer.BLL.Services
                             .ProjectPackageVersions
                             .Select(ppv => versionService
                                 .Compare(latestPackageVersions
-                                    .First(lpv => lpv.PackageId == ppv.PackageVersion.PackageId), ppv.PackageVersion)).ToList();
+                                    .First(lpv => lpv.PackageId == ppv.PackageVersion.PackageId), ppv.PackageVersion))
+                            .ToList();
 
                         repositoriesWithVersionReport[i]
                             .Solutions[j]

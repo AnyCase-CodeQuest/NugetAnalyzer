@@ -1,11 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NugetAnalyzer.BLL.Models;
 using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.BLL.Models.Solutions;
 using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Converters
 {
-    public class RepositoryConverter
+    public static class RepositoryConverter
     {
         public static RepositoryWithVersionReport RepositoryToRepositoryWithVersionReport(Repository repository)
         {
@@ -16,7 +18,12 @@ namespace NugetAnalyzer.BLL.Converters
                     Id = repository.Id,
                     Name = repository.Name,
                     Report = new PackageVersionComparisonReport(),
-                    Solutions = repository.Solutions.Select(SolutionConverter.SolutionToSolutionWithVersionReport).ToList()
+                    Solutions = repository.Solutions == null
+                        ? new List<SolutionWithVersionReport>()
+                        : repository
+                            .Solutions
+                            .Select(SolutionConverter.SolutionToSolutionWithVersionReport)
+                            .ToList()
                 };
         }
     }
