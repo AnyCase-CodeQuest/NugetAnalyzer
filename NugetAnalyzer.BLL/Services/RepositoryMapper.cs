@@ -6,26 +6,41 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public static class RepositoryMapper
+    public class RepositoryMapper
     {
-        public static Repository ToDomain(this Models.Repositories.Repository businessRepository, int userId,
-            IUnitOfWork database)
+        public IUnitOfWork UnitOfWork { get; }
+
+        public RepositoryMapper(IUnitOfWork unitOfWork)
         {
+            UnitOfWork = unitOfWork;
+        }
+
+        public Repository ToDomain(Models.Repositories.Repository businessRepository, int userId)
+        {
+            Repository dbRepository = UnitOfWork.GetRepository<Repository>()
+                .GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name)
+                .Result;
+            if (dbRepository != null)
+            {
+                UnitOfWork.GetRepository<Repository>().Delete(dbRepository.Id);
+            }
+
             Repository domainRepository = CreateRepository(businessRepository.Name, userId);
+
             foreach (var solution in businessRepository.Solutions)
             {
                 domainRepository.Solutions.Add(CreateSolution(solution.Name));
+                Solution domainSolution = domainRepository.Solutions.FirstOrDefault(o => o.Name == solution.Name);
+
                 foreach (var project in solution.Projects)
                 {
-                    var domainSolution = domainRepository.Solutions.FirstOrDefault(o => o.Name == solution.Name);
                     domainSolution.Projects.Add(CreateProject(project.Name));
+                    Project domainProject = domainSolution.Projects.FirstOrDefault(o => o.Name == project.Name);
 
                     foreach (var package in project.Packages)
                     {
-                        var domainPackage = domainSolution.Projects.FirstOrDefault(o => o.Name == project.Name)
-                            .ProjectPackageVersions;
-                        domainPackage.Add(CreatePackage(domainSolution, database, package.Name, package.Version,
-                            domainSolution.Projects.FirstOrDefault(o => o.Name == project.Name)));
+                        domainProject.ProjectPackageVersions.Add(CreatePackage(package.Name, package.Version,
+                            domainProject, domainRepository));
                     }
                 }
             }
@@ -33,7 +48,7 @@ namespace NugetAnalyzer.BLL.Services
             return domainRepository;
         }
 
-        private static Repository CreateRepository(string name, int userId)
+        private Repository CreateRepository(string name, int userId)
         {
             return new Repository
             {
@@ -43,7 +58,7 @@ namespace NugetAnalyzer.BLL.Services
             };
         }
 
-        private static Solution CreateSolution(string name)
+        private Solution CreateSolution(string name)
         {
             return new Solution
             {
@@ -52,7 +67,7 @@ namespace NugetAnalyzer.BLL.Services
             };
         }
 
-        private static Project CreateProject(string name)
+        private Project CreateProject(string name)
         {
             return new Project
             {
@@ -61,61 +76,104 @@ namespace NugetAnalyzer.BLL.Services
             };
         }
 
-        private static ProjectPackageVersion CreatePackage(Solution domainSolution, IUnitOfWork unitOfWork,
+        private ProjectPackageVersion CreatePackage(
             string packageName, string version, Project domainProject, Repository domainRepository)
         {
-            Package package = unitOfWork.GetRepository<Package>().GetSingleOrDefaultAsync(o => o.Name == packageName)
+            Package package = UnitOfWork.GetRepository<Package>().GetSingleOrDefaultAsync(o => o.Name == packageName)
                 .Result;
             Version packageVersion = CreatePackageVersion(version);
+            PackageVersion tempPackageVersion;
+            Package tempPackage;
 
-            if (package == null && !IsContainsPackageWithName(domainRepository, packageName))
+            if (package != null)
             {
+                tempPackageVersion = UnitOfWork.GetRepository<PackageVersion>().GetSingleOrDefaultAsync(o =>
+                    o.Package.Name == packageName && o.Major == packageVersion.Major &&
+                    o.Minor == packageVersion.Minor && o.Build == packageVersion.Build &&
+                    o.Revision == packageVersion.Revision).Result;
+                if (tempPackageVersion != null)
+                {
+                    return new ProjectPackageVersion
+                    {
+                        Project = domainProject,
+                        PackageVersion = tempPackageVersion
+                    };
+                }
+
+                tempPackageVersion = new PackageVersion
+                {
+                    Package = package,
+                    Minor = packageVersion.Minor,
+                    Major = packageVersion.Major,
+                    Build = packageVersion.Build,
+                    Revision = packageVersion.Revision
+                };
+                package.Versions.Add(tempPackageVersion);
                 return new ProjectPackageVersion
                 {
-                    Project = domainSolution.Projects.FirstOrDefault(o => o.Name == domainProject.Name),
-                    PackageVersion = new PackageVersion
-                    {
-                        Package = new Package {Name = packageName},
-                        Minor = packageVersion.Minor,
-                        Major = packageVersion.Major,
-                        Build = packageVersion.Build,
-                        Revision = packageVersion.Revision
-                    }
+                    Project = domainProject,
+                    PackageVersion = tempPackageVersion
                 };
             }
 
-            if (package.Versions.FirstOrDefault(o => o.Build == packageVersion.Build) == null)
+            package = ReturnExistingPackage(domainRepository, packageName);
+            if (package != null)
             {
+                tempPackageVersion = ReturnExistingPackageVersion(domainRepository, packageName, packageVersion);
+                if (tempPackageVersion != null)
+                {
+                    return new ProjectPackageVersion
+                    {
+                        Project = domainProject,
+                        PackageVersion = tempPackageVersion
+                    };
+                }
+
+                tempPackageVersion = new PackageVersion
+                {
+                    Package = package,
+                    Minor = packageVersion.Minor,
+                    Major = packageVersion.Major,
+                    Build = packageVersion.Build,
+                    Revision = packageVersion.Revision
+                };
+                package.Versions.Add(tempPackageVersion);
                 return new ProjectPackageVersion
                 {
-                    Project = domainSolution.Projects.FirstOrDefault(o => o.Name == domainProject.Name),
-                    PackageVersion = new PackageVersion
-                    {
-                        Package = package,
-                        Minor = packageVersion.Minor,
-                        Major = packageVersion.Major,
-                        Build = packageVersion.Build,
-                        Revision = packageVersion.Revision
-                    }
+                    Project = domainProject,
+                    PackageVersion = tempPackageVersion
                 };
             }
 
+            tempPackageVersion = new PackageVersion
+            {
+                Minor = packageVersion.Minor,
+                Major = packageVersion.Major,
+                Build = packageVersion.Build,
+                Revision = packageVersion.Revision
+            };
+            tempPackage = new Package
+            {
+                Name = packageName,
+                Versions = new List<PackageVersion>()
+            };
+            tempPackage.Versions.Add(tempPackageVersion);
+            tempPackageVersion.Package = tempPackage;
             return new ProjectPackageVersion
             {
-                Project = domainSolution.Projects.FirstOrDefault(o => o.Name == domainProject.Name),
-                PackageVersion = unitOfWork.GetRepository<PackageVersion>()
-                    .GetSingleOrDefaultAsync(o => o.Package.Name == package.Name).Result
+                Project = domainProject,
+                PackageVersion = tempPackageVersion
             };
         }
 
-        private static Version CreatePackageVersion(string version)
+        private Version CreatePackageVersion(string version)
         {
             Version packageVersion = new Version();
             Version.TryParse(version, out packageVersion);
             return packageVersion;
         }
 
-        private static bool IsContainsPackageWithName(Repository repository, string name)
+        private Package ReturnExistingPackage(Repository repository, string name)
         {
             foreach (var solution in repository.Solutions)
             {
@@ -125,13 +183,37 @@ namespace NugetAnalyzer.BLL.Services
                     {
                         if (projectPackageVersion.PackageVersion.Package.Name == name)
                         {
-                            return true;
+                            return projectPackageVersion.PackageVersion.Package;
                         }
                     }
                 }
             }
 
-            return false;
+            return null;
+        }
+
+        private PackageVersion ReturnExistingPackageVersion(Repository repository, string name, Version version)
+        {
+            foreach (var solution in repository.Solutions)
+            {
+                foreach (var project in solution.Projects)
+                {
+                    foreach (var projectPackageVersion in project.ProjectPackageVersions)
+                    {
+                        PackageVersion tempPackageVersion = projectPackageVersion.PackageVersion;
+                        if (tempPackageVersion.Package.Name == name &&
+                            tempPackageVersion.Minor == version.Minor &&
+                            tempPackageVersion.Major == version.Major &&
+                            tempPackageVersion.Build == version.Build &&
+                            tempPackageVersion.Revision == version.Revision)
+                        {
+                            return projectPackageVersion.PackageVersion;
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

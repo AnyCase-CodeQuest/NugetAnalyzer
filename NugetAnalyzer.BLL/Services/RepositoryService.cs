@@ -73,7 +73,7 @@ namespace NugetAnalyzer.BLL.Services
                                 Name = "AreaMonitor.WebApi.BL",
                                 Packages = new List<Package>
                                 {
-                                    new Package {Name = "DiffPlex", Version = "1.4.4"},
+                                    new Package {Name = "DiffPlex", Version = "1.4.2"},
                                     new Package {Name = "Hangfire", Version = "1.6.23"},
                                     new Package {Name = "HtmlAgilityPack", Version = "1.11.1"},
                                     new Package {Name = "Newtonsoft.Json", Version = "12.0.1"},
@@ -115,7 +115,8 @@ namespace NugetAnalyzer.BLL.Services
                     }
                 }
             };
-            UnitOfWork.GetRepository<Domain.Repository>().Add(repository2.ToDomain(userId, UnitOfWork));
+            RepositoryMapper mapper = new RepositoryMapper(UnitOfWork);
+            UnitOfWork.GetRepository<Domain.Repository>().Add(mapper.ToDomain(repository2, userId));
             UnitOfWork.SaveChangesAsync();
         }
     }
