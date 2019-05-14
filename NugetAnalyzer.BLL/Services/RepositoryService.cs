@@ -5,7 +5,7 @@ using NugetAnalyzer.DAL.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryService : IRepository
+    public class RepositoryService : IRepositoryService
     {
         private IUnitOfWork unitOfWork;
 

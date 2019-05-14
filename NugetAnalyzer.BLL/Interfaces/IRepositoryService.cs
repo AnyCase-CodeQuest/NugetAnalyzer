@@ -2,7 +2,7 @@
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
-    public interface IRepository
+    public interface IRepositoryService
     {
         void SaveAsync(Repository repository, int userId);
     }
