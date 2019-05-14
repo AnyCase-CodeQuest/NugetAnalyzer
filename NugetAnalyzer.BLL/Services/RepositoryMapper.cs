@@ -10,9 +10,9 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryMapper : IRepositoryMapper
     {
-        private IRepository<Repository> databaseRepository;
-        private IRepository<Package> packageRepository;
-        private IRepository<PackageVersion> packageVersionRepository;
+        private readonly IRepository<Repository> databaseRepository;
+        private readonly IRepository<Package> packageRepository;
+        private readonly IRepository<PackageVersion> packageVersionRepository;
 
         public RepositoryMapper(IUnitOfWork unitOfWork)
         {
