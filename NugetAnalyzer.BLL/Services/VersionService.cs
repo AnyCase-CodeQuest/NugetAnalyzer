@@ -13,19 +13,46 @@ namespace NugetAnalyzer.BLL.Services
     public class VersionService : IVersionService
     {
         private readonly IUnitOfWork uow;
-        private readonly IVersionRepository versionRepository;
         private readonly IDateTimeProvider dateTimeProvider;
+        private IRepository<Package> packageRepository;
+        private IVersionRepository versionRepository;
 
         public VersionService(IUnitOfWork uow, IDateTimeProvider dateTimeProvider)
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
             this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
-            versionRepository = uow.VersionRepository;
         }
 
-        public async Task UpdateLatestVersionOfNewPackagesAsync(IEnumerable<PackageVersion> versions)
+        private IRepository<Package> PackageRepository
         {
-            var latestVersions = await versionRepository
+            get
+            {
+                if (packageRepository == null)
+                {
+                    packageRepository = uow.GetRepository<Package>();
+                }
+
+                return packageRepository;
+            }
+        }
+
+        private IVersionRepository VersionRepository
+        {
+            get
+            {
+                if (versionRepository == null)
+                {
+                    versionRepository = uow.VersionRepository;
+                }
+
+                return versionRepository;
+            }
+        }
+
+
+        public async Task UpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions)
+        {
+            var latestVersions = await VersionRepository
                 .GetLatestVersionsAsync(lpv => versions
                                                         .Select(pv => pv.PackageId)
                                                         .Contains(lpv.PackageId));
@@ -33,9 +60,9 @@ namespace NugetAnalyzer.BLL.Services
             await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
         }
 
-        public async Task UpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions)
+        public async Task UpdateAllLatestVersionsAsync(IEnumerable<PackageVersion> versions)
         {
-            var latestVersions = await versionRepository.GetAllLatestVersionsAsync();
+            var latestVersions = await VersionRepository.GetAllLatestVersionsAsync();
 
             await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
         }
@@ -46,19 +73,18 @@ namespace NugetAnalyzer.BLL.Services
             {
                 var latestVersion = latestVersions.First(p => p.PackageId == packageVersion.PackageId);
 
-                versionRepository.Attach(latestVersion);
-
-                latestVersion
-                        .Package
-                        .LastUpdateTime = dateTimeProvider.CurrentUtcDateTime;
+                var package = latestVersion.Package;
+                package.LastUpdateTime = dateTimeProvider.CurrentUtcDateTime;
+                PackageRepository.Update(package);
 
                 if (latestVersion.GetVersion() == packageVersion.GetVersion())
                 {
                     latestVersion.PublishedDate = packageVersion.PublishedDate;
+                    VersionRepository.Update(latestVersion);
                 }
                 else
                 {
-                    versionRepository.Add(packageVersion);
+                    VersionRepository.Add(packageVersion);
                 }
             }
 
