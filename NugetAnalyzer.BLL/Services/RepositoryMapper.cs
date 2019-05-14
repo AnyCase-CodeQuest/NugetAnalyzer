@@ -27,23 +27,23 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<Repository> ToDomainAsync(Models.Repositories.Repository businessRepository, int userId)
         {
-            Repository dbRepository = await databaseRepository.GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name);
+            var dbRepository = await databaseRepository.GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name);
             if (dbRepository != null)
             {
                 databaseRepository.Delete(dbRepository.Id);
             }
 
-            Repository domainRepository = CreateRepository(businessRepository.Name, userId);
+            var domainRepository = CreateRepository(businessRepository.Name, userId);
 
             foreach (var solution in businessRepository.Solutions)
             {
                 domainRepository.Solutions.Add(CreateSolution(solution.Name));
-                Solution domainSolution = domainRepository.Solutions.FirstOrDefault(o => o.Name == solution.Name);
+                var domainSolution = domainRepository.Solutions.FirstOrDefault(o => o.Name == solution.Name);
 
                 foreach (var project in solution.Projects)
                 {
                     domainSolution.Projects.Add(CreateProject(project.Name));
-                    Project domainProject = domainSolution.Projects.FirstOrDefault(o => o.Name == project.Name);
+                    var domainProject = domainSolution.Projects.FirstOrDefault(o => o.Name == project.Name);
 
                     foreach (var package in project.Packages)
                     {
@@ -87,8 +87,8 @@ namespace NugetAnalyzer.BLL.Services
         private async Task<ProjectPackageVersion> CreatePackageAsync(
             string packageName, string version, Project domainProject, Repository domainRepository)
         {
-            Package package = await packageRepository.GetSingleOrDefaultAsync(o => o.Name == packageName);
-            Version packageVersion = CreatePackageVersion(version);
+            var package = await packageRepository.GetSingleOrDefaultAsync(o => o.Name == packageName);
+            var packageVersion = CreatePackageVersion(version);
             PackageVersion tempPackageVersion;
             Package tempPackage;
 
@@ -175,7 +175,7 @@ namespace NugetAnalyzer.BLL.Services
 
         private Version CreatePackageVersion(string version)
         {
-            Version packageVersion = new Version();
+            var packageVersion = new Version();
             Version.TryParse(version, out packageVersion);
             return packageVersion;
         }
@@ -207,7 +207,7 @@ namespace NugetAnalyzer.BLL.Services
                 {
                     foreach (var projectPackageVersion in project.ProjectPackageVersions)
                     {
-                        PackageVersion tempPackageVersion = projectPackageVersion.PackageVersion;
+                        var tempPackageVersion = projectPackageVersion.PackageVersion;
                         if (tempPackageVersion.Package.Name == name &&
                             tempPackageVersion.Minor == version.Minor &&
                             tempPackageVersion.Major == version.Major &&

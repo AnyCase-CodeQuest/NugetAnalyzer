@@ -16,7 +16,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async void SaveAsync(Repository repository, int userId)
         {
-            RepositoryMapper mapper = new RepositoryMapper(unitOfWork);
+            var mapper = new RepositoryMapper(unitOfWork);
             unitOfWork.GetRepository<Domain.Repository>().Add(await mapper.ToDomainAsync(repository, userId));
             unitOfWork.SaveChangesAsync();
         }
