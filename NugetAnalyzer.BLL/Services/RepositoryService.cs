@@ -7,18 +7,18 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryService : IRepository
     {
-        private IUnitOfWork UnitOfWork { get; }
+        private IUnitOfWork unitOfWork;
 
         public RepositoryService(IUnitOfWork unitOfWork)
         {
-            UnitOfWork = unitOfWork ?? throw new ArgumentNullException("Unit of work not initialized.");
+            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public void Save(Repository repository, int userId)
+        public async void SaveAsync(Repository repository, int userId)
         {
-            RepositoryMapper mapper = new RepositoryMapper(UnitOfWork);
-            UnitOfWork.GetRepository<Domain.Repository>().Add(mapper.ToDomain(repository, userId));
-            UnitOfWork.SaveChangesAsync();
+            RepositoryMapper mapper = new RepositoryMapper(unitOfWork);
+            unitOfWork.GetRepository<Domain.Repository>().Add(await mapper.ToDomainAsync(repository, userId));
+            unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 
@@ -8,29 +9,28 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryMapper
     {
-        private IRepository<Repository> DatabaseRepository { get; }
-        private IRepository<Package> PackageRepository { get; }
-        private IRepository<PackageVersion> PackageVersionRepository { get; }
+        private IRepository<Repository> databaseRepository;
+        private IRepository<Package> packageRepository;
+        private IRepository<PackageVersion> packageVersionRepository;
 
         public RepositoryMapper(IUnitOfWork unitOfWork)
         {
             if (unitOfWork == null)
             {
-                throw new ArgumentNullException("Unit of work not initialized.");
+                throw new ArgumentNullException(nameof(unitOfWork));
             }
 
-            DatabaseRepository = unitOfWork.GetRepository<Repository>();
-            PackageRepository = unitOfWork.GetRepository<Package>();
-            PackageVersionRepository = unitOfWork.GetRepository<PackageVersion>();
+            databaseRepository = unitOfWork.GetRepository<Repository>();
+            packageRepository = unitOfWork.GetRepository<Package>();
+            packageVersionRepository = unitOfWork.GetRepository<PackageVersion>();
         }
 
-        public Repository ToDomain(Models.Repositories.Repository businessRepository, int userId)
+        public async Task<Repository> ToDomainAsync(Models.Repositories.Repository businessRepository, int userId)
         {
-            Repository dbRepository = DatabaseRepository.GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name)
-                .Result;
+            Repository dbRepository = await databaseRepository.GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name);
             if (dbRepository != null)
             {
-                DatabaseRepository.Delete(dbRepository.Id);
+                databaseRepository.Delete(dbRepository.Id);
             }
 
             Repository domainRepository = CreateRepository(businessRepository.Name, userId);
@@ -47,7 +47,7 @@ namespace NugetAnalyzer.BLL.Services
 
                     foreach (var package in project.Packages)
                     {
-                        domainProject.ProjectPackageVersions.Add(CreatePackage(package.Name, package.Version,
+                        domainProject.ProjectPackageVersions.Add(await CreatePackageAsync(package.Name, package.Version,
                             domainProject, domainRepository));
                     }
                 }
@@ -84,21 +84,20 @@ namespace NugetAnalyzer.BLL.Services
             };
         }
 
-        private ProjectPackageVersion CreatePackage(
+        private async Task<ProjectPackageVersion> CreatePackageAsync(
             string packageName, string version, Project domainProject, Repository domainRepository)
         {
-            Package package = PackageRepository.GetSingleOrDefaultAsync(o => o.Name == packageName)
-                .Result;
+            Package package = await packageRepository.GetSingleOrDefaultAsync(o => o.Name == packageName);
             Version packageVersion = CreatePackageVersion(version);
             PackageVersion tempPackageVersion;
             Package tempPackage;
 
             if (package != null)
             {
-                tempPackageVersion = PackageVersionRepository.GetSingleOrDefaultAsync(o =>
+                tempPackageVersion = await packageVersionRepository.GetSingleOrDefaultAsync(o =>
                     o.Package.Name == packageName && o.Major == packageVersion.Major &&
                     o.Minor == packageVersion.Minor && o.Build == packageVersion.Build &&
-                    o.Revision == packageVersion.Revision).Result;
+                    o.Revision == packageVersion.Revision);
                 if (tempPackageVersion != null)
                 {
                     return new ProjectPackageVersion
