@@ -15,25 +15,23 @@ namespace NugetAnalyzer.BLL.Test.Services
     [TestFixture(Category = "UnitTests")]
     public class NugetHttpServiceTests
     {
-        const string EndpointSearch = "https://api-v2v3search-1.nuget.org";
-        const string EndpointPackageMetadata = "https://api.nuget.org";
-
         private NugetHttpService nugetHttpService;
         private Mock<HttpMessageHandler> handlerMock;
+        private NugetSettings nugetSettings;
 
         [OneTimeSetUp]
         public void Init()
         {
-            var settings = new NugetSettings
+            nugetSettings = new NugetSettings
             {
-                PackageMetadata = EndpointPackageMetadata,
-                Search = EndpointSearch,
+                PackageMetadata = "https://api/test/metadata.nuget.org",
+                Search = "https://api/test/search.nuget.org",
             };
 
             var optionsMock = new Mock<IOptions<NugetSettings>>();
             optionsMock
                 .Setup(o => o.Value)
-                .Returns(settings);
+                .Returns(nugetSettings);
 
             handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
@@ -62,7 +60,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             await nugetHttpService.GetPackageVersionMetadataAsync(packageName, version);
 
-            var expectedUri = new Uri($"{EndpointPackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json");
+            var expectedUri = new Uri($"{nugetSettings.PackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json");
 
             handlerMock
                 .Protected()
@@ -83,7 +81,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             await nugetHttpService.GetPackageMetadataAsync(packageName);
 
-            var expectedUri = new Uri($"{EndpointSearch}/query?q=PackageId:{WebUtility.UrlEncode(packageName)}&prerelease=false");
+            var expectedUri = new Uri($"{nugetSettings.Search}/query?q=PackageId:{WebUtility.UrlEncode(packageName)}&prerelease=false");
 
             handlerMock
                 .Protected()
