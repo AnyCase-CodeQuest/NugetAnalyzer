@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Xml;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models.Repositories;
 using NugetAnalyzer.BLL.Models.Solutions;
@@ -11,6 +13,12 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryAnalyzerService : IRepositoryAnalyzerService
     {
+        private enum FrameworkType
+        {
+            Core,
+            Framework
+        }
+
         private readonly IDirectoryService directoryService;
         private readonly IFileService fileService;
 
@@ -20,85 +28,124 @@ namespace NugetAnalyzer.BLL.Services
             this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
         }
 
-        public Repository GetParsedRepository(string repositoryPath)
+        public async Task<Repository> GetParsedRepositoryAsync(string repositoryPath)
         {
-            if (!directoryService.IsDirectoryExist(repositoryPath))
-            {
+            if (!directoryService.IsDirectoryExists(repositoryPath))
                 return null;
-            }
 
             Repository repository = new Repository
             {
                 Name = directoryService.GetDirectoryName(repositoryPath),
-                Path = repositoryPath,
-                Solutions = new List<Solution>()
+                Path = repositoryPath
             };
 
-            AddSolutionsToRepository(repository);
+            await AddSolutionsToRepositoryAsync(repository);
 
             return repository;
         }
 
-        private void AddSolutionsToRepository(Repository repository)
+        private async Task AddSolutionsToRepositoryAsync(Repository repository)
         {
             var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, "*.sln");
 
-            foreach (var solutionDirectoryPath in directoryService.GetDirectoriesPaths(solutionsFilesPaths))
+            foreach (var solutionDirectoryPath in fileService.GetFilesDirectoriesPaths(solutionsFilesPaths))
             {
                 Solution solution = new Solution
                 {
                     Name = directoryService.GetDirectoryName(solutionDirectoryPath),
-                    Path = solutionDirectoryPath,
-                    Projects = new List<Project>()
+                    Path = solutionDirectoryPath
                 };
 
-                AddProjectsToSolution(solution);
+                await AddProjectsToSolutionAsync(solution);
 
                 repository.Solutions.Add(solution);
             }
         }
 
-        private void AddProjectsToSolution(Solution solution)
+        private async Task AddProjectsToSolutionAsync(Solution solution)
         {
             var projectsFilesPaths = fileService.GetFilesPaths(solution.Path, "*.csproj");
 
-            foreach (var projectDirectoryPath in directoryService.GetDirectoriesPaths(projectsFilesPaths))
+            foreach (var projectDirectoryPath in fileService.GetFilesDirectoriesPaths(projectsFilesPaths))
             {
                 Project project = new Project
                 {
                     Name = directoryService.GetDirectoryName(projectDirectoryPath),
-                    Path = projectDirectoryPath,
-                    Packages = new List<Package>()
+                    Path = projectDirectoryPath
                 };
 
-                AddPackagesToProject(project);
+                await AddPackagesToProjectAsync(project);
 
                 solution.Projects.Add(project);
             }
         }
 
-        private void AddPackagesToProject(Project project)
+        private async Task AddPackagesToProjectAsync(Project project)
         {
-            if (fileService.GetPackagesConfigFilePath(project.Path) != null)
+            if (fileService.GetFilePath(project.Path, "packages.config") != null)
             {
-                project.Packages = GetPackagesOfFrameworkApp(fileService.GetPackagesConfigFilePath(project.Path));
+                var filePath = fileService.GetFilePath(project.Path, "packages.config");
+
+                project.Packages = await GetPackagesAsync(FrameworkType.Framework, filePath);
             }
             else
             {
-                project.Packages = GetPackagesOfCoreApp(fileService.GetCsProjFilePath(project.Path));
+                var filePath = fileService.GetFilePath(project.Path, "*.csproj");
+
+                project.Packages = await GetPackagesAsync(FrameworkType.Core, filePath);
             }
         }
 
-        private IList<Package> GetPackagesOfCoreApp(string csProjFilePath)
+        private async Task<IList<Package>> GetPackagesAsync(FrameworkType frameworkType, string filePath)
         {
-            IList<Package> packages = new List<Package>();
+            var packages = new List<Package>();
+            var document = new XmlDocument();
 
-            XmlDocument document = new XmlDocument();
+            var fileContent = await fileService.GetFileContentAsync(filePath);
 
-            document.LoadXml(fileService.GetFileContent(csProjFilePath));
+            document.LoadXml(fileContent);
 
-            XmlNodeList nodesList = document.SelectNodes("//Project/ItemGroup/PackageReference");
+            var nodesList = GetXmlNodeList(document, frameworkType);
 
+            AddPackagesToPackagesList(frameworkType, packages, nodesList);
+
+            return packages;
+        }
+
+        private XmlNodeList GetXmlNodeList(XmlDocument document, FrameworkType frameworkType)
+        {
+            switch (frameworkType)
+            {
+                case FrameworkType.Core:
+                    return document.SelectNodes("//Project/ItemGroup/PackageReference");
+
+                case FrameworkType.Framework:
+                    return document.SelectNodes("//packages/package");
+
+                default:
+                    return null;
+            }
+        }
+
+        private void AddPackagesToPackagesList(FrameworkType frameworkType, IList<Package> packages, XmlNodeList nodesList)
+        {
+            switch (frameworkType)
+            {
+                case FrameworkType.Core:
+                {
+                    AddPackagesToPackagesListForCoreApp(packages, nodesList);
+                    break;
+                }
+                case FrameworkType.Framework:
+                {
+                    AddPackagesToPackagesListForFrameworkApp(packages, nodesList);
+                    break;
+                }
+            }
+        }
+
+        private void AddPackagesToPackagesListForCoreApp(IList<Package> packages, XmlNodeList nodesList)
+        {
             foreach (XmlNode node in nodesList)
             {
                 if (node.Attributes["Version"] != null)
@@ -110,30 +157,11 @@ namespace NugetAnalyzer.BLL.Services
                             Version = node.Attributes["Version"].Value
                         });
                 }
-                else
-                {
-                    packages.Add(
-                         new Package
-                         {
-                             Name = node.Attributes["Include"].Value,
-                             Version = null
-                         });
-                }
             }
-
-            return packages;
         }
 
-        private IList<Package> GetPackagesOfFrameworkApp(string packagesConfigFilePath)
+        private void AddPackagesToPackagesListForFrameworkApp(IList<Package> packages, XmlNodeList nodesList)
         {
-            IList<Package> packages = new List<Package>();
-
-            XmlDocument document = new XmlDocument();
-
-            document.LoadXml(fileService.GetFileContent(packagesConfigFilePath));
-
-            XmlNodeList nodesList = document.SelectNodes("//packages/package");
-
             foreach (XmlNode node in nodesList)
             {
                 if (node.Attributes["version"] != null)
@@ -145,18 +173,7 @@ namespace NugetAnalyzer.BLL.Services
                             Version = node.Attributes["version"].Value
                         });
                 }
-                else
-                {
-                    packages.Add(
-                       new Package
-                       {
-                           Name = node.Attributes["id"].Value,
-                           Version = null
-                       });
-                }
             }
-
-            return packages;
         }
     }
 }

@@ -3,11 +3,19 @@ using NugetAnalyzer.BLL.Models.Solutions;
 
 namespace NugetAnalyzer.BLL.Models.Repositories
 {
-    public class Repository
+    public class Repository : BaseModel
     {
-        public string Name { get; set; }
+        public Repository()
+            : base()
+        {
+            Solutions = new List<Solution>();
+        }
 
-        public string Path { get; set; }
+        public Repository(string name, string path, IList<Solution> solutions)
+            : base(name, path)
+        {
+            this.Solutions = solutions;
+        }
 
         public IList<Solution> Solutions { get; set; }
     }

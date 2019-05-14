@@ -3,11 +3,19 @@ using NugetAnalyzer.BLL.Models.Packages;
 
 namespace NugetAnalyzer.BLL.Models.Projects
 {
-    public class Project
+    public class Project : BaseModel
     {
-        public string Name { get; set; }
+        public Project()
+            : base()
+        {
+            Packages = new List<Package>();
+        }
 
-        public string Path { get; set; }
+        public Project(string name, string path, IList<Package> packages)
+            : base(name, path)
+        {
+            this.Packages = packages;
+        }
 
         public IList<Package> Packages { get; set; }
     }
