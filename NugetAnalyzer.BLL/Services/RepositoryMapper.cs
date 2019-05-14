@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryMapper
+    public class RepositoryMapper : IRepositoryMapper
     {
         private IRepository<Repository> databaseRepository;
         private IRepository<Package> packageRepository;
@@ -90,7 +91,6 @@ namespace NugetAnalyzer.BLL.Services
             var package = await packageRepository.GetSingleOrDefaultAsync(o => o.Name == packageName);
             var packageVersion = CreatePackageVersion(version);
             PackageVersion tempPackageVersion;
-            Package tempPackage;
 
             if (package != null)
             {
@@ -107,14 +107,7 @@ namespace NugetAnalyzer.BLL.Services
                     };
                 }
 
-                tempPackageVersion = new PackageVersion
-                {
-                    Package = package,
-                    Minor = packageVersion.Minor,
-                    Major = packageVersion.Major,
-                    Build = packageVersion.Build,
-                    Revision = packageVersion.Revision
-                };
+                tempPackageVersion = CreatePackageVersion(packageVersion, package);
                 package.Versions.Add(tempPackageVersion);
                 return new ProjectPackageVersion
                 {
@@ -136,14 +129,7 @@ namespace NugetAnalyzer.BLL.Services
                     };
                 }
 
-                tempPackageVersion = new PackageVersion
-                {
-                    Package = package,
-                    Minor = packageVersion.Minor,
-                    Major = packageVersion.Major,
-                    Build = packageVersion.Build,
-                    Revision = packageVersion.Revision
-                };
+                tempPackageVersion = CreatePackageVersion(packageVersion, package);
                 package.Versions.Add(tempPackageVersion);
                 return new ProjectPackageVersion
                 {
@@ -152,14 +138,8 @@ namespace NugetAnalyzer.BLL.Services
                 };
             }
 
-            tempPackageVersion = new PackageVersion
-            {
-                Minor = packageVersion.Minor,
-                Major = packageVersion.Major,
-                Build = packageVersion.Build,
-                Revision = packageVersion.Revision
-            };
-            tempPackage = new Package
+            tempPackageVersion = CreatePackageVersion(packageVersion);
+            var tempPackage = new Package
             {
                 Name = packageName,
                 Versions = new List<PackageVersion>()
@@ -170,6 +150,18 @@ namespace NugetAnalyzer.BLL.Services
             {
                 Project = domainProject,
                 PackageVersion = tempPackageVersion
+            };
+        }
+
+        private PackageVersion CreatePackageVersion(Version version, Package package = null)
+        {
+            return new PackageVersion
+            {
+                Package = package,
+                Minor = version.Minor,
+                Major = version.Major,
+                Build = version.Build,
+                Revision = version.Revision
             };
         }
 
