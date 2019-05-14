@@ -8,21 +8,29 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryMapper
     {
-        public IUnitOfWork UnitOfWork { get; }
+        private IRepository<Repository> DatabaseRepository { get; }
+        private IRepository<Package> PackageRepository { get; }
+        private IRepository<PackageVersion> PackageVersionRepository { get; }
 
         public RepositoryMapper(IUnitOfWork unitOfWork)
         {
-            UnitOfWork = unitOfWork;
+            if (unitOfWork == null)
+            {
+                throw new ArgumentNullException("Unit of work not initialized.");
+            }
+
+            DatabaseRepository = unitOfWork.GetRepository<Repository>();
+            PackageRepository = unitOfWork.GetRepository<Package>();
+            PackageVersionRepository = unitOfWork.GetRepository<PackageVersion>();
         }
 
         public Repository ToDomain(Models.Repositories.Repository businessRepository, int userId)
         {
-            Repository dbRepository = UnitOfWork.GetRepository<Repository>()
-                .GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name)
+            Repository dbRepository = DatabaseRepository.GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name)
                 .Result;
             if (dbRepository != null)
             {
-                UnitOfWork.GetRepository<Repository>().Delete(dbRepository.Id);
+                DatabaseRepository.Delete(dbRepository.Id);
             }
 
             Repository domainRepository = CreateRepository(businessRepository.Name, userId);
@@ -79,7 +87,7 @@ namespace NugetAnalyzer.BLL.Services
         private ProjectPackageVersion CreatePackage(
             string packageName, string version, Project domainProject, Repository domainRepository)
         {
-            Package package = UnitOfWork.GetRepository<Package>().GetSingleOrDefaultAsync(o => o.Name == packageName)
+            Package package = PackageRepository.GetSingleOrDefaultAsync(o => o.Name == packageName)
                 .Result;
             Version packageVersion = CreatePackageVersion(version);
             PackageVersion tempPackageVersion;
@@ -87,7 +95,7 @@ namespace NugetAnalyzer.BLL.Services
 
             if (package != null)
             {
-                tempPackageVersion = UnitOfWork.GetRepository<PackageVersion>().GetSingleOrDefaultAsync(o =>
+                tempPackageVersion = PackageVersionRepository.GetSingleOrDefaultAsync(o =>
                     o.Package.Name == packageName && o.Major == packageVersion.Major &&
                     o.Minor == packageVersion.Minor && o.Build == packageVersion.Build &&
                     o.Revision == packageVersion.Revision).Result;
