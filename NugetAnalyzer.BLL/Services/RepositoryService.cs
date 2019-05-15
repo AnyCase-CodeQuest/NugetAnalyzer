@@ -30,9 +30,11 @@ namespace NugetAnalyzer.BLL.Services
             unitOfWork.SaveChangesAsync();
         }
 
+        #region PrivateMethods
+
         private async Task<Repository> ToDomainAsync(Models.Repositories.Repository businessRepository, int userId)
         {
-            var dbRepository = await databaseRepository.GetSingleOrDefaultAsync(o => o.Name == businessRepository.Name);
+            var dbRepository = await databaseRepository.GetSingleOrDefaultAsync(repository => repository.Name == businessRepository.Name);
             if (dbRepository != null)
             {
                 databaseRepository.Delete(dbRepository.Id);
@@ -40,19 +42,19 @@ namespace NugetAnalyzer.BLL.Services
 
             var domainRepository = CreateRepository(businessRepository.Name, userId);
 
-            foreach (var solution in businessRepository.Solutions)
+            foreach (var businessSolution in businessRepository.Solutions)
             {
-                domainRepository.Solutions.Add(CreateSolution(solution.Name));
-                var domainSolution = domainRepository.Solutions.FirstOrDefault(o => o.Name == solution.Name);
+                domainRepository.Solutions.Add(CreateSolution(businessSolution.Name));
+                var domainSolution = domainRepository.Solutions.FirstOrDefault(solution => solution.Name == businessSolution.Name);
 
-                foreach (var project in solution.Projects)
+                foreach (var businessProject in businessSolution.Projects)
                 {
-                    domainSolution.Projects.Add(CreateProject(project.Name));
-                    var domainProject = domainSolution.Projects.FirstOrDefault(o => o.Name == project.Name);
+                    domainSolution.Projects.Add(CreateProject(businessProject.Name));
+                    var domainProject = domainSolution.Projects.FirstOrDefault(project => project.Name == businessProject.Name);
 
-                    foreach (var package in project.Packages)
+                    foreach (var businessPackage in businessProject.Packages)
                     {
-                        domainProject.ProjectPackageVersions.Add(await CreatePackageAsync(package.Name, package.Version,
+                        domainProject.ProjectPackageVersions.Add(await CreatePackageAsync(businessPackage.Name, businessPackage.Version,
                             domainProject, domainRepository));
                     }
                 }
@@ -90,18 +92,21 @@ namespace NugetAnalyzer.BLL.Services
         }
 
         private async Task<ProjectPackageVersion> CreatePackageAsync(
-            string packageName, string version, Project domainProject, Repository domainRepository)
+            string packageName, 
+            string version,
+            Project domainProject,
+            Repository domainRepository)
         {
-            var package = await packageRepository.GetSingleOrDefaultAsync(o => o.Name == packageName);
+            var package = await packageRepository.GetSingleOrDefaultAsync(dbPackage => dbPackage.Name == packageName);
             var packageVersion = CreatePackageVersion(version);
             PackageVersion tempPackageVersion;
 
             if (package != null)
             {
-                tempPackageVersion = await packageVersionRepository.GetSingleOrDefaultAsync(o =>
-                    o.Package.Name == packageName && o.Major == packageVersion.Major &&
-                    o.Minor == packageVersion.Minor && o.Build == packageVersion.Build &&
-                    o.Revision == packageVersion.Revision);
+                tempPackageVersion = await packageVersionRepository.GetSingleOrDefaultAsync(dbPackageVersion =>
+                    dbPackageVersion.Package.Name == packageName && dbPackageVersion.Major == packageVersion.Major &&
+                    dbPackageVersion.Minor == packageVersion.Minor && dbPackageVersion.Build == packageVersion.Build &&
+                    dbPackageVersion.Revision == packageVersion.Revision);
                 if (tempPackageVersion != null)
                 {
                     return new ProjectPackageVersion
@@ -218,5 +223,6 @@ namespace NugetAnalyzer.BLL.Services
 
             return null;
         }
+        #endregion
     }
 }
