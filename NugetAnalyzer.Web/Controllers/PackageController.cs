@@ -7,7 +7,7 @@ namespace NugetAnalyzer.Web.Controllers
 {
     public class PackageController : Controller
     {
-        public IActionResult ListPackages()
+        public IActionResult ListPackages(int projectId)
         {
            var model = new ProjectViewModel
            {

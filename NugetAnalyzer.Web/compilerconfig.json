@@ -22,5 +22,9 @@
   {
     "outputFile": "wwwroot/stylesheets/Package/Package.css",
     "inputFile": "wwwroot/stylesheets/Package/Package.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Repositories/Repositories.css",
+    "inputFile": "wwwroot/stylesheets/Repositories/Repositories.scss"
   }
 ]

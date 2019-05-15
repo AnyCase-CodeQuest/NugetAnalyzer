@@ -13,8 +13,10 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
 {
     public static class GitHubOAuthExtension
     {
-        public static void AddGitHubOAuth(this IServiceCollection services, IConfigurationSection endPointsSection, IConfigurationSection secretsSection)
+        public static void AddGitHubOAuth(this IServiceCollection services, IConfiguration configuration)
         {
+            var secretsSection = configuration.GetSection("GitHubAppSettings");
+            var endPointsSection = configuration.GetSection("GitHubEndPoints");
             services.Configure<GitHubSecretsOptions>(endPointsSection);
             services.Configure<GitHubEndPointsOptions>(secretsSection);
 

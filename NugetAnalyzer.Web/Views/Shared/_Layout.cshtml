@@ -93,10 +93,8 @@
                     © @System.DateTime.Now.Year Nuget Analyzer
                 </div>
                 <div class="col col-1 text-center">
-                    <a asp-action="Index" asp-controller="Home" class="footer__logo text-center">
-                        <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
-                            <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z" />
-                        </svg>
+                    <a asp-action="Index" asp-controller="Home" class="navbar-brand">
+                        <logo font-size="14" color="rgba(0,0,0,.2)" hover-color="rgba(0,0,0,.4)"></logo>
                     </a>
                 </div>
                 <div class="col text-right small">
@@ -114,6 +112,6 @@
     <script src="~/scripts/jquery-3.4.0.min.js"></script>
     <script src="~/scripts/popper.min.js"></script>
     <script src="~/scripts/bootstrap.min.js"></script>
-    @RenderSection("Scritps", false)
+    @RenderSection("Scripts", false)
 </body>
 </html>

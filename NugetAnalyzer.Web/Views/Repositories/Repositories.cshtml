@@ -1,0 +1,22 @@
+﻿@model ICollection<NugetAnalyzer.Dtos.Models.Repositories.RepositoryWithVersionReport>
+<div class="just-padding">
+    <div class="list-group list-group-root well">
+        @foreach (var repository in Model)
+        {
+            <div class="list-group-item">@repository.Name Date: @repository.Report.DateStatus Version: @repository.Report.VersionStatus IsObsolet: @repository.Report.IsObsolete</div>
+            <div class="list-group">
+                @foreach (var solution in repository.Solutions)
+                {
+                    <div class="list-group-item">@solution.Name Date: @solution.Report.DateStatus Version: @solution.Report.VersionStatus IsObsolet: @solution.Report.IsObsolete</div>
+                    <div class="list-group">
+                        @foreach (var project in solution.Projects)
+                        {
+                            <a asp-action="ListPackages" asp-controller="Package" class="list-group-item">@project.Name Date: @project.Report.DateStatus Version: @project.Report.VersionStatus IsObsolet: @project.Report.IsObsolete</a>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+

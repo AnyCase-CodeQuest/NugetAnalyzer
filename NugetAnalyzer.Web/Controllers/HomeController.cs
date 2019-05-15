@@ -12,8 +12,5 @@ namespace NugetAnalyzer.Web.Controllers
         {
             return View();
         }
-
-     
-
     }
 }

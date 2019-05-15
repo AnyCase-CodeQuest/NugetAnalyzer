@@ -5,6 +5,35 @@
 
 @section Styles {
     <link href="~/stylesheets/Account/Profile.css" rel="stylesheet" />
+    <link href="~/stylesheets/Repositories/Repositories.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script type="text/javascript">
+        function OverviewResult() {
+            $.ajax({
+            type: "GET",
+            url: '/Repositories/Overview',
+            contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $('#overviewResult').html(data);
+                }
+            })
+        }
+    </script>
+<script type="text/javascript">
+    function ReposiotiresResult() {
+        var userId = @Model.Id;
+        $.ajax({
+            type: "GET",
+            url: '/Repositories/Repositories?userId=' + userId,
+            contentType: "application/json; charser=utf-8",
+            success: function (data) {
+                $('#repositoriesResult').html(data);
+            }
+        })
+    }
+</script>
 }
 
 <div class="row ">
@@ -15,12 +44,12 @@
     </div>
     <div class="column ml-4">
         <ul class="nav nav-tabs">
-            <li class="nav-item"><a class="nav-link nav__link_profile_tab active" data-toggle="tab" href="#overview">@Localizer["Overview"]</a></li>
-            <li class="nav-item"><a class="nav-link nav__link_profile_tab" data-toggle="tab" href="#repostiories">@Localizer["Repositories"]</a></li>
+            <li class="nav-item"><a class="nav-link nav__link_profile_tab active" data-toggle="tab" href="#overviewResult" onclick="OverviewResult();">@Localizer["Overview"]</a></li>
+            <li class="nav-item"><a class="nav-link nav__link_profile_tab" data-toggle="tab" href="#repositoriesResult" onclick="ReposiotiresResult();">@Localizer["Repositories"]</a></li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">@Localizer["Overview"]</div>
-            <div class="tab-pane fade" id="repostiories" role="tabpanel" aria-labelledby="repostiories-tab">@Localizer["Repositories"]</div>
+            <div class="tab-pane fade show active" id="overviewResult" role="tabpanel" aria-labelledby="overview-tab">@Localizer["Overview"]</div>
+            <div class="tab-pane fade" id="repositoriesResult" role="tabpanel" aria-labelledby="repostiories-tab"></div>
         </div>
     </div>
 </div>
