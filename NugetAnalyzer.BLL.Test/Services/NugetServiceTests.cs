@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
 using NugetAnalyzer.BLL.Helpers;
@@ -92,7 +93,11 @@ namespace NugetAnalyzer.BLL.Test.Services
                 nugetApiServiceMock.Object,
                 versionServiceMock.Object,
                 packageServiceMock.Object);
+        }
 
+        [SetUp]
+        public void SetUp()
+        {
             packageServiceMock
                 .Setup(p => p.GetAllAsync())
                 .ReturnsAsync(packages);
@@ -150,6 +155,22 @@ namespace NugetAnalyzer.BLL.Test.Services
             nugetApiServiceMock.Verify(n => n.GetPackagePublishedDateByVersionAsync(nUnitPackage.Name, nUnitVersion.GetVersion().ToString()));
             nugetApiServiceMock.Verify(n => n.GetPackagePublishedDateByVersionAsync(moqPackage.Name, moqVersion.GetVersion().ToString()));
             versionServiceMock.Verify(v => v.UpdateLatestVersionsAsync(packageVersions));
+        }
+
+        [Test]
+        public async Task RefreshLatestVersionOfAllPackagesAsync_Should_Exclude_PackageVersions_When_Request_To_NugetApi_Throw_Exception()
+        {
+            nugetApiServiceMock
+                .Setup(n => n.GetLatestPackageVersionAsync(moqPackage.Name))
+                .ThrowsAsync(new Exception("Nuget API exception."));
+
+            await nugetService.RefreshLatestVersionOfAllPackagesAsync();
+
+            var versions = new List<PackageVersion>
+            {
+                nUnitVersion
+            };
+            versionServiceMock.Verify(v => v.UpdateAllLatestVersionsAsync(versions));
         }
     }
 }
