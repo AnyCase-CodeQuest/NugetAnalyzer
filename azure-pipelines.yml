@@ -23,5 +23,3 @@ steps:
 
 - script: dotnet test --configuration Debug --no-build
   displayName: 'dotnet tests $(buildConfiguration)'
-  
-  csc -resource:EndpointPackageMetadata.resx in.cs  
