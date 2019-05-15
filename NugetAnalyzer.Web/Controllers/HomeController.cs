@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using NugetAnalyzer.BLL.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace NugetAnalyzer.Web.Controllers
 {
