@@ -11,5 +11,17 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-- script: dotnet test --configuration Release --no-build
+- task: MSBuild@1
+  inputs:
+    solution: '**/*.sln'
+    msbuildArchitecture: 'x64'
+    platform: 'Any CPU'
+    configuration: 'release'
+    restoreNugetPackages: true
+    logProjectEvents: true
+    createLogFile: true
+
+- script: dotnet test --configuration Debug --no-build
   displayName: 'dotnet tests $(buildConfiguration)'
+  
+  csc -resource:EndpointPackageMetadata.resx in.cs  
