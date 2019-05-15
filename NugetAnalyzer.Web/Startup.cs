@@ -4,11 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.BLL.Models.Configurations;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
+using NugetAnalyzer.Domain;
 using NugetAnalyzer.Web.ApplicationBuilderExtensions;
 using NugetAnalyzer.Web.Middleware;
 using NugetAnalyzer.Web.ServiceCollectionExtensions;
@@ -35,9 +39,19 @@ namespace NugetAnalyzer.Web
             {
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
-            
+
+            services.Configure<PackageVersionConfiguration>(options => Configuration.GetSection("PackageStatus").Bind(options));
+            services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IVersionRepository, VersionRepository>();
+            services.AddScoped<IRepositoryRepository, RepositoryRepository>();
+            services.AddScoped<IVersionAnalyzerService, VersionAnalyzerService>();
+            services.AddScoped<IRepositoryService, RepositoryService>();
+
+            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IVersionRepository>());
+            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoryRepository>());
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<ISourceService, SourceService>();
