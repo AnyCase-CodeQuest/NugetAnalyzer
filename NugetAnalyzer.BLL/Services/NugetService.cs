@@ -27,7 +27,7 @@ namespace NugetAnalyzer.BLL.Services
 
             var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
-            await versionService.UpdateAllLatestVersionsAsync(versions);
+            await versionService.UpdateAllLatestVersionsAsync(versions.Where(pv => pv != null));
         }
 
         public async Task RefreshLatestVersionOfNewlyAddedPackagesAsync()
@@ -36,28 +36,34 @@ namespace NugetAnalyzer.BLL.Services
 
             var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
-            await versionService.UpdateLatestVersionsAsync(versions);
+            await versionService.UpdateLatestVersionsAsync(versions.Where(pv => pv != null));
         }
 
 
         private async Task<PackageVersion[]> GetLatestVersionsOfPackagesAsync(IReadOnlyCollection<Package> packages)
         {
             var packageVersionTasks = packages
-                .Select(GetLatestVersionOfPackageAsync)
-                .ToArray();
+                .Select(GetLatestVersionOfPackageAsync);
 
             return await Task.WhenAll(packageVersionTasks);
         }
 
         private async Task<PackageVersion> GetLatestVersionOfPackageAsync(Package package)
         {
-            var version = await nugetApiService.GetLatestPackageVersionAsync(package.Name);
+            PackageVersion version = null;
+            try
+            {
+                version = await nugetApiService.GetLatestPackageVersionAsync(package.Name);
 
-            version.PublishedDate = await nugetApiService
-                .GetPackagePublishedDateByVersionAsync(package.Name, version.GetVersion().ToString());
-
+                version.PublishedDate = await nugetApiService
+                    .GetPackagePublishedDateByVersionAsync(package.Name, version.GetVersion().ToString());
+            }
+            catch
+            {
+                return null;
+            }
+           
             version.PackageId = package.Id;
-
             return version;
         }
     }
