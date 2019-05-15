@@ -8,14 +8,14 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryService : IRepositoryServiceSanek
+    public class RepositoryServiceSanek : IRepositoryServiceSanek
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IRepository<Repository> databaseRepository;
         private readonly IRepository<Package> packageRepository;
         private readonly IRepository<PackageVersion> packageVersionRepository;
 
-        public RepositoryService(IUnitOfWork unitOfWork)
+        public RepositoryServiceSanek(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
@@ -27,7 +27,7 @@ namespace NugetAnalyzer.BLL.Services
         public async void SaveAsync(Models.Repositories.Repository repository, int userId)
         {
             unitOfWork.GetRepository<Repository>().Add(await ToDomainAsync(repository, userId));
-            unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
         }
 
         private async Task<Repository> ToDomainAsync(Models.Repositories.Repository businessRepository, int userId)
