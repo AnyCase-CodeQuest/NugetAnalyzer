@@ -39,7 +39,7 @@ namespace NugetAnalyzer.Web
             services.AddSingleton<IDirectoryService, DirectoryService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
-            services.AddScoped<IRepositoryService, RepositoryService>();
+            services.AddScoped<IRepositoryServiceSanek, RepositoryService>();
 
             services.AddMvc();
         }

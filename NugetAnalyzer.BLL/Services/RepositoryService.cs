@@ -8,7 +8,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryService : IRepositoryService
+    public class RepositoryService : IRepositoryServiceSanek
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IRepository<Repository> databaseRepository;
