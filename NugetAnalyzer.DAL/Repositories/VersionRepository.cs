@@ -28,5 +28,20 @@ namespace NugetAnalyzer.DAL.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+        public async Task<IReadOnlyCollection<PackageVersion>> GetAllLatestVersionsAsync()
+        {
+            return await DbSet
+                .AsNoTracking()
+                .Include(p => p.Package)
+                .GroupByVersionAsync();
+        }
+        public async Task<IReadOnlyCollection<PackageVersion>> GetLatestVersionsAsync(Expression<Func<PackageVersion, bool>> predicate)
+        {
+            return await DbSet
+                .AsNoTracking()
+                .Include(p => p.Package)
+                .Where(predicate)
+                .GroupByVersionAsync();
+        }
     }
 }

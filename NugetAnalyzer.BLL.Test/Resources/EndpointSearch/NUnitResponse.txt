@@ -1,0 +1,188 @@
+{
+  "@context": {
+    "@vocab": "http://schema.nuget.org/schema#",
+    "@base": "https://api.nuget.org/v3/registration3/"
+  },
+  "totalHits": 1,
+  "lastReopen": "2019-05-04T21:53:58.3263595Z",
+  "index": "v3-lucene2-v2v3-20180914",
+  "data": [
+    {
+      "@id": "https://api.nuget.org/v3/registration3/nunit/index.json",
+      "@type": "Package",
+      "registration": "https://api.nuget.org/v3/registration3/nunit/index.json",
+      "id": "NUnit",
+      "version": "3.11.0",
+      "description": "NUnit features a fluent assert syntax, parameterized, generic and theory tests and is user-extensible.\n\nThis package includes the NUnit 3 framework assembly, which is referenced by your tests. You will need to install version 3 of the nunit3-console program or a third-party runner that supports NUnit 3 in order to execute tests. Runners intended for use with NUnit 2.x will not run NUnit 3 tests correctly.\n\nSupported platforms:\n- .NET Framework 2.0+\n- .NET Standard 1.4+\n- .NET Core",
+      "summary": "NUnit is a unit-testing framework for all .NET languages with a strong TDD focus.",
+      "title": "NUnit",
+      "iconUrl": "https://cdn.rawgit.com/nunit/resources/master/images/icon/nunit_256.png",
+      "licenseUrl": "https://raw.githubusercontent.com/nunit/nunit/master/LICENSE.txt",
+      "projectUrl": "http://nunit.org/",
+      "tags": [
+        "nunit",
+        "test",
+        "testing",
+        "tdd",
+        "framework",
+        "fluent",
+        "assert",
+        "theory",
+        "plugin",
+        "addin"
+      ],
+      "authors": [
+        "Charlie Poole, Rob Prouse"
+      ],
+      "totalDownloads": 40765695,
+      "verified": true,
+      "versions": [
+        {
+          "version": "2.5.7.10213",
+          "downloads": 133747,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.5.7.10213.json"
+        },
+        {
+          "version": "2.5.9.10348",
+          "downloads": 36739,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.5.9.10348.json"
+        },
+        {
+          "version": "2.5.10.11092",
+          "downloads": 421753,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.5.10.11092.json"
+        },
+        {
+          "version": "2.6.0.12054",
+          "downloads": 388280,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.0.12054.json"
+        },
+        {
+          "version": "2.6.1",
+          "downloads": 257985,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.1.json"
+        },
+        {
+          "version": "2.6.2",
+          "downloads": 1361139,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.2.json"
+        },
+        {
+          "version": "2.6.3",
+          "downloads": 2989854,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.3.json"
+        },
+        {
+          "version": "2.6.4",
+          "downloads": 6193816,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.4.json"
+        },
+        {
+          "version": "2.6.5",
+          "downloads": 29747,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.5.json"
+        },
+        {
+          "version": "2.6.6",
+          "downloads": 15630,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.6.json"
+        },
+        {
+          "version": "2.6.7",
+          "downloads": 37101,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.6.7.json"
+        },
+        {
+          "version": "2.7.0",
+          "downloads": 53097,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/2.7.0.json"
+        },
+        {
+          "version": "3.0.0",
+          "downloads": 369723,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.0.0.json"
+        },
+        {
+          "version": "3.0.1",
+          "downloads": 928234,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.0.1.json"
+        },
+        {
+          "version": "3.2.0",
+          "downloads": 556136,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.2.0.json"
+        },
+        {
+          "version": "3.2.1",
+          "downloads": 719468,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.2.1.json"
+        },
+        {
+          "version": "3.4.0",
+          "downloads": 105839,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.4.0.json"
+        },
+        {
+          "version": "3.4.1",
+          "downloads": 1312631,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.4.1.json"
+        },
+        {
+          "version": "3.5.0",
+          "downloads": 1819880,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.5.0.json"
+        },
+        {
+          "version": "3.6.0",
+          "downloads": 1151684,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.6.0.json"
+        },
+        {
+          "version": "3.6.1",
+          "downloads": 2132086,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.6.1.json"
+        },
+        {
+          "version": "3.7.0",
+          "downloads": 231154,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.7.0.json"
+        },
+        {
+          "version": "3.7.1",
+          "downloads": 1916447,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.7.1.json"
+        },
+        {
+          "version": "3.8.0",
+          "downloads": 104654,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.8.0.json"
+        },
+        {
+          "version": "3.8.1",
+          "downloads": 5175721,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.8.1.json"
+        },
+        {
+          "version": "3.9.0",
+          "downloads": 3716907,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.9.0.json"
+        },
+        {
+          "version": "3.10.0",
+          "downloads": 56318,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.10.0.json"
+        },
+        {
+          "version": "3.10.1",
+          "downloads": 5020743,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.10.1.json"
+        },
+        {
+          "version": "3.11.0",
+          "downloads": 3402140,
+          "@id": "https://api.nuget.org/v3/registration3/nunit/3.11.0.json"
+        }
+      ]
+    }
+  ]
+}

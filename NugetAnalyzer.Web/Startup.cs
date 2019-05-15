@@ -43,14 +43,15 @@ namespace NugetAnalyzer.Web
             services.Configure<PackageVersionConfiguration>(options => Configuration.GetSection("PackageStatus").Bind(options));
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
 
+            services.Configure<NugetSettings>(Configuration.GetSection("NugetEndpoints"));
+            services.AddSingleton<INugetApiService, NugetApiService>();
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IVersionRepository, VersionRepository>();
             services.AddScoped<IRepositoryRepository, RepositoryRepository>();
             services.AddScoped<IVersionAnalyzerService, VersionAnalyzerService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
 
-            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IVersionRepository>());
             services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoryRepository>());
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
@@ -59,7 +60,16 @@ namespace NugetAnalyzer.Web
             var secretsSection = Configuration.GetSection("GitHubAppSettings");
             var endPointsSection = Configuration.GetSection("GitHubEndPoints");
             services.AddGitHubOAuth(endPointsSection, secretsSection);
+            services.AddScoped<IVersionRepository, VersionRepository>();
+            services.AddScoped<INugetService, NugetService>();
+            services.AddScoped<IVersionService, VersionService>();
+            services.AddScoped<IPackageService, PackageService>();
 
+            services.AddScoped(
+                typeof(IRepository<PackageVersion>),
+                provider => provider.GetService<IVersionRepository>());
+
+            services.AddHttpClient<INugetHttpService, NugetHttpService>();
             services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -7,11 +7,42 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DeepEqual" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="DeepEqual" Version="2.0.0" />
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="SemanticComparison" Version="4.0.0" />
+    <PackageReference Include="WireMock.Net" Version="1.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NugetAnalyzer.BLL\NugetAnalyzer.BLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="EndpointPackageMetadata.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EndpointPackageMetadata.resx</DependentUpon>
+    </Compile>
+    <Compile Update="EndpointSearch.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EndpointSearch.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="EndpointPackageMetadata.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EndpointPackageMetadata.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EndpointSearch.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EndpointSearch.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

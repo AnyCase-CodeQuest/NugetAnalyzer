@@ -1,0 +1,28 @@
+﻿{
+  "@id": "https://api.nuget.org/v3/registration3/nunit/3.9.0.json",
+  "@type": [
+    "Package",
+    "http://schema.nuget.org/catalog#Permalink"
+  ],
+  "catalogEntry": "https://api.nuget.org/v3/catalog0/data/2018.10.16.12.57.01/nunit.3.9.0.json",
+  "listed": true,
+  "packageContent": "https://api.nuget.org/v3-flatcontainer/nunit/3.9.0/nunit.3.9.0.nupkg",
+  "published": "",
+  "registration": "https://api.nuget.org/v3/registration3/nunit/index.json",
+  "@context": {
+    "@vocab": "http://schema.nuget.org/schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "catalogEntry": {
+      "@type": "@id"
+    },
+    "registration": {
+      "@type": "@id"
+    },
+    "packageContent": {
+      "@type": "@id"
+    },
+    "published": {
+      "@type": "xsd:dateTime"
+    }
+  }
+}
