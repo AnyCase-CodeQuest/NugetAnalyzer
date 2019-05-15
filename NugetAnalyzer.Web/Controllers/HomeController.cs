@@ -8,7 +8,7 @@ namespace NugetAnalyzer.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IGitHubApiService gitHubApiService;
-        private const string userTestToken = "94c69698f37458f99db360c4e8d2803b5d6ba146";
+        private const string userTestToken = "c515ab303b56798412c4fff4e36f84fdcb3898e2";
 
         public HomeController(IGitHubApiService gitHubApiService)
         {
@@ -27,10 +27,11 @@ namespace NugetAnalyzer.Web.Controllers
             return PartialView("RepositoriesPopUp", result);
         }
 
-        public async Task<JsonResult> Branches(long repositoryId)
+        [HttpGet]
+        public async Task<JsonResult> Branches([FromHeader]long repositoryId)
         {
             var branchesNames = (await gitHubApiService.GetUserRepositoryBranchesAsync(userTestToken, repositoryId))
-                .Select(b => b.Name);
+                .Select(branch => branch.Name);
             return Json(branchesNames);
         }
     }

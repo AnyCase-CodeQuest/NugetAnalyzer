@@ -3,14 +3,14 @@
 <div class="modal show" id="new-repository-pop-up" style="display: block">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="border-bottom: unset">
                 <h2 class="modal-title font-weight-bold">Add your repositories</h2>
             </div>
             <div class="modal-body">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>repository name</th>
                             <th></th>
                             <th>Branch</th>
                         </tr>
@@ -20,8 +20,8 @@
                         {
                             <tr>
                                 <td>@repository.Name</td>
-                                <td><input type="checkbox" value="@repository.Id" style="transform: scale(1.5)" /></td>
-                                <td>default</td>
+                                <td><input type="checkbox" value="@repository.Id" style="transform: scale(1.5); cursor: pointer"/></td>
+                                <td><a class="repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch" style="cursor: pointer">default</a></td>
                             </tr>
                         }
                     </tbody>
