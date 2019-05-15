@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.Dtos.Models.Configurations;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common;
 using NugetAnalyzer.Common.Interfaces;
@@ -13,6 +12,7 @@ using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Models.Configurations;
 using NugetAnalyzer.Web.ApplicationBuilderExtensions;
 using NugetAnalyzer.Web.Middleware;
 using NugetAnalyzer.Web.ServiceCollectionExtensions;
@@ -65,9 +65,7 @@ namespace NugetAnalyzer.Web
             services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<IPackageService, PackageService>();
 
-            services.AddScoped(
-                typeof(IRepository<PackageVersion>),
-                provider => provider.GetService<IVersionRepository>());
+            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IVersionRepository>());
 
             services.AddHttpClient<INugetHttpService, NugetHttpService>();
             services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);

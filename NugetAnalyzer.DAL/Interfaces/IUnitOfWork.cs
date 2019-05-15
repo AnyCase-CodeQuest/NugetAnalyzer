@@ -11,8 +11,6 @@ namespace NugetAnalyzer.DAL.Interfaces
 
         IRepositoryRepository RepositoryRepository { get; }
 
-        IVersionRepository VersionRepository { get; }
-
         Task<int> SaveChangesAsync();
     }
 }
