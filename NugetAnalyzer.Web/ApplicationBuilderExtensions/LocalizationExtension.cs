@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
-using System.Globalization;
 
 namespace NugetAnalyzer.Web.ApplicationBuilderExtensions
 {

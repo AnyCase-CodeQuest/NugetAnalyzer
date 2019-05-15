@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
-    [TestFixture]
+    [TestFixture(Category = "UnitTests")]
     public class SourceServiceTests
     {
         private ISourceService sourceService;
@@ -29,10 +29,10 @@ namespace NugetAnalyzer.BLL.Test.Services
             unitOfWorkMock = new Mock<IUnitOfWork>();
 
             unitOfWorkMock
-                .Setup(p => p.GetRepository<Source>())
+                .Setup(unitOfWork => unitOfWork.GetRepository<Source>())
                 .Returns(sourceRepositoryMock.Object);
             sourceRepositoryMock
-                .Setup(p => p.GetAllAsync())
+                .Setup(sourceRepository => sourceRepository.GetAllAsync())
                 .ReturnsAsync(new List<Source> { source, source });
 
             sourceService = new SourceService(unitOfWorkMock.Object);
@@ -42,7 +42,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetSourceList_Should_Invoke_GetAll()
         {
             sourceService.GetSourceList();
-            sourceRepositoryMock.Verify(p => p.GetAllAsync());
+            sourceRepositoryMock.Verify(sourceRepository => sourceRepository.GetAllAsync());
         }
     }
 }

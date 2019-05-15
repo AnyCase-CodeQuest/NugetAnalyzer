@@ -9,6 +9,7 @@
     <link href="~/stylesheets/bootstrap.min.css" rel="stylesheet" />
 
     <link href="~/stylesheets/Shared/SignIn.min.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
 </head>
 <body>
     <div class="container mt-5">
@@ -28,9 +29,10 @@
             </div>
         </footer>
     </div>
-    
+
     <script src="~/scripts/jquery-3.4.0.min.js"></script>
     <script src="~/scripts/popper.min.js"></script>
     <script src="~/scripts/bootstrap.min.js"></script>
+    @RenderSection("Scritps", false)
 </body>
 </html>

@@ -31,7 +31,7 @@ namespace NugetAnalyzer.Web.Controllers
         {
             var sourceEnum = await sourceService.GetSourceList();
 
-            var sourceId = sourceEnum.First(p => p.Name == OAuthSourceNames.GitHubSourceName).Id;
+            var sourceId = sourceEnum.First(sourceViewModel => sourceViewModel.Name == OAuthSourceNames.GitHubSourceName).Id;
 
             var accessToken = await HttpContext.GetTokenAsync(AccessTokenName);
 

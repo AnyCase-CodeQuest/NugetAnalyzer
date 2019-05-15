@@ -29,7 +29,7 @@ namespace NugetAnalyzer.Web.Controllers
         public async Task<IActionResult> GitHubLogin(UserRegisterModel user)
         {
             var sourceList = await sourceService.GetSourceList();
-            var sourceId = sourceList.First(p => p.Name == OAuthSourceNames.GitHubSourceName).Id;
+            var sourceId = sourceList.First(sourceViewModel => sourceViewModel.Name == OAuthSourceNames.GitHubSourceName).Id;
             var gitHubId = user.ExternalId;
 
             var profile = await profileService.GetProfileBySourceIdAsync(sourceId, gitHubId);
@@ -58,7 +58,7 @@ namespace NugetAnalyzer.Web.Controllers
             int.TryParse(stringExternalId, out var externalId);
             //TODO: REFACTOR
             var sourceList = await sourceService.GetSourceList();
-            var sourceId = sourceList.First(p => p.Name == sourceName).Id;
+            var sourceId = sourceList.First(sourceViewModel => sourceViewModel.Name == sourceName).Id;
             var profile = await profileService.GetProfileBySourceIdAsync(sourceId, externalId);
             var userId = profile.UserId;
             var user = await userService.GetUserByIdAsync(userId);

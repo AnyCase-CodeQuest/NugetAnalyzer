@@ -11,9 +11,9 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("Sources");
 
             builder
-                .Property(p => p.Name)
+                .Property(source => source.Name)
                 .HasMaxLength(64)
-                .IsRequired(true);
+                .IsRequired();
         }
     }
 }

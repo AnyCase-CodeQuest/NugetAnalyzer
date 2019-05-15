@@ -11,19 +11,19 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("Profiles");
 
             builder
-                .Property(p => p.SourceId)
+                .Property(profile => profile.SourceId)
                 .IsRequired();
 
             builder
-                .Property(p => p.UserId)
+                .Property(profile => profile.UserId)
                 .IsRequired();
 
             builder
-                .Property(p => p.AccessToken)
+                .Property(profile => profile.AccessToken)
                 .IsRequired();
 
             builder
-                .Property(p => p.Url)
+                .Property(profile => profile.Url)
                 .IsRequired();
         }
     }

@@ -33,10 +33,10 @@ namespace NugetAnalyzer.BLL.Test.Services
             unitOfWorkMock = new Mock<IUnitOfWork>();
 
             unitOfWorkMock
-                .Setup(p => p.GetRepository<User>())
+                .Setup(unitOfWork => unitOfWork.GetRepository<User>())
                 .Returns(userRepositoryMock.Object);
             userRepositoryMock
-                .Setup(p => p.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
+                .Setup(userRepository => userRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
                 .ReturnsAsync(userMock);
 
             userService = new UserService(unitOfWorkMock.Object);
@@ -46,8 +46,8 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void CreateUserAsync_Should_Invoke_Add_Save()
         {
             userService.CreateUserAsync(new UserRegisterModel());
-            userRepositoryMock.Verify(p => p.Add(It.IsAny<User>()));
-            unitOfWorkMock.Verify(p => p.SaveChangesAsync());
+            userRepositoryMock.Verify(userRepository => userRepository.Add(It.IsAny<User>()));
+            unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync());
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             var userId = 4;
             userService.GetUserByIdAsync(userId);
-            userRepositoryMock.Verify(p => p.GetByIdAsync(userId));
+            userRepositoryMock.Verify(userRepository => userRepository.GetByIdAsync(userId));
         }
     }
 }
