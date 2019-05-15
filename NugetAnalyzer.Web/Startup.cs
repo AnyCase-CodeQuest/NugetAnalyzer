@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NugetAnalyzer.Common.Services;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common;
-using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
@@ -64,6 +65,10 @@ namespace NugetAnalyzer.Web
             services.AddScoped<INugetService, NugetService>();
             services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<IPackageService, PackageService>();
+            services.AddSingleton<IDirectoryService, DirectoryService>();
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
+            services.AddScoped<IRepositoryServiceSanek, RepositoryServiceSanek>();
 
             services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IVersionRepository>());
 
