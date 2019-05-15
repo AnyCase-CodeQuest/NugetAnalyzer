@@ -12,7 +12,7 @@ namespace NugetAnalyzer.Dtos.Converters
                 : new ProfileViewModel
                 {
                     Id = profile.Id,
-                    IdOnSource = profile.IdOnSource,
+                    ExternalId = profile.ExternalId,
                     SourceId = profile.SourceId,
                     AccessToken = profile.AccessToken,
                     Url = profile.Url,

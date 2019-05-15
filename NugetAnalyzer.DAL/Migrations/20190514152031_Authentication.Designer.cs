@@ -10,7 +10,7 @@ using NugetAnalyzer.DAL.Context;
 namespace NugetAnalyzer.DAL.Migrations
 {
     [DbContext(typeof(NugetAnalyzerDbContext))]
-    [Migration("20190513101942_Authentication")]
+    [Migration("20190514152031_Authentication")]
     partial class Authentication
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,7 +72,7 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.Property<string>("AccessToken")
                         .IsRequired();
 
-                    b.Property<int>("IdOnSource");
+                    b.Property<int>("ExternalId");
 
                     b.Property<int>("SourceId");
 

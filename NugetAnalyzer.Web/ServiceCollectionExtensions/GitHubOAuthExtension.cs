@@ -1,23 +1,18 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
+using NugetAnalyzer.Web.Models;
 using NugetAnalyzer.Web.Options;
 
 namespace NugetAnalyzer.Web.ServiceCollectionExtensions
 {
     public static class GitHubOAuthExtension
     {
-        private const string UserNameClaimType = "urn:github:login";
-        private const string GithubUrlClaimType = "urn:github:url";
-        private const string AvatarUrlClaimType = "urn:github:avatar";
-        private const string GithubIdClaimType = ClaimTypes.NameIdentifier;
-
         public static void AddGitHubOAuth(this IServiceCollection services, IConfigurationSection endPointsSection, IConfigurationSection secretsSection)
         {
             services.Configure<GitHubSecretsOptions>(endPointsSection);
@@ -30,10 +25,10 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "GitHub";
+                options.DefaultChallengeScheme = OAuthSourceNames.GitHubSourceName;
             })
            .AddCookie()
-           .AddOAuth("GitHub", options =>
+           .AddOAuth(OAuthSourceNames.GitHubSourceName, options =>
            {
                options.ClientId = secrets.ClientId;
                options.ClientSecret = secrets.ClientSecret;
@@ -43,12 +38,13 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
                options.TokenEndpoint = endPoints.TokenEndpoint;
                options.UserInformationEndpoint = endPoints.UserInformationEndpoint;
 
-               options.ClaimActions.MapJsonKey(GithubIdClaimType, "id");
-               options.ClaimActions.MapJsonKey(UserNameClaimType, "login");
-               options.ClaimActions.MapJsonKey(GithubUrlClaimType, "html_url");
-               options.ClaimActions.MapJsonKey(AvatarUrlClaimType, "avatar_url");
+               options.ClaimActions.MapJsonKey(NugetAnalyzerClaimTypes.ExternalIdClaimType, GitHubUserClaimTypes.Id);
+               options.ClaimActions.MapJsonKey(NugetAnalyzerClaimTypes.UserNameClaimType, GitHubUserClaimTypes.UserName);
+               options.ClaimActions.MapJsonKey(NugetAnalyzerClaimTypes.GithubUrlClaimType, GitHubUserClaimTypes.Url);
+               options.ClaimActions.MapJsonKey(NugetAnalyzerClaimTypes.AvatarUrlClaimType, GitHubUserClaimTypes.AvatarUrl);
+               options.ClaimActions.MapJsonKey(NugetAnalyzerClaimTypes.SourceNameClaimType, NugetAnalyzerClaimTypes.SourceNameClaimType);
 
-               options.Scope.Add("repo");
+               options.Scope.Add(GitHubScopes.Repo);
 
                options.SaveTokens = true;
 
@@ -64,6 +60,7 @@ namespace NugetAnalyzer.Web.ServiceCollectionExtensions
                        response.EnsureSuccessStatusCode();
                        var jObjectResponse = await response.Content.ReadAsStringAsync();
                        var user = JObject.Parse(jObjectResponse);
+                       user.Add(NugetAnalyzerClaimTypes.SourceNameClaimType, OAuthSourceNames.GitHubSourceName);
                        context.RunClaimActions(user);
                    }
                };

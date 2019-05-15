@@ -5,7 +5,7 @@ namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IProfileService
     {
-        Task<ProfileViewModel> GetProfileBySourceIdAsync(int sourceId, int idOnSource);
+        Task<ProfileViewModel> GetProfileBySourceIdAsync(int sourceId, int externalId);
 
         Task UpdateProfileAsync(ProfileViewModel profile);
     }

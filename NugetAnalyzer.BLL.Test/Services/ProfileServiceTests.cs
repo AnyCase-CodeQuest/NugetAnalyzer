@@ -24,7 +24,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             {
                 AccessToken = "AccessToken",
                 Id = 1,
-                IdOnSource = 1,
+                ExternalId = 1,
                 SourceId = 1,
                 Url = "Url",
                 UserId = 1
@@ -47,13 +47,13 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetProfileBySourceIdAsync_Should_Invoke_GetSingleOrDefaultAsync_With_Proper_Expression()
         {
             var sourceId = 3;
-            var idOnSource = 3;
+            var externalId = 3;
             var argProfile = new Profile
             {
                 SourceId = 3,
-                IdOnSource = 3
+                ExternalId = 3
             };
-            profileService.GetProfileBySourceIdAsync(sourceId, idOnSource);
+            profileService.GetProfileBySourceIdAsync(sourceId, externalId);
 
             profileRepository
                 .Verify(p =>

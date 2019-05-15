@@ -50,7 +50,7 @@ namespace NugetAnalyzer.DAL.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Url = table.Column<string>(nullable: false),
                     AccessToken = table.Column<string>(nullable: false),
-                    IdOnSource = table.Column<int>(nullable: false),
+                    ExternalId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     SourceId = table.Column<int>(nullable: false)
                 },

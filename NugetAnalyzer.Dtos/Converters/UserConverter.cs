@@ -52,7 +52,7 @@ namespace NugetAnalyzer.Dtos.Converters
             var profile = new Profile
             {
                 AccessToken = user.AccessToken,
-                IdOnSource = user.IdOnSource,
+                ExternalId = user.ExternalId,
                 SourceId = user.SourceId,
                 Url = user.Url,
                 User = newUser

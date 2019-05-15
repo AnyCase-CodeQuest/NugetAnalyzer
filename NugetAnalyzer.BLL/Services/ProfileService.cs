@@ -19,9 +19,9 @@ namespace NugetAnalyzer.BLL.Services
             profilesRepository = unitOfWork.GetRepository<Profile>();
         }
 
-        public async Task<ProfileViewModel> GetProfileBySourceIdAsync(int sourceId, int idOnSource)
+        public async Task<ProfileViewModel> GetProfileBySourceIdAsync(int sourceId, int externalId)
         {
-            var profile = await profilesRepository.GetSingleOrDefaultAsync(p => p.SourceId == sourceId && p.IdOnSource == idOnSource);
+            var profile = await profilesRepository.GetSingleOrDefaultAsync(p => p.SourceId == sourceId && p.ExternalId == externalId);
             return ProfileConverter.ConvertProfileToViewModel(profile);
         }
 

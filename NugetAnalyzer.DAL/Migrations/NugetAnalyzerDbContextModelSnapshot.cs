@@ -70,7 +70,7 @@ namespace NugetAnalyzer.DAL.Migrations
                     b.Property<string>("AccessToken")
                         .IsRequired();
 
-                    b.Property<int>("IdOnSource");
+                    b.Property<int>("ExternalId");
 
                     b.Property<int>("SourceId");
 

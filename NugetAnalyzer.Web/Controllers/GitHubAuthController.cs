@@ -6,18 +6,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Web.Models;
 
 namespace NugetAnalyzer.Web.Controllers
 {
     public class GitHubAuthController : Controller
     {
-        private const string UserNameClaimType = "urn:github:login";
-        private const string GithubUrlClaimType = "urn:github:url";
-        private const string AvatarUrlClaimType = "urn:github:avatar";
-        private const string GithubIdClaimType = ClaimTypes.NameIdentifier;
         private const string AccessTokenName = "access_token";
-        private const string gitHubSourceName = "GitHub";
-
         private readonly ISourceService sourceService;
 
         public GitHubAuthController(ISourceService sourceService)
@@ -28,7 +23,7 @@ namespace NugetAnalyzer.Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/GitHubAuth/Authenticate" }, gitHubSourceName);
+            return Challenge(new AuthenticationProperties { RedirectUri = "/GitHubAuth/Authenticate" }, OAuthSourceNames.GitHubSourceName);
         }
 
         [HttpGet]
@@ -36,16 +31,16 @@ namespace NugetAnalyzer.Web.Controllers
         {
             var sourceEnum = await sourceService.GetSourceList();
 
-            var sourceId = sourceEnum.First(p => p.Name == gitHubSourceName).Id;
+            var sourceId = sourceEnum.First(p => p.Name == OAuthSourceNames.GitHubSourceName).Id;
 
             var accessToken = await HttpContext.GetTokenAsync(AccessTokenName);
 
             var user = new UserRegisterModel
             {
-                UserName = User.FindFirstValue(UserNameClaimType),
-                AvatarUrl = User.FindFirstValue(AvatarUrlClaimType),
-                Url = User.FindFirstValue(GithubUrlClaimType),
-                IdOnSource = int.Parse(User.FindFirstValue(GithubIdClaimType)),
+                UserName = User.FindFirstValue(NugetAnalyzerClaimTypes.UserNameClaimType),
+                AvatarUrl = User.FindFirstValue(NugetAnalyzerClaimTypes.AvatarUrlClaimType),
+                Url = User.FindFirstValue(NugetAnalyzerClaimTypes.GithubUrlClaimType),
+                ExternalId = int.Parse(User.FindFirstValue(NugetAnalyzerClaimTypes.ExternalIdClaimType)),
                 AccessToken = accessToken,
                 SourceId = sourceId
             };

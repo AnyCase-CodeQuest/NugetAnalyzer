@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190513101642_Authentication.cs" />
     <Compile Remove="Migrations\20190513101642_Authentication.Designer.cs" />
+    <Compile Remove="Migrations\20190514151947_Authentication.cs" />
+    <Compile Remove="Migrations\20190514151947_Authentication.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
