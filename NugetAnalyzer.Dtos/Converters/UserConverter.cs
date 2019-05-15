@@ -1,6 +1,5 @@
 ﻿using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Domain;
-using System;
 using System.Collections.Generic;
 
 namespace NugetAnalyzer.Dtos.Converters
