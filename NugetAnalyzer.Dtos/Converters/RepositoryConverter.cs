@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Repositories;
 using NugetAnalyzer.Domain;
 
-namespace NugetAnalyzer.BLL.Converters
+namespace NugetAnalyzer.Dtos.Converters
 {
     public static class RepositoryConverter
     {

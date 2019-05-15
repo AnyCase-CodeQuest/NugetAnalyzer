@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Moq;
-using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Configurations;
-using NugetAnalyzer.BLL.Models.Enums;
+using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Configurations;
+using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Domain;

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using NugetAnalyzer.BLL.Converters;
+using NugetAnalyzer.Dtos.Converters;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.Dtos.Models.Repositories;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 

@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.BLL.Models.Projects
+﻿namespace NugetAnalyzer.Dtos.Models.Projects
 {
     public class ProjectWithVersionReport : ModelWithReport
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NugetAnalyzer.BLL.Models.Projects;
+using NugetAnalyzer.Dtos.Models.Projects;
 
-namespace NugetAnalyzer.BLL.Models.Solutions
+namespace NugetAnalyzer.Dtos.Models.Solutions
 {
     public class SolutionWithVersionReport : ModelWithReport
     {

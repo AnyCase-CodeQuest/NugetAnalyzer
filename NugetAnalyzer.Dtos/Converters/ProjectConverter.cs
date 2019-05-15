@@ -1,8 +1,8 @@
-﻿using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Projects;
+﻿using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Projects;
 using NugetAnalyzer.Domain;
 
-namespace NugetAnalyzer.BLL.Converters
+namespace NugetAnalyzer.Dtos.Converters
 {
     public static class ProjectConverter
     {

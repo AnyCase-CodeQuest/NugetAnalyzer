@@ -1,12 +1,12 @@
-﻿using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Enums;
+﻿using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using NugetAnalyzer.BLL.Models.Configurations;
+using NugetAnalyzer.Dtos.Models.Configurations;
 using NugetAnalyzer.Common.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
