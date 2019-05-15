@@ -4,7 +4,9 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
-    /// <summary>Used to work with Nuget API</summary>
+    /// <summary>
+    /// Used to work with Nuget API
+    /// </summary>
     public interface INugetApiService
     {
         /// <summary>

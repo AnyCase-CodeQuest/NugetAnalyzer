@@ -27,7 +27,7 @@ namespace NugetAnalyzer.BLL.Services
 
             var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
-            await versionService.UpdateAllLatestVersionsAsync(versions.Where(pv => pv != null));
+            await versionService.UpdateAllLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
         }
 
         public async Task RefreshLatestVersionOfNewlyAddedPackagesAsync()
@@ -36,7 +36,7 @@ namespace NugetAnalyzer.BLL.Services
 
             var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
-            await versionService.UpdateLatestVersionsAsync(versions.Where(pv => pv != null));
+            await versionService.UpdateLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
         }
 
 

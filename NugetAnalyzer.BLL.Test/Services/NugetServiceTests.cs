@@ -99,23 +99,23 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void SetUp()
         {
             packageServiceMock
-                .Setup(p => p.GetAllAsync())
+                .Setup(packageService => packageService.GetAllAsync())
                 .ReturnsAsync(packages);
 
             packageServiceMock
-                .Setup(p => p.GetNewlyAddedPackagesAsync())
+                .Setup(packageService => packageService.GetNewlyAddedPackagesAsync())
                 .ReturnsAsync(packages);
 
             nugetApiServiceMock
-                .Setup(n => n.GetLatestPackageVersionAsync(nUnitPackage.Name))
+                .Setup(nugetApiService => nugetApiService.GetLatestPackageVersionAsync(nUnitPackage.Name))
                 .ReturnsAsync(nUnitVersion);
 
             nugetApiServiceMock
-                .Setup(n => n.GetLatestPackageVersionAsync(moqPackage.Name))
+                .Setup(nugetApiService => nugetApiService.GetLatestPackageVersionAsync(moqPackage.Name))
                 .ReturnsAsync(moqVersion);
 
             nugetApiServiceMock
-                .Setup(n => n.GetPackagePublishedDateByVersionAsync(
+                .Setup(nugetApiService => nugetApiService.GetPackagePublishedDateByVersionAsync(
                     nUnitPackage.Name,
                     nUnitVersion
                         .GetVersion()
@@ -123,7 +123,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .ReturnsAsync(nUnitVersion.PublishedDate);
 
             nugetApiServiceMock
-                .Setup(n => n.GetPackagePublishedDateByVersionAsync(
+                .Setup(nugetApiService => nugetApiService.GetPackagePublishedDateByVersionAsync(
                     moqPackage.Name,
                     moqVersion
                         .GetVersion()
@@ -136,12 +136,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             await nugetService.RefreshLatestVersionOfAllPackagesAsync();
 
-            packageServiceMock.Verify(p => p.GetAllAsync());
-            nugetApiServiceMock.Verify(n => n.GetLatestPackageVersionAsync(nUnitPackage.Name));
-            nugetApiServiceMock.Verify(n => n.GetLatestPackageVersionAsync(moqPackage.Name));
-            nugetApiServiceMock.Verify(n => n.GetPackagePublishedDateByVersionAsync(nUnitPackage.Name, nUnitVersion.GetVersion().ToString()));
-            nugetApiServiceMock.Verify(n => n.GetPackagePublishedDateByVersionAsync(moqPackage.Name, moqVersion.GetVersion().ToString()));
-            versionServiceMock.Verify(v => v.UpdateAllLatestVersionsAsync(packageVersions));
+            packageServiceMock.Verify(packageService => packageService.GetAllAsync());
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetLatestPackageVersionAsync(nUnitPackage.Name));
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetLatestPackageVersionAsync(moqPackage.Name));
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetPackagePublishedDateByVersionAsync(nUnitPackage.Name, nUnitVersion.GetVersion().ToString()));
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetPackagePublishedDateByVersionAsync(moqPackage.Name, moqVersion.GetVersion().ToString()));
+            versionServiceMock.Verify(versionService => versionService.UpdateAllLatestVersionsAsync(packageVersions));
         }
 
         [Test]
@@ -149,19 +149,19 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             await nugetService.RefreshLatestVersionOfNewlyAddedPackagesAsync();
 
-            packageServiceMock.Verify(p => p.GetNewlyAddedPackagesAsync());
-            nugetApiServiceMock.Verify(n => n.GetLatestPackageVersionAsync(nUnitPackage.Name));
-            nugetApiServiceMock.Verify(n => n.GetLatestPackageVersionAsync(moqPackage.Name));
-            nugetApiServiceMock.Verify(n => n.GetPackagePublishedDateByVersionAsync(nUnitPackage.Name, nUnitVersion.GetVersion().ToString()));
-            nugetApiServiceMock.Verify(n => n.GetPackagePublishedDateByVersionAsync(moqPackage.Name, moqVersion.GetVersion().ToString()));
-            versionServiceMock.Verify(v => v.UpdateLatestVersionsAsync(packageVersions));
+            packageServiceMock.Verify(packageService => packageService.GetNewlyAddedPackagesAsync());
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetLatestPackageVersionAsync(nUnitPackage.Name));
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetLatestPackageVersionAsync(moqPackage.Name));
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetPackagePublishedDateByVersionAsync(nUnitPackage.Name, nUnitVersion.GetVersion().ToString()));
+            nugetApiServiceMock.Verify(nugetApiService => nugetApiService.GetPackagePublishedDateByVersionAsync(moqPackage.Name, moqVersion.GetVersion().ToString()));
+            versionServiceMock.Verify(versionService => versionService.UpdateLatestVersionsAsync(packageVersions));
         }
 
         [Test]
         public async Task RefreshLatestVersionOfAllPackagesAsync_Should_Exclude_PackageVersions_When_Request_To_NugetApi_Throw_Exception()
         {
             nugetApiServiceMock
-                .Setup(n => n.GetLatestPackageVersionAsync(moqPackage.Name))
+                .Setup(nugetApiService => nugetApiService.GetLatestPackageVersionAsync(moqPackage.Name))
                 .ThrowsAsync(new Exception("Nuget API exception."));
 
             await nugetService.RefreshLatestVersionOfAllPackagesAsync();
@@ -170,7 +170,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             {
                 nUnitVersion
             };
-            versionServiceMock.Verify(v => v.UpdateAllLatestVersionsAsync(versions));
+            versionServiceMock.Verify(versionService => versionService.UpdateAllLatestVersionsAsync(versions));
         }
     }
 }

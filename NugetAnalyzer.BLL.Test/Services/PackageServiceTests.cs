@@ -24,7 +24,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             packageRepository = new Mock<IRepository<Package>>();
 
             packageRepository
-                .Setup(p => p.GetAllAsync())
+                .Setup(packageRepository => packageRepository.GetAllAsync())
                 .ReturnsAsync(It.IsAny<IReadOnlyCollection<Package>>());
 
             uowMock
@@ -39,19 +39,19 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             await packageService.GetAllAsync();
 
-            packageRepository.Verify(p => p.GetAllAsync());
+            packageRepository.Verify(packageRepository => packageRepository.GetAllAsync());
         }
 
         [Test]
         public async Task GetNewPackagesAsync_Should_Invoke_GetAsync()
         {
             packageRepository
-                .Setup(p => p.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()))
+                .Setup(packageRepository => packageRepository.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()))
                 .ReturnsAsync(It.IsAny<IReadOnlyCollection<Package>>());
 
             await packageService.GetNewlyAddedPackagesAsync();
 
-            packageRepository.Verify(p => p.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()));
+            packageRepository.Verify(packageRepository => packageRepository.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()));
         }
     }
 }

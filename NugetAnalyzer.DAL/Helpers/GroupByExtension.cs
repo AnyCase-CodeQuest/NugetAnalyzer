@@ -12,13 +12,13 @@ namespace NugetAnalyzer.DAL.Helpers
             this IQueryable<PackageVersion> source)
         {
             return await source
-                .GroupBy(pv => pv.PackageId)
-                .Select(grp =>
-                    grp
-                        .OrderByDescending(pv => pv.Major)
-                        .ThenByDescending(pv => pv.Minor)
-                        .ThenByDescending(pv => pv.Build)
-                        .ThenByDescending(pv => pv.Revision)
+                .GroupBy(packageVersion => packageVersion.PackageId)
+                .Select(grouping =>
+                    grouping
+                        .OrderByDescending(packageVersion => packageVersion.Major)
+                        .ThenByDescending(packageVersion => packageVersion.Minor)
+                        .ThenByDescending(packageVersion => packageVersion.Build)
+                        .ThenByDescending(packageVersion => packageVersion.Revision)
                         .First())
                 .ToListAsync();
         }

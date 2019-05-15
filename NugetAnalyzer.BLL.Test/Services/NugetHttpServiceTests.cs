@@ -30,7 +30,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             var optionsMock = new Mock<IOptions<NugetSettings>>();
             optionsMock
-                .Setup(o => o.Value)
+                .Setup(options => options.Value)
                 .Returns(nugetSettings);
 
             handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -67,9 +67,9 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Verify(
                     "SendAsync",
                     Times.Exactly(1),
-                    ItExpr.Is<HttpRequestMessage>(req =>
-                            req.Method == HttpMethod.Get 
-                            && req.RequestUri == expectedUri
+                    ItExpr.Is<HttpRequestMessage>(httpRequestMessage =>
+                        httpRequestMessage.Method == HttpMethod.Get 
+                            && httpRequestMessage.RequestUri == expectedUri
                     ),
                     ItExpr.IsAny<CancellationToken>());
         }
@@ -88,9 +88,9 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Verify(
                     "SendAsync",
                     Times.Exactly(1),
-                    ItExpr.Is<HttpRequestMessage>(req =>
-                        req.Method == HttpMethod.Get
-                        && req.RequestUri == expectedUri
+                    ItExpr.Is<HttpRequestMessage>(httpRequestMessage =>
+                        httpRequestMessage.Method == HttpMethod.Get
+                        && httpRequestMessage.RequestUri == expectedUri
                     ),
                     ItExpr.IsAny<CancellationToken>());
         }

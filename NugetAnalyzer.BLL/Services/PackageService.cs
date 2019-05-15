@@ -37,7 +37,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public Task<IReadOnlyCollection<Package>> GetNewlyAddedPackagesAsync()
         {
-            return PackageRepository.GetAsync(p => p.LastUpdateTime == null);
+            return PackageRepository.GetAsync(package => package.LastUpdateTime == null);
         }
     }
 }
