@@ -38,8 +38,6 @@ namespace NugetAnalyzer.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -51,9 +49,8 @@ namespace NugetAnalyzer.Web
                 app.UseHsts();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseStaticFiles();
-            app.UseMvc();
-
             app.UseMvcWithDefaultRoute();
         }
     }
