@@ -6,6 +6,6 @@ namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface ISourceService
     {
-        Task<ICollection<SourceViewModel>> GetSourceList();
+        Task<int> GetSourceIdByName(string sourceName);
     }
 }

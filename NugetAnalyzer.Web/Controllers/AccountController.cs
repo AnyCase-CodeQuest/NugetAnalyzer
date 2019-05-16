@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Web.HttpAccessors;
 using NugetAnalyzer.Web.Models;
 
 namespace NugetAnalyzer.Web.Controllers
@@ -17,27 +16,23 @@ namespace NugetAnalyzer.Web.Controllers
         private readonly IUserService userService;
         private readonly IProfileService profileService;
         private readonly ISourceService sourceService;
+        private readonly HttpContextInfoProvider httpContextInfoProvider;
 
-        public AccountController(IUserService userService, IProfileService profileService, ISourceService sourceService)
+        public AccountController(IUserService userService, IProfileService profileService, ISourceService sourceService, HttpContextInfoProvider httpContextInfoProvider)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
             this.sourceService = sourceService ?? throw new ArgumentNullException(nameof(sourceService));
+            this.httpContextInfoProvider = httpContextInfoProvider ?? throw new ArgumentNullException(nameof(httpContextInfoProvider));
         }
 
         [HttpGet]
         public async Task<IActionResult> GitHubLogin(UserRegisterModel user)
         {
-            var sourceList = await sourceService.GetSourceList();
-            var sourceId = sourceList.First(sourceViewModel => sourceViewModel.Name == OAuthSourceNames.GitHubSourceName).Id;
-            var gitHubId = user.ExternalId;
-
-            var profile = await profileService.GetProfileBySourceIdAsync(sourceId, gitHubId);
-
+            var sourceId = await sourceService.GetSourceIdByName(OAuthSourceNames.GitHubSourceName);
+            var profile = await profileService.GetProfileForUserAsync(user, sourceId);
             if (profile != null)
             {
-                profile.AccessToken = user.AccessToken;
-                await profileService.UpdateProfileAsync(profile);
                 return RedirectToAction("Profile");
             }
             return View("UserCreationForm", user);
@@ -53,15 +48,15 @@ namespace NugetAnalyzer.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var sourceName = User.FindFirstValue(NugetAnalyzerClaimTypes.SourceNameClaimType);
-            var stringExternalId = User.FindFirstValue(NugetAnalyzerClaimTypes.ExternalIdClaimType);
-            int.TryParse(stringExternalId, out var externalId);
-            //TODO: REFACTOR
-            var sourceList = await sourceService.GetSourceList();
-            var sourceId = sourceList.First(sourceViewModel => sourceViewModel.Name == sourceName).Id;
-            var profile = await profileService.GetProfileBySourceIdAsync(sourceId, externalId);
-            var userId = profile.UserId;
+            var sourceName = httpContextInfoProvider.GetSourceName();
+            var externalId = httpContextInfoProvider.GetExternalId();
+
+            var sourceId = await sourceService.GetSourceIdByName(sourceName);
+
+            var userId = await profileService.GetUserIdByExternalIdAsync(sourceId, externalId);
+
             var user = await userService.GetUserByIdAsync(userId);
+
             //countermeasures if user closed our site on profile registration form
             if (user == null)
             {

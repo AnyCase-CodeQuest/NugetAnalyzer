@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Web.HttpAccessors;
 using NugetAnalyzer.Web.Models;
 
 namespace NugetAnalyzer.Web.Controllers
 {
     public class GitHubAuthController : Controller
     {
-        private const string AccessTokenName = "access_token";
         private readonly ISourceService sourceService;
+        private readonly HttpContextInfoProvider httpContextInfoProvider;
 
-        public GitHubAuthController(ISourceService sourceService)
+        public GitHubAuthController(ISourceService sourceService, HttpContextInfoProvider httpContextInfoProvider)
         {
             this.sourceService = sourceService ?? throw new ArgumentNullException(nameof(sourceService));
+            this.httpContextInfoProvider = httpContextInfoProvider ?? throw new ArgumentNullException(nameof(httpContextInfoProvider));
         }
 
         [HttpGet]
@@ -29,18 +29,16 @@ namespace NugetAnalyzer.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Authenticate()
         {
-            var sourceEnum = await sourceService.GetSourceList();
+            var sourceId = await sourceService.GetSourceIdByName(OAuthSourceNames.GitHubSourceName);
 
-            var sourceId = sourceEnum.First(sourceViewModel => sourceViewModel.Name == OAuthSourceNames.GitHubSourceName).Id;
-
-            var accessToken = await HttpContext.GetTokenAsync(AccessTokenName);
+            var accessToken = await httpContextInfoProvider.GetAccessTokenAsync();
 
             var user = new UserRegisterModel
             {
-                UserName = User.FindFirstValue(NugetAnalyzerClaimTypes.UserNameClaimType),
-                AvatarUrl = User.FindFirstValue(NugetAnalyzerClaimTypes.AvatarUrlClaimType),
-                Url = User.FindFirstValue(NugetAnalyzerClaimTypes.GithubUrlClaimType),
-                ExternalId = int.Parse(User.FindFirstValue(NugetAnalyzerClaimTypes.ExternalIdClaimType)),
+                UserName = httpContextInfoProvider.GetUsername(),
+                AvatarUrl = httpContextInfoProvider.GetAvatarUrl(),
+                Url = httpContextInfoProvider.GetExternalUrl(),
+                ExternalId = httpContextInfoProvider.GetExternalId(),
                 AccessToken = accessToken,
                 SourceId = sourceId
             };

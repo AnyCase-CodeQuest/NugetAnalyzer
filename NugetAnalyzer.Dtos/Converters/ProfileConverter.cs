@@ -3,9 +3,9 @@ using NugetAnalyzer.Dtos.Models;
 
 namespace NugetAnalyzer.Dtos.Converters
 {
-    public static class ProfileConverter
+    public class ProfileConverter
     {
-        public static ProfileViewModel ConvertProfileToViewModel(Profile profile)
+        public ProfileViewModel ConvertProfileToViewModel(Profile profile)
         {
             return profile == null
                 ? null

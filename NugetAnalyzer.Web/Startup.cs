@@ -10,6 +10,7 @@ using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
 using NugetAnalyzer.Web.ApplicationBuilderExtensions;
+using NugetAnalyzer.Web.HttpAccessors;
 using NugetAnalyzer.Web.Middleware;
 using NugetAnalyzer.Web.ServiceCollectionExtensions;
 
@@ -35,7 +36,10 @@ namespace NugetAnalyzer.Web
             {
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
-            
+            services.AddConverters();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextInfoProvider>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserService, UserService>();

@@ -6,7 +6,7 @@ namespace NugetAnalyzer.Dtos.Converters
 {
     public class UserConverter
     {
-        public static User ConvertProfileToUser(UserViewModel profile)
+        public User ConvertProfileToUser(UserViewModel profile)
         {
             return profile == null
                 ? null
@@ -19,7 +19,7 @@ namespace NugetAnalyzer.Dtos.Converters
             };
         }
 
-        public static UserViewModel ConvertUserToProfile(User user)
+        public UserViewModel ConvertUserToProfile(User user)
         {
             return user == null
                 ? null
@@ -32,7 +32,7 @@ namespace NugetAnalyzer.Dtos.Converters
                 };
         }
 
-        public static User ConvertRegisterModelToUser(UserRegisterModel user)
+        public User ConvertRegisterModelToUser(UserRegisterModel user)
         {
             //TODO: REFACTOR
             if( user == null)

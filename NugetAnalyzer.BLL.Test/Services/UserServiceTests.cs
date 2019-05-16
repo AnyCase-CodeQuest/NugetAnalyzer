@@ -7,6 +7,7 @@ using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Converters;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
@@ -17,10 +18,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IUnitOfWork> unitOfWorkMock;
         private Mock<IRepository<User>> userRepositoryMock;
         private User userMock;
+        private UserConverter userConverter;
 
         [OneTimeSetUp]
         public void Init()
         {
+            userConverter = new UserConverter();
             userMock = new User
             {
                 AvatarUrl = @"https://avatars1.githubusercontent.com/u/46676069?v=4",
@@ -39,7 +42,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(userRepository => userRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
                 .ReturnsAsync(userMock);
 
-            userService = new UserService(unitOfWorkMock.Object);
+            userService = new UserService(unitOfWorkMock.Object, userConverter);
         }
 
         [Test]

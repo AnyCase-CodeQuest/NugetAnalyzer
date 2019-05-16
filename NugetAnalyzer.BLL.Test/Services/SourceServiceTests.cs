@@ -39,9 +39,9 @@ namespace NugetAnalyzer.BLL.Test.Services
         }
 
         [Test]
-        public void GetSourceList_Should_Invoke_GetAll()
+        public void GetSourceIdByName_Should_Invoke_GetAllAsync()
         {
-            sourceService.GetSourceList();
+            sourceService.GetSourceIdByName("GitHub");
             sourceRepositoryMock.Verify(sourceRepository => sourceRepository.GetAllAsync());
         }
     }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
-using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.UnitOfWork
 {

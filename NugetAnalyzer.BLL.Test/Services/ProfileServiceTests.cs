@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Moq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Converters;
+using NugetAnalyzer.Dtos.Models;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
@@ -14,13 +17,16 @@ namespace NugetAnalyzer.BLL.Test.Services
     {
         private IProfileService profileService;
         private Mock<IUnitOfWork> unitOfWorkMock;
-        private Mock<IRepository<Profile>> profileRepository;
-        private Profile profile;
+        private Mock<IRepository<Profile>> profileRepositoryMock;
+        private Profile profileMock;
+        private UserRegisterModel userMock;
+        private ProfileConverter profileConverter;
 
         [OneTimeSetUp]
         public void Init()
         {
-            profile = new Profile
+            profileConverter = new ProfileConverter();
+            profileMock = new Profile
             {
                 AccessToken = "AccessToken",
                 Id = 1,
@@ -29,18 +35,26 @@ namespace NugetAnalyzer.BLL.Test.Services
                 Url = "Url",
                 UserId = 1
             };
-            profileRepository = new Mock<IRepository<Profile>>();
+            userMock = new UserRegisterModel
+            {
+                ExternalId = 1,
+                AccessToken = "AccessToken"
+            };
+            profileRepositoryMock = new Mock<IRepository<Profile>>();
             unitOfWorkMock = new Mock<IUnitOfWork>();
 
-            profileRepository
-                .Setup(p => p.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Profile, bool>>>()))
-                .ReturnsAsync(profile);
+            profileRepositoryMock
+                .Setup(profileRepository => profileRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Profile, bool>>>()))
+                .ReturnsAsync(profileMock);
+
+            profileRepositoryMock
+                .Setup(profileRepository => profileRepository.GetByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(profileMock);
 
             unitOfWorkMock
-                .Setup(p => p.GetRepository<Profile>())
-                .Returns(profileRepository.Object);
-
-            profileService = new ProfileService(unitOfWorkMock.Object);
+                .Setup(profileRepository => profileRepository.GetRepository<Profile>())
+                .Returns(profileRepositoryMock.Object);
+            profileService = new ProfileService(unitOfWorkMock.Object, profileConverter);
         }
 
         [Test]
@@ -55,9 +69,25 @@ namespace NugetAnalyzer.BLL.Test.Services
             };
             profileService.GetProfileBySourceIdAsync(sourceId, externalId);
 
-            profileRepository
-                .Verify(p =>
-                p.GetSingleOrDefaultAsync(It.Is<Expression<Func<Profile, bool>>>(function => function.Compile().Invoke(argProfile))));
+            profileRepositoryMock
+                .Verify(profileRepository =>
+                profileRepository.GetSingleOrDefaultAsync(It.Is<Expression<Func<Profile, bool>>>(function => function.Compile().Invoke(argProfile))));
+        }
+
+        [Test]
+        public async Task GetProfileForUserAsync_Should_Invoke_UpdateProfileAsync_When_ProfileNotNullAsync()
+        {
+            await profileService.GetProfileForUserAsync(userMock, 1);
+            profileRepositoryMock.Verify(profileRepository => profileRepository.GetByIdAsync(It.IsAny<int>()));
+            profileRepositoryMock.Verify(profileRepository => profileRepository.Update(profileMock));
+            unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync());
+        }
+
+        [Test]
+        public async Task GetUserIdByExternalIdAsync_Should_Invoke_GetSingleOrDefaultAsync()
+        {
+            await profileService.GetUserIdByExternalIdAsync(1, 1);
+            profileRepositoryMock.Verify(profileRepository => profileRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Profile, bool>>>()));
         }
     }
 }
