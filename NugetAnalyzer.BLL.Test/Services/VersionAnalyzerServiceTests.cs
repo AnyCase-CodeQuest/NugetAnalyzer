@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Moq;
-using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Configurations;
-using NugetAnalyzer.BLL.Models.Enums;
+using NugetAnalyzer.BLL.IOptions;
+using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Domain;
@@ -16,7 +16,7 @@ namespace NugetAnalyzer.BLL.Test.Services
     public class VersionAnalyzerServiceTests
     {
         private VersionAnalyzerService versionService;
-        private Mock<IDateTimeProvider> dateTimeProvider;
+        private Mock<IDateTimeProvider> dateTimeProviderMock;
 
         private readonly IOptions<PackageVersionConfiguration> packageVersionConfiguration = Options.Create(new PackageVersionConfiguration
         {
@@ -91,15 +91,15 @@ namespace NugetAnalyzer.BLL.Test.Services
         [OneTimeSetUp]
         public void Init()
         {
-            dateTimeProvider = new Mock<IDateTimeProvider>();
-            dateTimeProvider.SetupGet(p => p.CurrentUtcDateTime).Returns(DateTime.UtcNow);
+            dateTimeProviderMock = new Mock<IDateTimeProvider>();
+            dateTimeProviderMock.SetupGet(dateTimeProvider => dateTimeProvider.CurrentUtcDateTime).Returns(DateTime.UtcNow);
 
-            versionService = new VersionAnalyzerService(packageVersionConfiguration, dateTimeProvider.Object);
+            versionService = new VersionAnalyzerService(packageVersionConfiguration, dateTimeProviderMock.Object);
         }
 
-        [Test] public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumetIsNull()
+        [Test] public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(null, dateTimeProvider.Object));
+            Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(null, dateTimeProviderMock.Object));
             Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(packageVersionConfiguration,null));
         }
 

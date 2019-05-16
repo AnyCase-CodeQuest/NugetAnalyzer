@@ -5,15 +5,17 @@ VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.Web", "NugetAnalyzer.Web\NugetAnalyzer.Web.csproj", "{BDF4BFA4-035C-4412-998D-663995435C0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetAnalyzer.BLL", "NugetAnalyzer.BLL\NugetAnalyzer.BLL.csproj", "{B0F35D5E-527F-49C7-8532-1DB3126F0FA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.BLL", "NugetAnalyzer.BLL\NugetAnalyzer.BLL.csproj", "{B0F35D5E-527F-49C7-8532-1DB3126F0FA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetAnalyzer.DAL", "NugetAnalyzer.DAL\NugetAnalyzer.DAL.csproj", "{CC40F158-687C-4AE7-83DC-938947914863}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.DAL", "NugetAnalyzer.DAL\NugetAnalyzer.DAL.csproj", "{CC40F158-687C-4AE7-83DC-938947914863}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.Domain", "NugetAnalyzer.Domain\NugetAnalyzer.Domain.csproj", "{EED615DE-67B3-458E-998C-18A39786C266}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.BLL.Test", "NugetAnalyzer.BLL.Test\NugetAnalyzer.BLL.Test.csproj", "{023CB359-6CD8-4758-AE02-38116B821B02}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.Common", "NugetAnalyzer.Common\NugetAnalyzer.Common.csproj", "{A2CA0EA5-6FA8-4ACB-9FE4-3ECCA4B3B46E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetAnalyzer.Dtos", "NugetAnalyzer.Dtos\NugetAnalyzer.Dtos.csproj", "{22465B5D-EDB5-4196-8309-A404DB534914}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{A2CA0EA5-6FA8-4ACB-9FE4-3ECCA4B3B46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2CA0EA5-6FA8-4ACB-9FE4-3ECCA4B3B46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2CA0EA5-6FA8-4ACB-9FE4-3ECCA4B3B46E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22465B5D-EDB5-4196-8309-A404DB534914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22465B5D-EDB5-4196-8309-A404DB534914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22465B5D-EDB5-4196-8309-A404DB534914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22465B5D-EDB5-4196-8309-A404DB534914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

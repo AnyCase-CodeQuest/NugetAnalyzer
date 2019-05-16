@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using DeepEqual.Syntax;
 using Moq;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Enums;
-using NugetAnalyzer.BLL.Models.Projects;
-using NugetAnalyzer.BLL.Models.Repositories;
-using NugetAnalyzer.BLL.Models.Solutions;
+using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Enums;
+using NugetAnalyzer.Dtos.Models.Projects;
+using NugetAnalyzer.Dtos.Models.Repositories;
+using NugetAnalyzer.Dtos.Models.Solutions;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
@@ -20,14 +20,14 @@ namespace NugetAnalyzer.BLL.Test.Services
     [TestFixture(Category = "UnitTests")]
     public class RepositoryServiceTests
     {
-        private Mock<IVersionAnalyzerService> versionService;
-        private Mock<IRepositoryRepository> repositoryRepository;
-        private Mock<IVersionRepository> versionRepository;
-        private Mock<IUnitOfWork> uow;
+        private Mock<IVersionAnalyzerService> versionAnalyzerServiceMock;
+        private Mock<IRepositoryRepository> repositoryRepositoryMock;
+        private Mock<IVersionRepository> versionRepositoryMock;
+        private Mock<IUnitOfWork> uowMock;
 
         private RepositoryService repositoryService;
 
-        private readonly Expression<Func<Repository, bool>> expression = r => r.UserId == 1;
+        private readonly Expression<Func<Repository, bool>> expression = repository => repository.UserId == 1;
 
         private readonly PackageVersionComparisonReport report = new PackageVersionComparisonReport
         {
@@ -39,52 +39,52 @@ namespace NugetAnalyzer.BLL.Test.Services
         [OneTimeSetUp]
         public void Init()
         {
-            versionService = new Mock<IVersionAnalyzerService>();
-            repositoryRepository = new Mock<IRepositoryRepository>();
-            versionRepository = new Mock<IVersionRepository>();
-            uow = new Mock<IUnitOfWork>();
-            uow.SetupGet(uow => uow.RepositoryRepository).Returns(repositoryRepository.Object);
-            uow.SetupGet(uow => uow.VersionRepository).Returns(versionRepository.Object);
+            versionAnalyzerServiceMock = new Mock<IVersionAnalyzerService>();
+            repositoryRepositoryMock = new Mock<IRepositoryRepository>();
+            versionRepositoryMock = new Mock<IVersionRepository>();
+            uowMock = new Mock<IUnitOfWork>();
+            uowMock.SetupGet(uow => uow.RepositoryRepository).Returns(repositoryRepositoryMock.Object);
+            uowMock.SetupGet(uow => uow.VersionRepository).Returns(versionRepositoryMock.Object);
 
-            repositoryService = new RepositoryService(versionService.Object, uow.Object);
+            repositoryService = new RepositoryService(versionAnalyzerServiceMock.Object, uowMock.Object);
         }
 
         [Test]
         public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(null, uow.Object));
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionService.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new RepositoryService(null, uowMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionAnalyzerServiceMock.Object, null));
         }
 
         [Test]
         public async Task GetAnalyzedRepositoriesAsync_Check_AllMethodsUsedWithProperParameters()
         {
-            repositoryRepository
-                .Setup(r => r.GetRepositoriesWithIncludesAsync(It.IsAny<Expression<Func<Repository, bool>>>()))
+            repositoryRepositoryMock
+                .Setup(repositoryRepository => repositoryRepository.GetRepositoriesWithIncludesAsync(It.IsAny<Expression<Func<Repository, bool>>>()))
                 .ReturnsAsync(GetRepositories());
-            versionRepository
-                .Setup(r => r.GetLatestPackageVersionsAsync(It.IsAny<ICollection<int>>()))
+            versionRepositoryMock
+                .Setup(versionRepository => versionRepository.GetLatestPackageVersionsAsync(It.IsAny<ICollection<int>>()))
                 .ReturnsAsync(GetLatestPackageVersions());
 
             await repositoryService.GetAnalyzedRepositoriesAsync(expression);
 
-            repositoryRepository.Verify(r => r.GetRepositoriesWithIncludesAsync(expression), Times.Once());
-            versionRepository.Verify(r => r.GetLatestPackageVersionsAsync(It.IsAny<ICollection<int>>()), Times.Once());
+            repositoryRepositoryMock.Verify(repository => repository.GetRepositoriesWithIncludesAsync(expression), Times.Once());
+            versionRepositoryMock.Verify(repository => repository.GetLatestPackageVersionsAsync(It.IsAny<ICollection<int>>()), Times.Once());
         }
 
         [Test]
         public async Task GetAnalyzedRepositoriesAsync_Check_ReturnsValue()
         {
-            repositoryRepository
-                .Setup(r => r.GetRepositoriesWithIncludesAsync(It.IsAny<Expression<Func<Repository, bool>>>()))
+            repositoryRepositoryMock
+                .Setup(repositoryRepository => repositoryRepository.GetRepositoriesWithIncludesAsync(It.IsAny<Expression<Func<Repository, bool>>>()))
                 .ReturnsAsync(GetRepositories());
-            versionRepository
-                .Setup(r => r.GetLatestPackageVersionsAsync(It.IsAny<ICollection<int>>()))
+            versionRepositoryMock
+                .Setup(versionRepository => versionRepository.GetLatestPackageVersionsAsync(It.IsAny<ICollection<int>>()))
                 .ReturnsAsync(GetLatestPackageVersions());
-            versionService.Setup(s => s.Compare(It.IsAny<PackageVersion>(), It.IsAny<PackageVersion>()))
+            versionAnalyzerServiceMock.Setup(versionAnalyzerService => versionAnalyzerService.Compare(It.IsAny<PackageVersion>(), It.IsAny<PackageVersion>()))
                 .Returns(report);
-            versionService
-                .Setup(s => s.CalculateMaxReportLevelStatus(It.IsAny<ICollection<PackageVersionComparisonReport>>()))
+            versionAnalyzerServiceMock
+                .Setup(versionAnalyzerService => versionAnalyzerService.CalculateMaxReportLevelStatus(It.IsAny<ICollection<PackageVersionComparisonReport>>()))
                 .Returns(report);
 
             var result = await repositoryService.GetAnalyzedRepositoriesAsync(expression);

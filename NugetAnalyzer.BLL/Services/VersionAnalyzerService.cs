@@ -1,12 +1,12 @@
-﻿using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Enums;
+﻿using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using NugetAnalyzer.BLL.Models.Configurations;
+using NugetAnalyzer.BLL.IOptions;
 using NugetAnalyzer.Common.Interfaces;
 
 namespace NugetAnalyzer.BLL.Services
@@ -60,18 +60,18 @@ namespace NugetAnalyzer.BLL.Services
                 VersionStatus = CalculateMaxVersionStatusLevel(reports),
                 IsObsolete = reports
                                  .Cast<PackageVersionComparisonReport?>()
-                                 .FirstOrDefault(r => r.Value.IsObsolete) != null
+                                 .FirstOrDefault(packageVersionComparisonReport => packageVersionComparisonReport.Value.IsObsolete) != null
             };
         }
 
         private PackageVersionStatus CalculateMaxVersionStatusLevel(ICollection<PackageVersionComparisonReport> reports)
         {
-            return reports.Select(r => r.VersionStatus).Max();
+            return reports.Select(packageVersionComparisonReport => packageVersionComparisonReport.VersionStatus).Max();
         }
 
         private PackageDateStatus CalculateMaxDateStatusLevel(ICollection<PackageVersionComparisonReport> reports)
         {
-            return reports.Select(r => r.DateStatus).Max();
+            return reports.Select(packageVersionComparisonReport => packageVersionComparisonReport.DateStatus).Max();
         }
 
         private bool ObsoleteCheck(DateTime? publishedDateOfLatestVersion)

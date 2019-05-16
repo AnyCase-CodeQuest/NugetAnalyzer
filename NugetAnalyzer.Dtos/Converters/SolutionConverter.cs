@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NugetAnalyzer.BLL.Models;
-using NugetAnalyzer.BLL.Models.Solutions;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.Dtos.Models.Solutions;
 
-namespace NugetAnalyzer.BLL.Converters
+namespace NugetAnalyzer.Dtos.Converters
 {
     public static class SolutionConverter
     {

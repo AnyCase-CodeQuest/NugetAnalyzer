@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.Models.Configurations;
+using NugetAnalyzer.BLL.IOptions;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common;
 using NugetAnalyzer.Common.Interfaces;

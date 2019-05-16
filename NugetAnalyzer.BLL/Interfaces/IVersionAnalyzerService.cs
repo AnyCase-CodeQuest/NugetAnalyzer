@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NugetAnalyzer.BLL.Models;
+using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Interfaces

@@ -1,6 +1,6 @@
-﻿using NugetAnalyzer.BLL.Models.Enums;
+﻿using NugetAnalyzer.Dtos.Models.Enums;
 
-namespace NugetAnalyzer.BLL.Models.Configurations
+namespace NugetAnalyzer.BLL.IOptions
 {
     public class PackageVersionConfiguration
     {
