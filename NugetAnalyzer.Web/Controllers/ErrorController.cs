@@ -2,10 +2,13 @@
 
 namespace NugetAnalyzer.Web.Controllers
 {
-    [Route("error")]
     public class ErrorController : Controller
     {
-        [Route("404")]
+        public ActionResult ServerError()
+        {
+            return View();
+        }
+
         public ActionResult NotFoundError()
         {
             return View();
