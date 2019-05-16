@@ -1,6 +1,6 @@
-﻿namespace NugetAnalyzer.Web.Infrastructure.Options
+﻿namespace NugetAnalyzer.Web.Infrastructure.Configurations
 {
-    public class GitHubEndPointsOptions
+    public class GitHubEndPointsConfigurations
     {
         public string AuthorizationEndpoint { get; set; }
 

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using NugetAnalyzer.Web.Infrastructure.Models;
 
 namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 {
@@ -30,7 +29,7 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 			return httpContextAccessor
 				.HttpContext
 				.User
-				.FindFirstValue(NugetAnalyzerClaimTypes.UserNameClaimType);
+				.FindFirstValue(Constants.NugetAnalyzerClaimTypes.UserNameClaimType);
 		}
 
 		public string GetAvatarUrl()
@@ -38,7 +37,7 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 			return httpContextAccessor
 				.HttpContext
 				.User
-				.FindFirstValue(NugetAnalyzerClaimTypes.AvatarUrlClaimType);
+				.FindFirstValue(Constants.NugetAnalyzerClaimTypes.AvatarUrlClaimType);
 		}
 
 		public string GetExternalUrl()
@@ -46,7 +45,7 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 			return httpContextAccessor
 				.HttpContext
 				.User
-				.FindFirstValue(NugetAnalyzerClaimTypes.GithubUrlClaimType);
+				.FindFirstValue(Constants.NugetAnalyzerClaimTypes.GithubUrlClaimType);
 		}
 
 		public string GetSourceName()
@@ -54,7 +53,7 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 			return httpContextAccessor
 				.HttpContext
 				.User
-				.FindFirstValue(NugetAnalyzerClaimTypes.SourceNameClaimType);
+				.FindFirstValue(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType);
 		}
 
 		public int GetExternalId()
@@ -62,7 +61,7 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 			var stringId = httpContextAccessor
 				.HttpContext
 				.User
-				.FindFirstValue(NugetAnalyzerClaimTypes.ExternalIdClaimType);
+				.FindFirstValue(Constants.NugetAnalyzerClaimTypes.ExternalIdClaimType);
 
 			return int.Parse(stringId);
 		}

@@ -11,64 +11,62 @@ using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
 using NugetAnalyzer.Web.Infrastructure.Extensions;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
-using NugetAnalyzer.Web.Infrastructure.Options;
 using NugetAnalyzer.Web.Middleware;
 
 namespace NugetAnalyzer.Web
 {
-    public class Startup
-    {
-        private const string ResourcePath = "Resources";
-        public Startup(IHostingEnvironment environment)
-        {
-            Configuration = new ConfigurationBuilder()
-                                .SetBasePath(environment.ContentRootPath)
-                                .AddJsonFile("appsettings.json", optional: false)
-                                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
-                                .Build();
-        }
+	public class Startup
+	{
+		private const string ResourcePath = "Resources";
+		public Startup(IHostingEnvironment environment)
+		{
+			Configuration = new ConfigurationBuilder()
+								.SetBasePath(environment.ContentRootPath)
+								.AddJsonFile("appsettings.json", optional: false)
+								.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
+								.Build();
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContextPool<NugetAnalyzerDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
-            });
-            services.AddConverters();
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddDbContextPool<NugetAnalyzerDbContext>(options =>
+			{
+				options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
+			});
+			services.AddConverters();
 
-            services.AddHttpContextAccessor();
-            services.AddScoped<HttpContextInfoProvider>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IProfileService, ProfileService>();
-            services.AddScoped<ISourceService, SourceService>();
+			services.AddHttpContextAccessor();
+			services.AddScoped<HttpContextInfoProvider>();
+			services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
+			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IProfileService, ProfileService>();
+			services.AddScoped<ISourceService, SourceService>();
 
-            IConfigurationSection gitHubEndPointsSection = Configuration.GetSection("GitHubEndPoints");
-            IConfigurationSection gitHubAppSettingsSection = Configuration.GetSection("GitHubAppSettings");
-
+			IConfigurationSection gitHubEndPointsSection = Configuration.GetSection("GitHubEndPoints");
+			IConfigurationSection gitHubAppSettingsSection = Configuration.GetSection("GitHubAppSettings");
 			services.AddGitHubOAuth(gitHubEndPointsSection, gitHubAppSettingsSection);
 
-            services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
-        }
+			services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
+		}
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseConfiguredLocalization();
+			app.UseConfiguredLocalization();
 
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseStaticFiles();
+			app.UseMiddleware<ExceptionHandlingMiddleware>();
+			app.UseStaticFiles();
 
-            app.UseAuthentication();
+			app.UseAuthentication();
 
-            app.UseMvcWithDefaultRoute();
-        }
-    }
+			app.UseMvcWithDefaultRoute();
+		}
+	}
 }

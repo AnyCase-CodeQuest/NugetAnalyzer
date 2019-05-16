@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.BLL.Test", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.Common", "NugetAnalyzer.Common\NugetAnalyzer.Common.csproj", "{A2CA0EA5-6FA8-4ACB-9FE4-3ECCA4B3B46E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.Dtos", "NugetAnalyzer.Dtos\NugetAnalyzer.Dtos.csproj", "{DB64AE21-8D53-4CEC-B016-809914AC4CCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NugetAnalyzer.DTOs", "NugetAnalyzer.Dtos\NugetAnalyzer.DTOs.csproj", "{DB64AE21-8D53-4CEC-B016-809914AC4CCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetAnalyzer.Web.Infrastructure", "NugetAnalyzer.Web.Infrastructure\NugetAnalyzer.Web.Infrastructure.csproj", "{33645125-EBD0-4DAA-B22E-DE5CC85A43F7}"
 EndProject
