@@ -35,7 +35,7 @@ namespace NugetAnalyzer.BLL.Services
 
             Repository repository = new Repository
             {
-                Name = directoryService.GetDirectoryName(repositoryPath),
+                Name = directoryService.GetName(repositoryPath),
                 Path = repositoryPath
             };
 
@@ -52,7 +52,7 @@ namespace NugetAnalyzer.BLL.Services
             {
                 Solution solution = new Solution
                 {
-                    Name = directoryService.GetDirectoryName(solutionDirectoryPath),
+                    Name = directoryService.GetName(solutionDirectoryPath),
                     Path = solutionDirectoryPath
                 };
 
@@ -70,7 +70,7 @@ namespace NugetAnalyzer.BLL.Services
             {
                 Project project = new Project
                 {
-                    Name = directoryService.GetDirectoryName(projectDirectoryPath),
+                    Name = directoryService.GetName(projectDirectoryPath),
                     Path = projectDirectoryPath
                 };
 
@@ -101,7 +101,7 @@ namespace NugetAnalyzer.BLL.Services
             var packages = new List<Package>();
             var document = new XmlDocument();
 
-            var fileContent = await fileService.GetFileContentAsync(filePath);
+            var fileContent = await fileService.GetContentAsync(filePath);
 
             document.LoadXml(fileContent);
 

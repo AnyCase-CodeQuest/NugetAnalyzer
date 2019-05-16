@@ -91,12 +91,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             // Arrange
             directoryService.Setup(s => s.Exists(TestList[0])).Returns(true);
-            directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
+            directoryService.Setup(s => s.GetName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
             fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
             fileService.Setup(s => s.GetFilePath(TestList[0], "packages.config")).Returns(TestList[0]);
-            fileService.Setup(s => s.GetFileContentAsync(TestList[0])).ReturnsAsync(TestPackagesConfigFileContent);
+            fileService.Setup(s => s.GetContentAsync(TestList[0])).ReturnsAsync(TestPackagesConfigFileContent);
 
             // Act
             var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList[0]);
@@ -111,13 +111,13 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             // Arrange
             directoryService.Setup(s => s.Exists(TestList[0])).Returns(true);
-            directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
+            directoryService.Setup(s => s.GetName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
             fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.csproj")).Returns(TestArray);
             fileService.Setup(s => s.GetFilePath(TestList[0], "packages.config")).Returns((string)null);
             fileService.Setup(s => s.GetFilePath(TestList[0], "*.csproj")).Returns(TestList[0]);
-            fileService.Setup(s => s.GetFileContentAsync(TestList[0])).ReturnsAsync(TestCsProjFileContent);
+            fileService.Setup(s => s.GetContentAsync(TestList[0])).ReturnsAsync(TestCsProjFileContent);
 
             // Act
             var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList[0]);

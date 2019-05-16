@@ -33,7 +33,7 @@ namespace NugetAnalyzer.Common.Services
             return filesPaths.Count() == 0 ? null : filesPaths[0];
         }
 
-        public Task<string> GetFileContentAsync(string filePath)
+        public Task<string> GetContentAsync(string filePath)
         {
             if (filePath == null)
                 throw new ArgumentNullException(nameof(filePath));

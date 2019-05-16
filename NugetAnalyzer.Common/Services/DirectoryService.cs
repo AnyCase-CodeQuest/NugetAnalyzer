@@ -14,7 +14,7 @@ namespace NugetAnalyzer.Common.Services
             return Directory.Exists(path);
         }
 
-        public string GetDirectoryName(string directoryPath)
+        public string GetName(string directoryPath)
         {
             if (directoryPath == null)
                 throw new ArgumentNullException(nameof(directoryPath));

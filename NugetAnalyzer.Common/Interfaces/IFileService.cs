@@ -9,7 +9,7 @@ namespace NugetAnalyzer.Common.Interfaces
 
         string GetFilePath(string directoryPath, string searchPattern);
 
-        Task<string> GetFileContentAsync(string filePath);
+        Task<string> GetContentAsync(string filePath);
 
         IList<string> GetFilesDirectoriesPaths(string[] filesPaths);
     }

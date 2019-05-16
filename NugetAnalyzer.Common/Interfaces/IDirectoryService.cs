@@ -4,7 +4,7 @@
     {
         bool Exists(string path);
 
-        string GetDirectoryName(string directoryPath);
+        string GetName(string directoryPath);
 
         void Create(string path);
 
