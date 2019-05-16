@@ -11,17 +11,52 @@ namespace NugetAnalyzer.BLL.Services
     public class RepositoryService : IRepositoryService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IRepository<Repository> databaseRepository;
-        private readonly IRepository<Package> packageRepository;
-        private readonly IRepository<PackageVersion> packageVersionRepository;
+        private IRepository<Repository> databaseRepository;
+        private IRepository<PackageVersion> packageVersionRepository;
+        private IRepository<Package> packageRepository;
+
+        private IRepository<Repository> DatabaseRepository
+        {
+            get
+            {
+                if (databaseRepository == null)
+                {
+                    databaseRepository = unitOfWork.GetRepository<Repository>();
+                }
+
+                return databaseRepository;
+            }
+        }
+
+        private IRepository<Package> PackageRepository
+        {
+            get
+            {
+                if (packageRepository == null)
+                {
+                    packageRepository = unitOfWork.GetRepository<Package>();
+                }
+
+                return packageRepository;
+            }
+        }
+
+        private IRepository<PackageVersion> PackageVersionRepository
+        {
+            get
+            {
+                if (packageVersionRepository == null)
+                {
+                    packageVersionRepository = unitOfWork.GetRepository<PackageVersion>();
+                }
+
+                return packageVersionRepository;
+            }
+        }
 
         public RepositoryService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-
-            databaseRepository = unitOfWork.GetRepository<Repository>();
-            packageRepository = unitOfWork.GetRepository<Package>();
-            packageVersionRepository = unitOfWork.GetRepository<PackageVersion>();
         }
 
         public async void SaveAsync(Models.Repositories.Repository repository, int userId)
@@ -34,10 +69,12 @@ namespace NugetAnalyzer.BLL.Services
 
         private async Task<Repository> ToDomainAsync(Models.Repositories.Repository businessRepository, int userId)
         {
-            var dbRepository = await databaseRepository.GetSingleOrDefaultAsync(repository => repository.Name == businessRepository.Name);
+            var dbRepository =
+                await DatabaseRepository.GetSingleOrDefaultAsync(repository =>
+                    repository.Name == businessRepository.Name);
             if (dbRepository != null)
             {
-                databaseRepository.Delete(dbRepository.Id);
+                DatabaseRepository.Delete(dbRepository.Id);
             }
 
             var domainRepository = CreateRepository(businessRepository.Name, userId);
@@ -45,16 +82,19 @@ namespace NugetAnalyzer.BLL.Services
             foreach (var businessSolution in businessRepository.Solutions)
             {
                 domainRepository.Solutions.Add(CreateSolution(businessSolution.Name));
-                var domainSolution = domainRepository.Solutions.FirstOrDefault(solution => solution.Name == businessSolution.Name);
+                var domainSolution =
+                    domainRepository.Solutions.FirstOrDefault(solution => solution.Name == businessSolution.Name);
 
                 foreach (var businessProject in businessSolution.Projects)
                 {
                     domainSolution.Projects.Add(CreateProject(businessProject.Name));
-                    var domainProject = domainSolution.Projects.FirstOrDefault(project => project.Name == businessProject.Name);
+                    var domainProject =
+                        domainSolution.Projects.FirstOrDefault(project => project.Name == businessProject.Name);
 
                     foreach (var businessPackage in businessProject.Packages)
                     {
-                        domainProject.ProjectPackageVersions.Add(await CreatePackageAsync(businessPackage.Name, businessPackage.Version,
+                        domainProject.ProjectPackageVersions.Add(await CreatePackageAsync(businessPackage.Name,
+                            businessPackage.Version,
                             domainProject, domainRepository));
                     }
                 }
@@ -92,18 +132,18 @@ namespace NugetAnalyzer.BLL.Services
         }
 
         private async Task<ProjectPackageVersion> CreatePackageAsync(
-            string packageName, 
+            string packageName,
             string version,
             Project domainProject,
             Repository domainRepository)
         {
-            var package = await packageRepository.GetSingleOrDefaultAsync(dbPackage => dbPackage.Name == packageName);
+            var package = await PackageRepository.GetSingleOrDefaultAsync(dbPackage => dbPackage.Name == packageName);
             var packageVersion = CreatePackageVersion(version);
             PackageVersion tempPackageVersion;
 
             if (package != null)
             {
-                tempPackageVersion = await packageVersionRepository.GetSingleOrDefaultAsync(dbPackageVersion =>
+                tempPackageVersion = await PackageVersionRepository.GetSingleOrDefaultAsync(dbPackageVersion =>
                     dbPackageVersion.Package.Name == packageName && dbPackageVersion.Major == packageVersion.Major &&
                     dbPackageVersion.Minor == packageVersion.Minor && dbPackageVersion.Build == packageVersion.Build &&
                     dbPackageVersion.Revision == packageVersion.Revision);
@@ -223,6 +263,7 @@ namespace NugetAnalyzer.BLL.Services
 
             return null;
         }
+
         #endregion
     }
 }
