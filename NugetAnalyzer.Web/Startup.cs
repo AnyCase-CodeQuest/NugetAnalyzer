@@ -9,10 +9,10 @@ using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
-using NugetAnalyzer.Web.HttpAccessors;
 using NugetAnalyzer.Web.Infrastructure.Extensions;
+using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
+using NugetAnalyzer.Web.Infrastructure.Options;
 using NugetAnalyzer.Web.Middleware;
-using NugetAnalyzer.Web.ServiceCollectionExtensions;
 
 namespace NugetAnalyzer.Web
 {
@@ -46,9 +46,10 @@ namespace NugetAnalyzer.Web
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<ISourceService, SourceService>();
 
-            var secretsSection = Configuration.GetSection("GitHubAppSettings");
-            var endPointsSection = Configuration.GetSection("GitHubEndPoints");
-            services.AddGitHubOAuth(endPointsSection, secretsSection);
+            IConfigurationSection gitHubEndPointsSection = Configuration.GetSection("GitHubEndPoints");
+            IConfigurationSection gitHubAppSettingsSection = Configuration.GetSection("GitHubAppSettings");
+
+			services.AddGitHubOAuth(gitHubEndPointsSection, gitHubAppSettingsSection);
 
             services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }

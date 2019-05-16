@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Dtos.Models;
-using NugetAnalyzer.Web.HttpAccessors;
-using NugetAnalyzer.Web.Models;
+using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
+using NugetAnalyzer.Web.Infrastructure.Models;
 
 namespace NugetAnalyzer.Web.Controllers
 {

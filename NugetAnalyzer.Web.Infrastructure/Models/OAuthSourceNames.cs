@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.Web.Models
+﻿namespace NugetAnalyzer.Web.Infrastructure.Models
 {
     public static class OAuthSourceNames
     {

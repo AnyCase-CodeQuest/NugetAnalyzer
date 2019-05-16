@@ -1,19 +1,21 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using NugetAnalyzer.Dtos.Converters;
 using NugetAnalyzer.Web.Infrastructure.Models;
-using NugetAnalyzer.Web.Options;
+using NugetAnalyzer.Web.Infrastructure.Options;
 
 namespace NugetAnalyzer.Web.Infrastructure.Extensions
 {
 	public static class ConverterExtensions
 	{
 		/// <summary>
-		/// 
+		/// TODO: write comment
 		/// </summary>
 		/// <param name="services"></param>
 		public static void AddConverters(this IServiceCollection services)
@@ -23,18 +25,18 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
 		}
 
 		/// <summary>
-		/// 
+		/// TODO: write comment
 		/// </summary>
 		/// <param name="services"></param>
-		/// <param name="endPointsSection"></param>
-		/// <param name="secretsSection"></param>
-		public static void AddGitHubOAuth(this IServiceCollection services, IConfigurationSection endPointsSection, IConfigurationSection secretsSection)
+		/// <param name="gitHubEndPointsSection"></param>
+		/// <param name="gitHubAppSettingsSection"></param>
+		public static void AddGitHubOAuth(this IServiceCollection services, IConfigurationSection gitHubEndPointsSection, IConfigurationSection gitHubAppSettingsSection)
 		{
-			services.Configure<GitHubSecretsOptions>(endPointsSection);
-			services.Configure<GitHubEndPointsOptions>(secretsSection);
+			services.Configure<GitHubSecretsOptions>(gitHubEndPointsSection);
+			services.Configure<GitHubEndPointsOptions>(gitHubAppSettingsSection);
 
-			var endPoints = endPointsSection.Get<GitHubEndPointsOptions>();
-			var secrets = secretsSection.Get<GitHubSecretsOptions>();
+			GitHubEndPointsOptions endPoints = gitHubEndPointsSection.Get<GitHubEndPointsOptions>();
+			GitHubSecretsOptions secrets = gitHubAppSettingsSection.Get<GitHubSecretsOptions>();
 
 			services.AddAuthentication(options =>
 			{
@@ -67,14 +69,14 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
 				{
 					OnCreatingTicket = async context =>
 					{
-						var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+						HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
 						request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 						request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
 
-						var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
+						HttpResponseMessage response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
 						response.EnsureSuccessStatusCode();
-						var jObjectResponse = await response.Content.ReadAsStringAsync();
-						var user = JObject.Parse(jObjectResponse);
+						string jObjectResponse = await response.Content.ReadAsStringAsync();
+						JObject user = JObject.Parse(jObjectResponse);
 						user.Add(NugetAnalyzerClaimTypes.SourceNameClaimType, OAuthSourceNames.GitHubSourceName);
 						context.RunClaimActions(user);
 					}

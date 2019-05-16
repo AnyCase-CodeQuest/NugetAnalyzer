@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace NugetAnalyzer.Web.Models
+namespace NugetAnalyzer.Web.Infrastructure.Models
 {
     /// <summary>
     /// Defines constants for custom user claims.

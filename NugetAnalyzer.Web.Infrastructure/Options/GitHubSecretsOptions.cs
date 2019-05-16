@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.Web.Options
+﻿namespace NugetAnalyzer.Web.Infrastructure.Options
 {
     public class GitHubSecretsOptions
     {
