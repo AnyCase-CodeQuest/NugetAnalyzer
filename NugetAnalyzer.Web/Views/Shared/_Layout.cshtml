@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark">
         <a asp-action="Index" asp-controller="Home" class="navbar-brand">
-            <logo color="#fff" font-size="14px" hover-color=" hsla(0,0%,100%,.7)"></logo>
+            <logo width="32px" height="32px" fill-color="#fff" hover-fill-color="hsla(0,0%,100%,.7)"></logo> 
         </a>
 
         <button class="navbar-toggler text-center" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,15 +74,15 @@
 
     <footer class="container footer__container">
         <div class="row footer__row_margin">
-            <div class="col text-left small">
+            <div class="col text-left small align-self-center">
                 © @System.DateTime.Now.Year Nuget Analyzer
             </div>
-            <div class="col col-1 text-center">
+            <div class="col col-1 text-center align-self-center">
                 <a asp-action="Index" asp-controller="Home" class="navbar-brand">
-                    <logo color="rgba(0,0,0,.2)" font-size="12px" hover-color="rgba(0,0,0,.4)"></logo>
+                    <logo width="24px" height="24px" fill-color="rgba(0,0,0,.2)" hover-fill-color="rgba(0,0,0,.4)"></logo>
                 </a>
             </div>
-            <div class="col text-right small">
+            <div class="col text-right small align-self-center">
                 <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text">
                     About
                 </a>
