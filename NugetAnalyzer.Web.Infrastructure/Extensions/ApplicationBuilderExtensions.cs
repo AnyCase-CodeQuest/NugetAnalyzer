@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 
-namespace NugetAnalyzer.Web.ApplicationBuilderExtensions
+namespace NugetAnalyzer.Web.Infrastructure.Extensions
 {
-    public static class LocalizationExtension
+    public static class LocalizationExtensions
     {
         public static void UseConfiguredLocalization(this IApplicationBuilder app)
         {

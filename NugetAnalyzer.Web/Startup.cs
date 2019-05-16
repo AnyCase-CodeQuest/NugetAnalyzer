@@ -9,8 +9,8 @@ using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
 using NugetAnalyzer.DAL.UnitOfWork;
-using NugetAnalyzer.Web.ApplicationBuilderExtensions;
 using NugetAnalyzer.Web.HttpAccessors;
+using NugetAnalyzer.Web.Infrastructure.Extensions;
 using NugetAnalyzer.Web.Middleware;
 using NugetAnalyzer.Web.ServiceCollectionExtensions;
 
