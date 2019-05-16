@@ -6,7 +6,7 @@ namespace NugetAnalyzer.Common.Services
 {
     public class DirectoryService : IDirectoryService
     {
-        public bool IsDirectoryExists(string path)
+        public bool Exists(string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -22,7 +22,7 @@ namespace NugetAnalyzer.Common.Services
             return new DirectoryInfo(directoryPath).Name;
         }
 
-        public void CreateDirectory(string path)
+        public void Create(string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
@@ -30,7 +30,7 @@ namespace NugetAnalyzer.Common.Services
             Directory.CreateDirectory(path);
         }
 
-        public void DeleteDirectory(string path)
+        public void Delete(string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path));

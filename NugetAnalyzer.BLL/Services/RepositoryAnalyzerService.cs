@@ -30,7 +30,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<Repository> GetParsedRepositoryAsync(string repositoryPath)
         {
-            if (!directoryService.IsDirectoryExists(repositoryPath))
+            if (!directoryService.Exists(repositoryPath))
                 return null;
 
             Repository repository = new Repository

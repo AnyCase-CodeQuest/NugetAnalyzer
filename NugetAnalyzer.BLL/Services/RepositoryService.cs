@@ -59,7 +59,7 @@ namespace NugetAnalyzer.BLL.Services
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async void SaveAsync(Models.Repositories.Repository repository, int userId)
+        public async Task SaveAsync(Models.Repositories.Repository repository, int userId)
         {
             unitOfWork.GetRepository<Repository>().Add(await ToDomainAsync(repository, userId));
             unitOfWork.SaveChangesAsync();

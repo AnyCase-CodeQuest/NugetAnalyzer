@@ -67,7 +67,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public void GetParsedRepositoryAsync_ShouldThrowArgumentNullException_WhenRepositoryPathNull()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExists(NullRepositoryPath)).Throws(new ArgumentNullException());
+            directoryService.Setup(s => s.Exists(NullRepositoryPath)).Throws(new ArgumentNullException());
 
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => repositoryAnalyzerService.GetParsedRepositoryAsync(NullRepositoryPath));
@@ -77,7 +77,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public async Task GetParsedRepositoryAsync_ShouldRepositoryNull_WhenRepositoryPathNotExist()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExists(EmptyRepositoryPath)).Returns(false);
+            directoryService.Setup(s => s.Exists(EmptyRepositoryPath)).Returns(false);
 
             // Act
             var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(EmptyRepositoryPath);
@@ -90,7 +90,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount3_WhenFrameworkAppType()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExists(TestList[0])).Returns(true);
+            directoryService.Setup(s => s.Exists(TestList[0])).Returns(true);
             directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
             fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
@@ -110,7 +110,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount5_WhenCoreAppType()
         {
             // Arrange
-            directoryService.Setup(s => s.IsDirectoryExists(TestList[0])).Returns(true);
+            directoryService.Setup(s => s.Exists(TestList[0])).Returns(true);
             directoryService.Setup(s => s.GetDirectoryName(TestList[0])).Returns(TestList[0]);
             fileService.Setup(s => s.GetFilesPaths(TestList[0], "*.sln")).Returns(TestArray);
             fileService.Setup(s => s.GetFilesDirectoriesPaths(TestArray)).Returns(TestList);
