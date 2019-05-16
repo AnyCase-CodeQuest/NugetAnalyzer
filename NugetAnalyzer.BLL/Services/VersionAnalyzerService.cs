@@ -15,10 +15,10 @@ namespace NugetAnalyzer.BLL.Services
     {
         private const double daysInTheMonth = 365.25 / 12;
 
-        private readonly PackageVersionConfiguration packageVersionConfiguration;
+        private readonly PackageVersionAnalysisRules packageVersionConfiguration;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public VersionAnalyzerService(IOptions<PackageVersionConfiguration> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
+        public VersionAnalyzerService(IOptions<PackageVersionAnalysisRules> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
         {
             if (packageVersionConfiguration == null)
             {

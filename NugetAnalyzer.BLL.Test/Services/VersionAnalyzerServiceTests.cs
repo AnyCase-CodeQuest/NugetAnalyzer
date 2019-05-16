@@ -18,7 +18,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private VersionAnalyzerService versionService;
         private Mock<IDateTimeProvider> dateTimeProviderMock;
 
-        private readonly IOptions<PackageVersionConfiguration> packageVersionConfiguration = Options.Create(new PackageVersionConfiguration
+        private readonly IOptions<PackageVersionAnalysisRules> packageVersionConfiguration = Options.Create(new PackageVersionAnalysisRules
         {
             VersionStatus = new VersionConfigs
             {

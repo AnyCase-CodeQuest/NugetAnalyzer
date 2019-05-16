@@ -2,7 +2,7 @@
 
 namespace NugetAnalyzer.BLL.IOptions
 {
-    public class PackageVersionConfiguration
+    public class PackageVersionAnalysisRules
     {
         public VersionConfigs VersionStatus { get; set; }
         public DateBordersInMonthsConfigs DateBordersInMonths { get; set; }

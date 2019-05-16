@@ -36,7 +36,7 @@ namespace NugetAnalyzer.Web
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
-            services.Configure<PackageVersionConfiguration>(options => Configuration.GetSection("PackageStatus").Bind(options));
+            services.Configure<PackageVersionAnalysisRules>(options => Configuration.GetSection("PackageStatus").Bind(options));
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
