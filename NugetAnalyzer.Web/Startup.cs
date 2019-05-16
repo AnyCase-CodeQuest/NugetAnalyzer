@@ -35,7 +35,7 @@ namespace NugetAnalyzer.Web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<IGitHubApiService, GitHubApiService>();
+            services.AddScoped<IGitHubApiService, GitHubApiService>(provider => new GitHubApiService(Configuration["ApplicationName"]));
 
             services.AddMvc();
         }

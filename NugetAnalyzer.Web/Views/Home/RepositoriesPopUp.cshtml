@@ -1,36 +1,38 @@
-﻿@model IEnumerable<NugetAnalyzer.BLL.Models.Repositories.RepositoryChoice>
+﻿@model IEnumerable<NugetAnalyzer.Dtos.Models.Repositories.RepositoryChoice>
 
-<div class="modal show" id="new-repository-pop-up" style="display: block">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header" style="border-bottom: unset">
-                <h2 class="modal-title font-weight-bold">Add your repositories</h2>
-            </div>
-            <div class="modal-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>repository name</th>
-                            <th></th>
-                            <th>Branch</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var repository in Model)
-                        {
+<div class="modal-wrapper">
+    <div class="modal show" style="display: block">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: unset">
+                    <h2 class="modal-title font-weight-bold">Add your repositories</h2>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
-                                <td>@repository.Name</td>
-                                <td><input type="checkbox" value="@repository.Id" style="transform: scale(1.5); cursor: pointer"/></td>
-                                <td><a class="repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch" style="cursor: pointer">default</a></td>
+                                <th>Repository name</th>
+                                <th></th>
+                                <th>Branch</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-dark">Add</button>
+                        </thead>
+                        <tbody>
+                            @foreach (var repository in Model)
+                            {
+                                <tr>
+                                    <td><a target="_blank" rel="noopener noreferrer" href="@repository.Url">@repository.Name</a></td>
+                                    <td><input type="checkbox" value="@repository.Id" style="transform: scale(1.5); cursor: pointer" /></td>
+                                    <td><a class="repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch" style="cursor: pointer">default</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-dark">Add</button>
+                </div>
             </div>
         </div>
     </div>
+    <div class="modal-backdrop show"></div>
 </div>
-<div class="modal-backdrop show"></div>

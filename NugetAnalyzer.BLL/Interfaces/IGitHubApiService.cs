@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.Dtos.Models.Repositories;
 using Octokit;
 
 namespace NugetAnalyzer.BLL.Interfaces

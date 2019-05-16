@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NugetAnalyzer.BLL.Converters;
+using NugetAnalyzer.Dtos.Converters;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.Dtos.Models.Repositories;
 using Octokit;
 using Octokit.Internal;
 
@@ -11,9 +11,14 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class GitHubApiService : IGitHubApiService
     {
-        private const string productName = "AspNetCoreGitHubAuth"; // replace to configs?
+        private readonly string applicationName;
 
         private GitHubClient gitHubClient;
+
+        public GitHubApiService(string applicationName)
+        {
+            this.applicationName = applicationName;
+        }
 
         public async Task<IReadOnlyCollection<RepositoryChoice>> GetUserRepositoriesAsync(string userToken)
         {
@@ -49,7 +54,8 @@ namespace NugetAnalyzer.BLL.Services
 
         private GitHubClient GetGitHubClientInstance(string userToken)
         {
-            return gitHubClient ?? (gitHubClient = new GitHubClient(new ProductHeaderValue(productName),
+            return gitHubClient ?? (gitHubClient = new GitHubClient(
+                       new ProductHeaderValue(applicationName),
                        new InMemoryCredentialStore(new Credentials(userToken))));
         }
     }

@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NugetAnalyzer.DAL\NugetAnalyzer.DAL.csproj" />
-    <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.Dtos.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Octokit" Version="0.32.0" />
   </ItemGroup>
 

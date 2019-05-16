@@ -1,7 +1,7 @@
-﻿using NugetAnalyzer.BLL.Models.Repositories;
+﻿using NugetAnalyzer.Dtos.Models.Repositories;
 using Octokit;
 
-namespace NugetAnalyzer.BLL.Converters
+namespace NugetAnalyzer.Dtos.Converters
 {
     public static class RepositoryConverter
     {
@@ -12,6 +12,7 @@ namespace NugetAnalyzer.BLL.Converters
                 : new RepositoryChoice
                 {
                     Id = repository.Id,
+                    Url = repository.HtmlUrl,
                     Name = repository.Name
                 };
         }
