@@ -12,10 +12,13 @@ namespace NugetAnalyzer.Common.Services
         public string[] GetFilesPaths(string directoryPath, string searchPattern)
         {
             if (directoryPath == null)
+            {
                 throw new ArgumentNullException(nameof(directoryPath));
-
+            }
             if (searchPattern == null)
+            {
                 throw new ArgumentNullException(nameof(searchPattern));
+            }
 
             return Directory.GetFiles(directoryPath, searchPattern, SearchOption.AllDirectories);
         }
@@ -23,10 +26,13 @@ namespace NugetAnalyzer.Common.Services
         public string GetFilePath(string directoryPath, string searchPattern)
         {
             if (directoryPath == null)
+            {
                 throw new ArgumentNullException(nameof(directoryPath));
-
+            }
             if (searchPattern == null)
+            {
                 throw new ArgumentNullException(nameof(searchPattern));
+            }
 
             var filesPaths = GetFilesPaths(directoryPath, searchPattern);
 
@@ -36,7 +42,9 @@ namespace NugetAnalyzer.Common.Services
         public Task<string> GetContentAsync(string filePath)
         {
             if (filePath == null)
+            {
                 throw new ArgumentNullException(nameof(filePath));
+            }
 
             using (StreamReader streamReader = new StreamReader(filePath))
             {
@@ -44,16 +52,18 @@ namespace NugetAnalyzer.Common.Services
             }
         }
 
-        public IList<string> GetFilesDirectoriesPaths(string[] filesPaths)
+        public ICollection<string> GetFilesDirectoriesPaths(string[] filesPaths)
         {
             if (filesPaths == null)
+            {
                 throw new ArgumentNullException(nameof(filesPaths));
+            }
 
-            IList<string> directoriesPaths = new List<string>();
+            var directoriesPaths = new List<string>();
 
             foreach (var filePath in filesPaths)
             {
-                FileInfo file = new FileInfo(filePath);
+                var file = new FileInfo(filePath);
 
                 directoriesPaths.Add(file.DirectoryName);
             }

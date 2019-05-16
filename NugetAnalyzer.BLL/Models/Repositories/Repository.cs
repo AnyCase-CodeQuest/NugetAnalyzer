@@ -11,12 +11,12 @@ namespace NugetAnalyzer.BLL.Models.Repositories
             Solutions = new List<Solution>();
         }
 
-        public Repository(string name, string path, IList<Solution> solutions)
+        public Repository(string name, string path, ICollection<Solution> solutions)
             : base(name, path)
         {
             this.Solutions = solutions;
         }
 
-        public IList<Solution> Solutions { get; set; }
+        public ICollection<Solution> Solutions { get; set; }
     }
 }

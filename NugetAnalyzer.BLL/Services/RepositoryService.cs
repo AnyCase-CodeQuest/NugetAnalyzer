@@ -216,8 +216,7 @@ namespace NugetAnalyzer.BLL.Services
 
         private Version CreatePackageVersion(string version)
         {
-            var packageVersion = new Version();
-            Version.TryParse(version, out packageVersion);
+            Version.TryParse(version, out var packageVersion);
             return packageVersion;
         }
 

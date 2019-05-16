@@ -11,12 +11,12 @@ namespace NugetAnalyzer.BLL.Models.Projects
             Packages = new List<Package>();
         }
 
-        public Project(string name, string path, IList<Package> packages)
+        public Project(string name, string path, ICollection<Package> packages)
             : base(name, path)
         {
             this.Packages = packages;
         }
 
-        public IList<Package> Packages { get; set; }
+        public ICollection<Package> Packages { get; set; }
     }
 }

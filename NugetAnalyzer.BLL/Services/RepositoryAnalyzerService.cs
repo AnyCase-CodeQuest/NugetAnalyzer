@@ -13,11 +13,9 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class RepositoryAnalyzerService : IRepositoryAnalyzerService
     {
-        private enum FrameworkType
-        {
-            Core,
-            Framework
-        }
+        private const string SolutionSearchPattern = "*.sln";
+        private const string CsProjSearchPattern = "*.csproj";
+        private const string PackagesConfigSearchPattern = "packages.config";
 
         private readonly IDirectoryService directoryService;
         private readonly IFileService fileService;
@@ -28,10 +26,18 @@ namespace NugetAnalyzer.BLL.Services
             this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
         }
 
+        private enum FrameworkType
+        {
+            Core = 0,
+            Framework = 1
+        }
+
         public async Task<Repository> GetParsedRepositoryAsync(string repositoryPath)
         {
             if (!directoryService.Exists(repositoryPath))
+            {
                 return null;
+            }
 
             Repository repository = new Repository
             {
@@ -46,7 +52,7 @@ namespace NugetAnalyzer.BLL.Services
 
         private async Task AddSolutionsToRepositoryAsync(Repository repository)
         {
-            var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, "*.sln");
+            var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, SolutionSearchPattern);
 
             foreach (var solutionDirectoryPath in fileService.GetFilesDirectoriesPaths(solutionsFilesPaths))
             {
@@ -64,7 +70,7 @@ namespace NugetAnalyzer.BLL.Services
 
         private async Task AddProjectsToSolutionAsync(Solution solution)
         {
-            var projectsFilesPaths = fileService.GetFilesPaths(solution.Path, "*.csproj");
+            var projectsFilesPaths = fileService.GetFilesPaths(solution.Path, CsProjSearchPattern);
 
             foreach (var projectDirectoryPath in fileService.GetFilesDirectoriesPaths(projectsFilesPaths))
             {
@@ -82,27 +88,26 @@ namespace NugetAnalyzer.BLL.Services
 
         private async Task AddPackagesToProjectAsync(Project project)
         {
-            if (fileService.GetFilePath(project.Path, "packages.config") != null)
+            if (fileService.GetFilePath(project.Path, PackagesConfigSearchPattern) != null)
             {
-                var filePath = fileService.GetFilePath(project.Path, "packages.config");
+                var filePath = fileService.GetFilePath(project.Path, PackagesConfigSearchPattern);
 
                 project.Packages = await GetPackagesAsync(FrameworkType.Framework, filePath);
             }
             else
             {
-                var filePath = fileService.GetFilePath(project.Path, "*.csproj");
+                var filePath = fileService.GetFilePath(project.Path, CsProjSearchPattern);
 
                 project.Packages = await GetPackagesAsync(FrameworkType.Core, filePath);
             }
         }
 
-        private async Task<IList<Package>> GetPackagesAsync(FrameworkType frameworkType, string filePath)
+        private async Task<ICollection<Package>> GetPackagesAsync(FrameworkType frameworkType, string filePath)
         {
             var packages = new List<Package>();
             var document = new XmlDocument();
 
             var fileContent = await fileService.GetContentAsync(filePath);
-
             document.LoadXml(fileContent);
 
             var nodesList = GetXmlNodeList(document, frameworkType);
@@ -117,17 +122,21 @@ namespace NugetAnalyzer.BLL.Services
             switch (frameworkType)
             {
                 case FrameworkType.Core:
+                {
                     return document.SelectNodes("//Project/ItemGroup/PackageReference");
-
+                }
                 case FrameworkType.Framework:
+                {
                     return document.SelectNodes("//packages/package");
-
+                }
                 default:
+                {
                     return null;
+                }
             }
         }
 
-        private void AddPackagesToPackagesList(FrameworkType frameworkType, IList<Package> packages, XmlNodeList nodesList)
+        private void AddPackagesToPackagesList(FrameworkType frameworkType, ICollection<Package> packages, XmlNodeList nodesList)
         {
             switch (frameworkType)
             {
@@ -144,7 +153,7 @@ namespace NugetAnalyzer.BLL.Services
             }
         }
 
-        private void AddPackagesToPackagesListForCoreApp(IList<Package> packages, XmlNodeList nodesList)
+        private void AddPackagesToPackagesListForCoreApp(ICollection<Package> packages, XmlNodeList nodesList)
         {
             foreach (XmlNode node in nodesList)
             {
@@ -160,7 +169,7 @@ namespace NugetAnalyzer.BLL.Services
             }
         }
 
-        private void AddPackagesToPackagesListForFrameworkApp(IList<Package> packages, XmlNodeList nodesList)
+        private void AddPackagesToPackagesListForFrameworkApp(ICollection<Package> packages, XmlNodeList nodesList)
         {
             foreach (XmlNode node in nodesList)
             {

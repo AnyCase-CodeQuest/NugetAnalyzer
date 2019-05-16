@@ -9,7 +9,9 @@ namespace NugetAnalyzer.Common.Services
         public bool Exists(string path)
         {
             if (path == null)
+            {
                 throw new ArgumentNullException(nameof(path));
+            }
 
             return Directory.Exists(path);
         }
@@ -17,7 +19,9 @@ namespace NugetAnalyzer.Common.Services
         public string GetName(string directoryPath)
         {
             if (directoryPath == null)
+            {
                 throw new ArgumentNullException(nameof(directoryPath));
+            }
 
             return new DirectoryInfo(directoryPath).Name;
         }
@@ -25,7 +29,9 @@ namespace NugetAnalyzer.Common.Services
         public void Create(string path)
         {
             if (path == null)
+            {
                 throw new ArgumentNullException(nameof(path));
+            }
 
             Directory.CreateDirectory(path);
         }
@@ -33,7 +39,9 @@ namespace NugetAnalyzer.Common.Services
         public void Delete(string path)
         {
             if (path == null)
+            {
                 throw new ArgumentNullException(nameof(path));
+            }
 
             if (Directory.Exists(path))
             {

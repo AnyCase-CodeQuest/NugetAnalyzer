@@ -11,6 +11,6 @@ namespace NugetAnalyzer.Common.Interfaces
 
         Task<string> GetContentAsync(string filePath);
 
-        IList<string> GetFilesDirectoriesPaths(string[] filesPaths);
+        ICollection<string> GetFilesDirectoriesPaths(string[] filesPaths);
     }
 }

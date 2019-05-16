@@ -11,12 +11,12 @@ namespace NugetAnalyzer.BLL.Models.Solutions
             Projects = new List<Project>();
         }
 
-        public Solution(string name, string path, IList<Project> projects)
+        public Solution(string name, string path, ICollection<Project> projects)
             : base(name, path)
         {
             this.Projects = projects;
         }
 
-        public IList<Project> Projects { get; set; }
+        public ICollection<Project> Projects { get; set; }
     }
 }
