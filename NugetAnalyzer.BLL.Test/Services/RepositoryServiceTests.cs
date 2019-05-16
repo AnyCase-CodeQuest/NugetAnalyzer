@@ -7,12 +7,10 @@ using Moq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Dtos.Models.Enums;
-using NugetAnalyzer.Dtos.Models.Projects;
-using NugetAnalyzer.Dtos.Models.Repositories;
-using NugetAnalyzer.Dtos.Models.Solutions;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Models.Reports;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
@@ -20,9 +18,9 @@ namespace NugetAnalyzer.BLL.Test.Services
     [TestFixture(Category = "UnitTests")]
     public class RepositoryServiceTests
     {
-        private Mock<IVersionAnalyzerService> versionAnalyzerServiceMock;
-        private Mock<IRepositoryRepository> repositoryRepositoryMock;
-        private Mock<IVersionRepository> versionRepositoryMock;
+        private Mock<IVersionsAnalyzerService> versionAnalyzerServiceMock;
+        private Mock<IRepositoriesRepository> repositoryRepositoryMock;
+        private Mock<IPackageVersionsRepository> versionRepositoryMock;
         private Mock<IUnitOfWork> uowMock;
 
         private RepositoryService repositoryService;
@@ -39,12 +37,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         [OneTimeSetUp]
         public void Init()
         {
-            versionAnalyzerServiceMock = new Mock<IVersionAnalyzerService>();
-            repositoryRepositoryMock = new Mock<IRepositoryRepository>();
-            versionRepositoryMock = new Mock<IVersionRepository>();
+            versionAnalyzerServiceMock = new Mock<IVersionsAnalyzerService>();
+            repositoryRepositoryMock = new Mock<IRepositoriesRepository>();
+            versionRepositoryMock = new Mock<IPackageVersionsRepository>();
             uowMock = new Mock<IUnitOfWork>();
-            uowMock.SetupGet(uow => uow.RepositoryRepository).Returns(repositoryRepositoryMock.Object);
-            uowMock.SetupGet(uow => uow.VersionRepository).Returns(versionRepositoryMock.Object);
+            uowMock.SetupGet(uow => uow.RepositoriesRepository).Returns(repositoryRepositoryMock.Object);
+            uowMock.SetupGet(uow => uow.PackageVersionsRepository).Returns(versionRepositoryMock.Object);
 
             repositoryService = new RepositoryService(versionAnalyzerServiceMock.Object, uowMock.Object);
         }

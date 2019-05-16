@@ -5,107 +5,102 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using NugetAnalyzer.Dtos.Converters;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.Dtos.Models.Repositories;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryService : IRepositoryService
-    {
-        private readonly IVersionAnalyzerService versionService;
-        private readonly IUnitOfWork uow;
-        private IRepositoryRepository repositoryRepository;
+	public class RepositoryService : IRepositoryService
+	{
+		private readonly IVersionsAnalyzerService versionsService;
+		private readonly IUnitOfWork uow;
+		private IRepositoriesRepository repositoriesRepository;
 
-        public RepositoryService(IVersionAnalyzerService versionService, IUnitOfWork uow)
-        {
-            this.versionService = versionService ?? throw new ArgumentNullException(nameof(versionService));
-            this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
-        }
+		public RepositoryService(IVersionsAnalyzerService versionsService, IUnitOfWork uow)
+		{
+			this.versionsService = versionsService ?? throw new ArgumentNullException(nameof(versionsService));
+			this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
+		}
 
-        public async Task<ICollection<RepositoryWithVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
-        {
-            var repositories = await RepositoryRepository.GetRepositoriesWithIncludesAsync(expression);
+		private IRepositoriesRepository RepositoriesRepository =>
+			repositoriesRepository ?? (repositoriesRepository = uow.RepositoriesRepository);
 
-            var packageIds = GetAllPackagesIdsFromRepositories(repositories);
-            var latestPackageVersions = await uow.VersionRepository.GetLatestPackageVersionsAsync(packageIds);
+		public async Task<ICollection<RepositoryWithVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
+		{
+			IReadOnlyCollection<Repository> repositories = await RepositoriesRepository.GetRepositoriesWithIncludesAsync(expression);
 
-            var repositoriesWithVersionReport = Analyze(repositories, latestPackageVersions);
+			HashSet<int> packageIds = GetAllPackagesIdsFromRepositories(repositories);
+			IReadOnlyCollection<PackageVersion> latestPackageVersions
+				= await uow.PackageVersionsRepository.GetLatestPackageVersionsAsync(packageIds);
 
-            return repositoriesWithVersionReport;
-        }
+			ICollection<RepositoryWithVersionReport> repositoriesWithVersionReport = Analyze(repositories, latestPackageVersions);
 
-        private IRepositoryRepository RepositoryRepository =>
-            repositoryRepository ?? (repositoryRepository = uow.RepositoryRepository);
+			return repositoriesWithVersionReport;
+		}
 
-        private HashSet<int> GetAllPackagesIdsFromRepositories(IEnumerable<Repository> repositories)
-        {
-            var packageIds = new HashSet<int>();
-            foreach (var repository in repositories)
-            {
-                foreach (var solution in repository.Solutions)
-                {
-                    foreach (var project in solution.Projects)
-                    {
-                        foreach (var projectPackageVersion in project.ProjectPackageVersions)
-                        {
-                            packageIds.Add(projectPackageVersion.PackageVersion.PackageId);
-                        }
-                    }
-                }
-            }
 
-            return packageIds;
-        }
+		private HashSet<int> GetAllPackagesIdsFromRepositories(IEnumerable<Repository> repositories)
+		{
+			IEnumerable<int> packageIds = repositories
+				.SelectMany(repository => repository.Solutions)
+				.SelectMany(solution => solution.Projects)
+				.SelectMany(project => project.ProjectPackageVersions)
+				.Select(projectPackageVersion => projectPackageVersion.PackageVersion.PackageId)
+				.Distinct();
 
-        // TODO: give me an advice on this method, please =)
-        private ICollection<RepositoryWithVersionReport> Analyze(IReadOnlyCollection<Repository> repositories, IReadOnlyCollection<PackageVersion> latestPackageVersions)
-        {
-            var repositoriesWithVersionReport = repositories.Select(RepositoryConverter.RepositoryToRepositoryWithVersionReport).ToList();
+			return new HashSet<int>(packageIds);
+		}
 
-            for (var i = 0; i < repositories.Count; i++)
-            {
-                var solutions = repositories
-                    .ElementAt(i)
-                    .Solutions
-                    .ToList();
+		// TODO: give me an advice on this method, please =)
+		private ICollection<RepositoryWithVersionReport> Analyze(
+			IReadOnlyCollection<Repository> repositories,
+			IReadOnlyCollection<PackageVersion> latestPackageVersions)
+		{
+			List<RepositoryWithVersionReport> repositoriesWithVersionReport
+				= repositories.Select(RepositoryConverter.RepositoryToRepositoryVersionReport).ToList();
 
-                for (var j = 0; j < solutions.Count; j++)
-                {
-                    var projects = solutions
-                        .ElementAt(j)
-                        .Projects
-                        .ToList();
+			for (int i = 0; i < repositories.Count; i++)
+			{
+				List<Solution> solutions = repositories
+					.ElementAt(i)
+					.Solutions
+					.ToList();
 
-                    for (var k = 0; k < projects.Count; k++)
-                    {
-                        var reports = projects
-                            .ElementAt(k)
-                            .ProjectPackageVersions
-                            .Select(projectPackageVersion => versionService
-                                .Compare(latestPackageVersions
-                                    .First(packageVersion => packageVersion.PackageId == projectPackageVersion.PackageVersion.PackageId), projectPackageVersion.PackageVersion))
-                            .ToList();
+				for (int j = 0; j < solutions.Count; j++)
+				{
+					List<Project> projects = solutions[j]
+						.Projects
+						.ToList();
 
-                        repositoriesWithVersionReport[i]
-                            .Solutions[j]
-                            .Projects[k].Report = versionService.CalculateMaxReportLevelStatus(reports);
-                    }
+					for (int k = 0; k < projects.Count; k++)
+					{
+						List<PackageVersionComparisonReport> reports = projects[k]
+							.ProjectPackageVersions
+							.Select(projectPackageVersion => versionsService
+								.Compare(latestPackageVersions
+									.First(packageVersion => packageVersion.PackageId == projectPackageVersion.PackageVersion.PackageId),
+									projectPackageVersion.PackageVersion))
+							.ToList();
 
-                    repositoriesWithVersionReport[i]
-                        .Solutions[j].Report = versionService.CalculateMaxReportLevelStatus(repositoriesWithVersionReport[i]
-                            .Solutions[j].Projects
-                            .Select(projectWithVersionReport => projectWithVersionReport.Report)
-                            .ToList());
-                }
+						repositoriesWithVersionReport[i].Solutions[j].Projects[k].Report = versionsService.CalculateMaxReportLevelStatus(reports);
+					}
 
-                repositoriesWithVersionReport[i].Report = versionService.CalculateMaxReportLevelStatus(repositoriesWithVersionReport[i]
-                    .Solutions
-                    .Select(solutionWithVersionReport => solutionWithVersionReport.Report)
-                    .ToList());
-            }
+					repositoriesWithVersionReport[i].Solutions[j].Report = versionsService
+						.CalculateMaxReportLevelStatus(repositoriesWithVersionReport[i]
+							.Solutions[j].Projects
+							.Select(projectWithVersionReport => projectWithVersionReport.Report)
+							.ToList());
+				}
 
-            return repositoriesWithVersionReport;
-        }
-    }
+				repositoriesWithVersionReport[i].Report = versionsService
+					.CalculateMaxReportLevelStatus(repositoriesWithVersionReport[i]
+						.Solutions
+						.Select(solutionWithVersionReport => solutionWithVersionReport.Report)
+						.ToList());
+			}
+
+			return repositoriesWithVersionReport;
+		}
+	}
 }

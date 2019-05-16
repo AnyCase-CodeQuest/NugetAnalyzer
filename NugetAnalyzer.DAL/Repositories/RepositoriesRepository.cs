@@ -10,9 +10,9 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Repositories
 {
-    public class RepositoryRepository : Repository<Repository>, IRepositoryRepository
+    public class RepositoriesRepository : Repository<Repository>, IRepositoriesRepository
     {
-        public RepositoryRepository(NugetAnalyzerDbContext context) : base(context)
+        public RepositoriesRepository(NugetAnalyzerDbContext context) : base(context)
         {
         }
 

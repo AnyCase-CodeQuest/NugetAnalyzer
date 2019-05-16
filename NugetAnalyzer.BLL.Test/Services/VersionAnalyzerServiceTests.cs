@@ -8,6 +8,7 @@ using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Models.Reports;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
@@ -15,7 +16,7 @@ namespace NugetAnalyzer.BLL.Test.Services
     [TestFixture(Category = "UnitTests")]
     public class VersionAnalyzerServiceTests
     {
-        private VersionAnalyzerService versionService;
+        private VersionsAnalyzerService versionsService;
         private Mock<IDateTimeProvider> dateTimeProviderMock;
 
         private readonly IOptions<PackageVersionAnalysisRules> packageVersionConfiguration = Options.Create(new PackageVersionAnalysisRules
@@ -94,31 +95,31 @@ namespace NugetAnalyzer.BLL.Test.Services
             dateTimeProviderMock = new Mock<IDateTimeProvider>();
             dateTimeProviderMock.SetupGet(dateTimeProvider => dateTimeProvider.CurrentUtcDateTime).Returns(DateTime.UtcNow);
 
-            versionService = new VersionAnalyzerService(packageVersionConfiguration, dateTimeProviderMock.Object);
+            versionsService = new VersionsAnalyzerService(packageVersionConfiguration, dateTimeProviderMock.Object);
         }
 
         [Test] public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(null, dateTimeProviderMock.Object));
-            Assert.Throws<ArgumentNullException>(() => new VersionAnalyzerService(packageVersionConfiguration,null));
+            Assert.Throws<ArgumentNullException>(() => new VersionsAnalyzerService(null, dateTimeProviderMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new VersionsAnalyzerService(packageVersionConfiguration,null));
         }
 
         [Test]
         public void Compare_Should_ThrowsArgumentNullException_When_LatestVersionArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => versionService.Compare(null, actualPackageVersion));
+            Assert.Throws<ArgumentNullException>(() => versionsService.Compare(null, actualPackageVersion));
         }
 
         [Test]
         public void Compare_Should_ThrowsArgumentNullException_When_CurrentVersionArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => versionService.Compare(latestPackageVersion, null));
+            Assert.Throws<ArgumentNullException>(() => versionsService.Compare(latestPackageVersion, null));
         }
 
         [Test]
         public void Compare_Should_ReturnsReportWithObsoleteTrueValue_When_LatestVersionIsObsolete()
         {
-            var report = versionService.Compare(obsoletePackageVersion, packageVersionWithErrorDateStatus);
+            var report = versionsService.Compare(obsoletePackageVersion, packageVersionWithErrorDateStatus);
 
             Assert.AreEqual(report.IsObsolete, true);
         }
@@ -126,7 +127,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void Compare_Should_ReturnsReportWithUndefinedDateValueAndFalseObsoleteValue_When_DateOfVersionIsUndefined()
         {
-            var report = versionService.Compare(packageVersionWithUndefinedDate, packageVersionWithUndefinedDate);
+            var report = versionsService.Compare(packageVersionWithUndefinedDate, packageVersionWithUndefinedDate);
 
             Assert.AreEqual(report.DateStatus, PackageDateStatus.Undefined);
             Assert.AreEqual(report.IsObsolete, false);
@@ -135,7 +136,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void Compare_Should_ReturnsReportWithDateErrorValue_When_DateOfCurrentVersionIsOld()
         {
-            var report = versionService.Compare(latestPackageVersion, packageVersionWithErrorDateStatus);
+            var report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorDateStatus);
 
             Assert.AreEqual(report.DateStatus, PackageDateStatus.Error);
             Assert.AreEqual(report.VersionStatus, PackageVersionStatus.Actual);
@@ -144,7 +145,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void Compare_Should_ReturnsReportWithVersionErrorValue_When_MajorVersionOfCurrentVersionIsChanged()
         {
-            var report = versionService.Compare(latestPackageVersion, packageVersionWithErrorVersionStatus);
+            var report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorVersionStatus);
 
             Assert.AreEqual(report.DateStatus, PackageDateStatus.Normal);
             Assert.AreEqual(report.VersionStatus, PackageVersionStatus.Error);
@@ -153,13 +154,13 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void CalculateMaxReportLevelStatus_Should_ThrowsArgumentNullException_When_ReportsArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => versionService.CalculateMaxReportLevelStatus(null));
+            Assert.Throws<ArgumentNullException>(() => versionsService.CalculateMaxReportLevelStatus(null));
         }
 
         [Test]
         public void CalculateMaxReportLevelStatus_Should_ReturnsReportWithAllGoodValues_When_ReportsCountIsZero()
         {
-            var report = versionService.CalculateMaxReportLevelStatus(new List<PackageVersionComparisonReport>(0));
+            var report = versionsService.CalculateMaxReportLevelStatus(new List<PackageVersionComparisonReport>(0));
 
             Assert.AreEqual(report, new PackageVersionComparisonReport());
         }
@@ -167,8 +168,8 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void CalculateMaxReportLevelStatus_CheckReturnsValues()
         {
-            var report1 = versionService.CalculateMaxReportLevelStatus(GetTestReports1());
-            var report2 = versionService.CalculateMaxReportLevelStatus(GetTestReports2());
+            var report1 = versionsService.CalculateMaxReportLevelStatus(GetTestReports1());
+            var report2 = versionsService.CalculateMaxReportLevelStatus(GetTestReports2());
 
             Assert.AreEqual(report1, new PackageVersionComparisonReport
             {

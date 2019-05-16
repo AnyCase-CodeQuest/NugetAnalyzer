@@ -4,7 +4,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Interfaces
 {
-    public interface IVersionRepository
+    public interface IPackageVersionsRepository
     {
         Task<IReadOnlyCollection<PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds);
     }

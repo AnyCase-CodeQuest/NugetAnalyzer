@@ -1,5 +1,4 @@
-﻿using NugetAnalyzer.Dtos.Models;
-using NugetAnalyzer.Dtos.Models.Enums;
+﻿using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Domain;
 using System;
@@ -8,17 +7,18 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using NugetAnalyzer.BLL.IOptions;
 using NugetAnalyzer.Common.Interfaces;
+using NugetAnalyzer.Dtos.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class VersionAnalyzerService : IVersionAnalyzerService
+    public class VersionsAnalyzerService : IVersionsAnalyzerService
     {
-        private const double daysInTheMonth = 365.25 / 12;
+        private const double DaysInTheMonth = 365.25 / 12;
 
         private readonly PackageVersionAnalysisRules packageVersionConfiguration;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public VersionAnalyzerService(IOptions<PackageVersionAnalysisRules> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
+        public VersionsAnalyzerService(IOptions<PackageVersionAnalysisRules> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
         {
             if (packageVersionConfiguration == null)
             {
@@ -84,7 +84,7 @@ namespace NugetAnalyzer.BLL.Services
             return dateTimeProvider
                        .CurrentUtcDateTime
                        .Subtract(publishedDateOfLatestVersion.Value)
-                       .Days / daysInTheMonth >= packageVersionConfiguration.ObsoleteBorderInMonths;
+                       .Days / DaysInTheMonth >= packageVersionConfiguration.ObsoleteBorderInMonths;
         }
 
         private PackageDateStatus CompareDates(DateTime? publishedDateOfLatestVersion, DateTime? publishedDateOfCurrentVersion)
@@ -95,7 +95,7 @@ namespace NugetAnalyzer.BLL.Services
             }
 
             var differenceInMonths = publishedDateOfLatestVersion.Value
-                    .Subtract(publishedDateOfCurrentVersion.Value).Days / daysInTheMonth;
+                    .Subtract(publishedDateOfCurrentVersion.Value).Days / DaysInTheMonth;
 
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.WarningBottomBorder)
             {

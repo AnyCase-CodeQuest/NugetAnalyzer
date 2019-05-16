@@ -5,7 +5,7 @@ using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 
-namespace NugetAnalyzer.DAL.UnitOfWork
+namespace NugetAnalyzer.DAL
 {
     public sealed class UnitOfWork : IUnitOfWork
     {
@@ -18,8 +18,8 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public IRepositoryRepository RepositoryRepository => (IRepositoryRepository)GetRepository<Repository>();
-        public IVersionRepository VersionRepository => (IVersionRepository)GetRepository<PackageVersion>();
+        public IRepositoriesRepository RepositoriesRepository => (IRepositoriesRepository)GetRepository<Repository>();
+        public IPackageVersionsRepository PackageVersionsRepository => (IPackageVersionsRepository)GetRepository<PackageVersion>();
 
 
         public IRepository<T> GetRepository<T>()

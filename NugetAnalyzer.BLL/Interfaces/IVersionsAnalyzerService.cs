@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Dtos.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
     /// <summary>
     /// Service for comparing versions of packages and calculating the maximum in importance report of reports
     /// </summary>
-    public interface IVersionAnalyzerService
+    public interface IVersionsAnalyzerService
     {
         /// <summary>
         /// Comparing the current version of the package with the latest version and publication date of the current package with the publication date of latest package

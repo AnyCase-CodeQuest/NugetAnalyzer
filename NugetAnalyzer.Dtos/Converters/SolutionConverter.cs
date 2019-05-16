@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Models;
-using NugetAnalyzer.Dtos.Models.Solutions;
+using NugetAnalyzer.Dtos.Models.Reports;
 
 namespace NugetAnalyzer.Dtos.Converters
 {
     public static class SolutionConverter
     {
-        public static SolutionWithVersionReport SolutionToSolutionWithVersionReport(Solution solution)
+        public static SolutionWithVersionReport SolutionToSolutionVersionReport(Solution solution)
         {
             return solution == null
                 ? null
@@ -16,11 +15,10 @@ namespace NugetAnalyzer.Dtos.Converters
                 {
                     Id = solution.Id,
                     Name = solution.Name,
-                    Report = new PackageVersionComparisonReport(),
                     Projects = solution.Projects == null 
                         ? throw new ArgumentNullException(nameof(solution.Projects))
                         : solution.Projects
-                            .Select(ProjectConverter.ProjectToProjectWithVersionReport)
+                            .Select(ProjectConverter.ProjectToProjectVersionReport)
                             .ToList()
                 };
         }

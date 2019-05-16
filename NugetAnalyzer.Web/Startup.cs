@@ -8,10 +8,10 @@ using NugetAnalyzer.BLL.IOptions;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common;
 using NugetAnalyzer.Common.Interfaces;
+using NugetAnalyzer.DAL;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
-using NugetAnalyzer.DAL.UnitOfWork;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.Web.Middleware;
 
@@ -41,13 +41,13 @@ namespace NugetAnalyzer.Web
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IVersionRepository, VersionRepository>();
-            services.AddScoped<IRepositoryRepository, RepositoryRepository>();
-            services.AddScoped<IVersionAnalyzerService, VersionAnalyzerService>();
+            services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
+            services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
+            services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
 
-            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IVersionRepository>());
-            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoryRepository>());
+            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
+            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
 
             services.AddMvc();
         }

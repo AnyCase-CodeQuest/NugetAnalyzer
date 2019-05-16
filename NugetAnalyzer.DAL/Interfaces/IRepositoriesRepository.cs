@@ -6,7 +6,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Interfaces
 {
-    public interface IRepositoryRepository
+    public interface IRepositoriesRepository
     {
         Task<IReadOnlyCollection<Repository>> GetRepositoriesWithIncludesAsync(Expression<Func<Repository, bool>> expression);
     }

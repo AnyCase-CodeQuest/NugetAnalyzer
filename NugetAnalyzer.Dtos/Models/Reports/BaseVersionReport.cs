@@ -1,9 +1,11 @@
-﻿namespace NugetAnalyzer.Dtos.Models
+﻿namespace NugetAnalyzer.Dtos.Models.Reports
 {
-    public abstract class ModelWithReport
+    public abstract class BaseVersionReport
     {
         public int Id { get; set; }
+
         public string Name { get; set; }
+
         public PackageVersionComparisonReport Report { get; set; }
     }
 }

@@ -7,9 +7,9 @@ namespace NugetAnalyzer.DAL.Interfaces
         IRepository<T> GetRepository<T>()
             where T : class;
 
-        IRepositoryRepository RepositoryRepository { get; }
+        IRepositoriesRepository RepositoriesRepository { get; }
 
-        IVersionRepository VersionRepository { get; }
+        IPackageVersionsRepository PackageVersionsRepository { get; }
 
         Task<int> SaveChangesAsync();
     }

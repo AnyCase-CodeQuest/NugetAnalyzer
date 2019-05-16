@@ -8,9 +8,9 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Repositories
 {
-    public class VersionRepository : Repository<PackageVersion>, IVersionRepository
+    public class PackageVersionsRepository : Repository<PackageVersion>, IPackageVersionsRepository
     {
-        public VersionRepository(NugetAnalyzerDbContext context) : base(context)
+        public PackageVersionsRepository(NugetAnalyzerDbContext context) : base(context)
         {
         }
 
