@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
@@ -11,6 +11,7 @@ namespace NugetAnalyzer.BLL.Services
     public class RepositoryService : IRepositoryService
     {
         private readonly IUnitOfWork unitOfWork;
+
         private IRepository<Repository> databaseRepository;
         private IRepository<PackageVersion> packageVersionRepository;
         private IRepository<Package> packageRepository;

@@ -1,15 +1,15 @@
 ﻿namespace NugetAnalyzer.BLL.Models
 {
-    public class BaseModel
+    public class BaseRepositoryModel
     {
         public string Name { get; set; }
 
         public string Path { get; set; }
 
-        public BaseModel()
+        public BaseRepositoryModel()
         { }
 
-        public BaseModel(string name, string path)
+        public BaseRepositoryModel(string name, string path)
         {
             this.Name = name;
             this.Path = path;

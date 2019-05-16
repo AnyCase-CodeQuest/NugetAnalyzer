@@ -41,14 +41,16 @@ namespace NugetAnalyzer.BLL.Test.Services
         private const string SolutionSearchPattern = "*.sln";
         private const string CsProjSearchPattern = "*.csproj";
         private const string PackagesConfigSearchPattern = "packages.config";
+        private const string SolutionPath = @"C:\temp\solution";
+
 
         private readonly IList<string> TestList = new List<string>
         {
-            @"C:\temp\solution"
+            SolutionPath
         };
         private readonly string[] TestArray = new string[]
         {
-            @"C:\temp\solution"
+            SolutionPath
         };
 
         private Mock<IDirectoryService> directoryServiceMock;

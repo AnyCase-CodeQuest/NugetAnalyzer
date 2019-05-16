@@ -3,7 +3,7 @@ using NugetAnalyzer.BLL.Models.Packages;
 
 namespace NugetAnalyzer.BLL.Models.Projects
 {
-    public class Project : BaseModel
+    public class Project : BaseRepositoryModel
     {
         public Project()
             : base()

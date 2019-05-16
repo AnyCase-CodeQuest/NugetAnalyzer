@@ -3,7 +3,7 @@ using NugetAnalyzer.BLL.Models.Solutions;
 
 namespace NugetAnalyzer.BLL.Models.Repositories
 {
-    public class Repository : BaseModel
+    public class Repository : BaseRepositoryModel
     {
         public Repository()
             : base()

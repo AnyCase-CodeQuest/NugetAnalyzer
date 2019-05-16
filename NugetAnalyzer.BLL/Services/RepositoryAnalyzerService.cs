@@ -39,7 +39,7 @@ namespace NugetAnalyzer.BLL.Services
                 return null;
             }
 
-            Repository repository = new Repository
+            var repository = new Repository
             {
                 Name = directoryService.GetName(repositoryPath),
                 Path = repositoryPath
@@ -56,7 +56,7 @@ namespace NugetAnalyzer.BLL.Services
 
             foreach (var solutionDirectoryPath in fileService.GetFilesDirectoriesPaths(solutionsFilesPaths))
             {
-                Solution solution = new Solution
+                var solution = new Solution
                 {
                     Name = directoryService.GetName(solutionDirectoryPath),
                     Path = solutionDirectoryPath
@@ -74,7 +74,7 @@ namespace NugetAnalyzer.BLL.Services
 
             foreach (var projectDirectoryPath in fileService.GetFilesDirectoriesPaths(projectsFilesPaths))
             {
-                Project project = new Project
+                var project = new Project
                 {
                     Name = directoryService.GetName(projectDirectoryPath),
                     Path = projectDirectoryPath
