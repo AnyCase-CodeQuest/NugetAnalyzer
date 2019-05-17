@@ -14,7 +14,7 @@ namespace NugetAnalyzer.BLL.Services
 		private const string CsProjSearchPattern = "*.csproj";
 		private const string PackagesConfigSearchPattern = "packages.config";
 
-		private const string CoreAppPackagesXPath = "//ProjectDTO/ItemGroup/PackageReference";
+		private const string CoreAppPackagesXPath = "//Project/ItemGroup/PackageReference";
 		private const string FrameworkAppPackagesXPath = "//packages/package";
 
 		private const string PackageVersionAttributeSearchPatternOfCoreApp = "Version";
