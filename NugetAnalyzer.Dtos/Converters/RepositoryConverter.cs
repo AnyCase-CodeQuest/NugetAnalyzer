@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NugetAnalyzer.Domain;
 using NugetAnalyzer.Dtos.Models.Reports;
 using NugetAnalyzer.Dtos.Models.Repositories;
 
@@ -8,7 +7,7 @@ namespace NugetAnalyzer.Dtos.Converters
 {
 	public static class RepositoryConverter
 	{
-		public static RepositoryWithVersionReport RepositoryToRepositoryVersionReport(Repository repository)
+		public static RepositoryWithVersionReport RepositoryToRepositoryVersionReport(NugetAnalyzer.Domain.Repository repository)
 		{
 			return repository == null
 				? null
@@ -24,7 +23,7 @@ namespace NugetAnalyzer.Dtos.Converters
 					};
 		}
 
-        public static RepositoryChoice OctokitRepositoryToRepositoryChoice(Repository repository)
+        public static RepositoryChoice OctokitRepositoryToRepositoryChoice(Octokit.Repository repository)
         {
             return repository == null
                 ? null
