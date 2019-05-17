@@ -1,6 +1,6 @@
 ﻿namespace NugetAnalyzer.Dtos.Models.Reports
 {
-    public class ProjectWithVersionReport : BaseVersionReport
+    public class ProjectVersionReport : BaseVersionReport
     {
     }
 }

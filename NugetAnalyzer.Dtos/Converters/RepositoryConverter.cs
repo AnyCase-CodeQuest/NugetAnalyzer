@@ -7,11 +7,11 @@ namespace NugetAnalyzer.Dtos.Converters
 {
 	public static class RepositoryConverter
 	{
-		public static RepositoryWithVersionReport RepositoryToRepositoryVersionReport(Repository repository)
+		public static RepositoryVersionReport RepositoryToRepositoryVersionReport(Repository repository)
 		{
 			return repository == null
 				? null
-				: new RepositoryWithVersionReport
+				: new RepositoryVersionReport
 					{
 						Id = repository.Id,
 						Name = repository.Name,

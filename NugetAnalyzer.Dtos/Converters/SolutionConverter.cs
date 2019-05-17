@@ -7,11 +7,11 @@ namespace NugetAnalyzer.Dtos.Converters
 {
     public static class SolutionConverter
     {
-        public static SolutionWithVersionReport SolutionToSolutionVersionReport(Solution solution)
+        public static SolutionVersionReport SolutionToSolutionVersionReport(Solution solution)
         {
             return solution == null
                 ? null
-                : new SolutionWithVersionReport
+                : new SolutionVersionReport
                 {
                     Id = solution.Id,
                     Name = solution.Name,
