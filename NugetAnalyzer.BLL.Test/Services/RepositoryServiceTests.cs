@@ -16,52 +16,10 @@ namespace NugetAnalyzer.BLL.Test.Services
     {
         private const int UserId = 1;
         private const int NullUserId = 0;
+        private const string VersionString = "1.1.1.1";
         private readonly Models.Repositories.Repository NullRepository = null;
-        private readonly Models.Repositories.Repository AccurateRepository = new Models.Repositories.Repository
-        {
-            Name = "TestRepository",
-            Solutions = new List<Solution>
-            {
-                new Solution
-                {
-                    Name = "TestSolution",
-                    Projects = new List<Project>
-                    {
-                        new Project
-                        {
-                            Name = "TestProject1",
-                            Packages = new List<Models.Packages.Package>
-                            {
-                                new Models.Packages.Package
-                                {
-                                    Name = "TestPackage",
-                                    Version = "1.1.1.1"
-                                },
-                                new Models.Packages.Package
-                                {
-                                    Name="AnotherTestPackage",
-                                    Version = "1.1.1.1"
-                                }
-                            }
-                        },
-                        new Project
-                        {
-                            Name="TestProject2",
-                            Packages=new List<Models.Packages.Package>
-                            {
-                                new Models.Packages.Package
-                                {
-                                    Name = "TestPackage",
-                                    Version = "1.1.1.1"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        private IUnitOfWork NullUnitOfWork = null;
-
+        private Models.Repositories.Repository AccurateRepository;
+        private readonly IUnitOfWork NullUnitOfWork = null;
         private Mock<IUnitOfWork> unitOfWorkMock;
         private Mock<IRepository<Repository>> databaseRepositoryMock;
         private Mock<IRepository<PackageVersion>> packageVersionRepositoryMock;
@@ -69,7 +27,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private IRepositoryService repositoryService;
 
         [SetUp]
-        public void Init()
+        public void SetUp()
         {
             databaseRepositoryMock = new Mock<IRepository<Repository>>();
             packageVersionRepositoryMock = new Mock<IRepository<PackageVersion>>();
@@ -80,6 +38,54 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Returns(packageVersionRepositoryMock.Object);
             unitOfWorkMock.Setup(UnitOfWork => UnitOfWork.GetRepository<Package>()).Returns(packageRepositoryMock.Object);
             repositoryService = new RepositoryService(unitOfWorkMock.Object);
+        }
+
+        [OneTimeSetUp]
+        public void OneTimeSetup()
+        {
+            AccurateRepository = new Models.Repositories.Repository
+            {
+                Name = "TestRepository",
+                Solutions = new List<Solution>
+                {
+                    new Solution
+                    {
+                        Name = "TestSolution",
+                        Projects = new List<Project>
+                        {
+                            new Project
+                            {
+                                Name = "TestProject1",
+                                Packages = new List<Models.Packages.Package>
+                                {
+                                    new Models.Packages.Package
+                                    {
+                                        Name = "TestPackage",
+                                        Version = VersionString
+                                    },
+                                    new Models.Packages.Package
+                                    {
+                                        Name="AnotherTestPackage",
+                                        Version = VersionString
+                                    }
+                                }
+                            },
+                            new Project
+                            {
+                                Name="TestProject2",
+                                Packages=new List<Models.Packages.Package>
+                                {
+                                    new Models.Packages.Package
+                                    {
+                                        Name = "TestPackage",
+                                        Version = VersionString
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         [Test]
