@@ -10,10 +10,10 @@ namespace NugetAnalyzer.Domain
 
         public string Email { get; set; }
 
-        public string FirstName { get; set; }
+        public string AvatarUrl { get; set; }
 
-        public string LastName { get; set; }
-        
+        public ICollection<Profile> Profiles { get; set; }
+
         public ICollection<Repository> Repositories { get; set; }
     }
 }

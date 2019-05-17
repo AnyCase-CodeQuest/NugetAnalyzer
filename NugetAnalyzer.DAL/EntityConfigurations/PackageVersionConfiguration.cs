@@ -11,9 +11,9 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("PackageVersions");
 
             builder
-                .HasOne(p => p.Package)
-                .WithMany(p => p.Versions)
-                .HasForeignKey(p => p.PackageId);
+                .HasOne(packageVerison => packageVerison.Package)
+                .WithMany(package => package.Versions)
+                .HasForeignKey(packageVerison => packageVerison.PackageId);
         }
     }
 }

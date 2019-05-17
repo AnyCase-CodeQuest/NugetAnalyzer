@@ -11,12 +11,12 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("Repositories");
 
             builder
-                .Property(p => p.Name)
+                .Property(repository => repository.Name)
                 .IsRequired()
                 .HasMaxLength(4096);
 
             builder
-                .Property(p => p.UserId)
+                .Property(repository => repository.UserId)
                 .IsRequired();
         }
     }

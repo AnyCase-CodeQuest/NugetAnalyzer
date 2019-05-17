@@ -13,12 +13,12 @@ namespace NugetAnalyzer.DAL.Repositories
         where T : class
     {
         private readonly NugetAnalyzerDbContext context;
-        private readonly DbSet<T> dbSet;
+        protected readonly DbSet<T> DbSet;
 
         public Repository(NugetAnalyzerDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.dbSet = context.Set<T>();
+            DbSet = context.Set<T>();
         }
 
         public void Add(T item)
@@ -28,12 +28,12 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(item));
             }
 
-            dbSet.Add(item);
+            DbSet.Add(item);
         }
 
         public Task<T> GetByIdAsync(int id)
         {
-            return dbSet.FindAsync(id);
+            return DbSet.FindAsync(id);
         }
 
         public Task<T> GetSingleOrDefaultAsync(Expression<Func<T, bool>> predicates)
@@ -43,7 +43,7 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            return dbSet.SingleOrDefaultAsync(predicates);
+            return DbSet.SingleOrDefaultAsync(predicates);
         }
 
         public async Task<IReadOnlyCollection<T>> GetAsync(Expression<Func<T, bool>> predicates)
@@ -53,7 +53,7 @@ namespace NugetAnalyzer.DAL.Repositories
                 throw new ArgumentNullException(nameof(predicates));
             }
 
-            return await dbSet
+            return await DbSet
                 .Where(predicates)
                 .AsNoTracking()
                 .ToListAsync();
@@ -61,21 +61,21 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public async Task<IReadOnlyCollection<T>> GetAllAsync()
         {
-            return await dbSet
+            return await DbSet
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public void Delete(int id)
         {
-            var item = dbSet.Find(id);
+            T item = DbSet.Find(id);
 
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
 
-            dbSet.Remove(item);
+            DbSet.Remove(item);
         }
 
         public void Update(T item)
@@ -84,7 +84,6 @@ namespace NugetAnalyzer.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(item));
             }
-
             context.Entry(item).State = EntityState.Modified;
         }
     }

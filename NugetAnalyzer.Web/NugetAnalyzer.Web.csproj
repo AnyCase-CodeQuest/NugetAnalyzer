@@ -3,25 +3,37 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>7e052dc8-bf49-4bff-88a8-4e9107c76734</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\stylesheets\OAuthSignIn\StyleSheet.scss" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BuildWebCompiler" Version="1.12.394" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.0.461" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NugetAnalyzer.BLL\NugetAnalyzer.BLL.csproj" />
     <ProjectReference Include="..\NugetAnalyzer.Common\NugetAnalyzer.Common.csproj" />
+    <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.DTOs.csproj" />
+    <ProjectReference Include="..\NugetAnalyzer.Web.Infrastructure\NugetAnalyzer.Web.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Update="nlog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Views\Home\" />
   </ItemGroup>
 
 </Project>
