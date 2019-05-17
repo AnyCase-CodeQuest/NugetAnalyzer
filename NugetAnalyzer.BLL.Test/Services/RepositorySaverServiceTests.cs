@@ -6,8 +6,7 @@ using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
-using Project = NugetAnalyzer.BLL.Models.Projects.Project;
-using Solution = NugetAnalyzer.BLL.Models.Solutions.Solution;
+using NugetAnalyzer.DTOs.Models;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
@@ -23,8 +22,8 @@ namespace NugetAnalyzer.BLL.Test.Services
         private const string SolutionName = "TestSolution";
         private const string FirstProjectName = "TestProject";
         private const string SecondProjectName = "SecondTestProject";
-        private readonly Models.Repositories.Repository NullRepository = null;
-        private Models.Repositories.Repository AccurateRepository;
+        private readonly RepositoryDTO nullRepositoryDTO = null;
+        private RepositoryDTO accurateRepositoryDTO;
         private readonly IUnitOfWork NullUnitOfWork = null;
         private Mock<IUnitOfWork> unitOfWorkMock;
         private Mock<IRepository<Repository>> databaseRepositoryMock;
@@ -51,39 +50,39 @@ namespace NugetAnalyzer.BLL.Test.Services
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            AccurateRepository = new Models.Repositories.Repository
+            accurateRepositoryDTO = new RepositoryDTO
             {
                 Name = RepositoryName,
-                Solutions = new List<Solution>
+                Solutions = new List<SolutionDTO>
                 {
-                    new Solution
+                    new SolutionDTO
                     {
                         Name = SolutionName,
-                        Projects = new List<Project>
+                        Projects = new List<ProjectDTO>
                         {
-                            new Project
+                            new ProjectDTO
                             {
                                 Name = FirstProjectName,
-                                Packages = new List<Models.Packages.Package>
+                                Packages = new List<PackageDTO>
                                 {
-                                    new Models.Packages.Package
+                                    new PackageDTO
                                     {
                                         Name = FirstPackageName,
                                         Version = VersionString
                                     },
-                                    new Models.Packages.Package
+                                    new PackageDTO
                                     {
                                         Name = SecondPackageName,
                                         Version = VersionString
                                     }
                                 }
                             },
-                            new Project
+                            new ProjectDTO
                             {
                                 Name = SecondProjectName,
-                                Packages = new List<Models.Packages.Package>
+                                Packages = new List<PackageDTO>
                                 {
-                                    new Models.Packages.Package
+                                    new PackageDTO
                                     {
                                         Name = FirstPackageName,
                                         Version = VersionString
@@ -99,7 +98,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void SaveAsync_ShouldThrowNullReferenceException_WhenInputDataIsNull()
         {
-            Assert.ThrowsAsync<NullReferenceException>(() => repositoryService.SaveAsync(NullRepository, NullUserId));
+            Assert.ThrowsAsync<NullReferenceException>(() => repositoryService.SaveAsync(nullRepositoryDTO, NullUserId));
         }
 
         [Test]
@@ -111,7 +110,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void SaveAsync_ShouldNotThrowException_WhenRepositoryIsAccurate()
         {
-            Assert.DoesNotThrowAsync(() => repositoryService.SaveAsync(AccurateRepository, UserId));
+            Assert.DoesNotThrowAsync(() => repositoryService.SaveAsync(accurateRepositoryDTO, UserId));
         }
 
     }

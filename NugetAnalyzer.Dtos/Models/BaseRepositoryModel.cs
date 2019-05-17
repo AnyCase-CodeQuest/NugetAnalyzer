@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.BLL.Models
+﻿namespace NugetAnalyzer.DTOs.Models
 {
     public class BaseRepositoryModel
     {
@@ -11,8 +11,8 @@
 
         public BaseRepositoryModel(string name, string path)
         {
-            this.Name = name;
-            this.Path = path;
+            Name = name;
+            Path = path;
         }
     }
 }

@@ -10,7 +10,8 @@ namespace NugetAnalyzer.BLL.Services
 {
     public class NugetApiService : INugetApiService
     {
-        private const string publishedDateFormat = "MM/dd/yyyy HH:mm:ss";
+        private const string PublishedDateFormat = "MM/dd/yyyy HH:mm:ss";
+
         private readonly INugetHttpService nugetHttpService;
 
         public NugetApiService(INugetHttpService nugetHttpService)
@@ -98,7 +99,7 @@ namespace NugetAnalyzer.BLL.Services
             string publishedString = (string)jsonObject["published"];
             if (DateTime.TryParseExact(
                             publishedString,
-                            publishedDateFormat,
+                            PublishedDateFormat,
                             null,
                             DateTimeStyles.AdjustToUniversal 
                             | DateTimeStyles.AssumeLocal,

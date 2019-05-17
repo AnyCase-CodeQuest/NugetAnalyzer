@@ -3,10 +3,10 @@ using System.IO;
 
 namespace NugetAnalyzer.BLL.Test
 {
-    public static class ResponseReader
+    public static class ResponsesReader
     {
-        private const string PathToEndpointPackageMetadata = "Response/EndpointPackageMetadata";
-        private const string PathToEndpointSearch = "Response/EndpointSearch";
+        private const string PathToEndpointPackageMetadata = "Responses/EndpointPackageMetadata";
+        private const string PathToEndpointSearch = "Responses/EndpointSearch";
 
         public static Task<string> GetNUnitFromEndpointPackageMetadata()
         {

@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NugetAnalyzer.Common\NugetAnalyzer.Common.csproj" />
     <ProjectReference Include="..\NugetAnalyzer.DAL\NugetAnalyzer.DAL.csproj" />
-    <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.Dtos.csproj" />
+    <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.DTOs.csproj" />
   </ItemGroup>
 
 </Project>

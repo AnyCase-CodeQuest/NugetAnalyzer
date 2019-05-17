@@ -29,22 +29,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Response\EndpointPackageMetadata\DateFormatIncorrectResponse.json">
+    <None Update="Responses\EndpointPackageMetadata\DateFormatIncorrectResponse.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Response\EndpointPackageMetadata\NotFoundResponse.xml">
+    <None Update="Responses\EndpointPackageMetadata\NotFoundResponse.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Response\EndpointPackageMetadata\NUnitResponse.json">
+    <None Update="Responses\EndpointPackageMetadata\NUnitResponse.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Response\EndpointSearch\IncorrectVersionResponse.json">
+    <None Update="Responses\EndpointSearch\IncorrectVersionResponse.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Response\EndpointSearch\NotExistPackageResponse.json">
+    <None Update="Responses\EndpointSearch\NotExistPackageResponse.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Response\EndpointSearch\NUnitResponse.json">
+    <None Update="Responses\EndpointSearch\NUnitResponse.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -2,196 +2,196 @@
 using System.Xml;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.Models.Repositories;
-using NugetAnalyzer.BLL.Models.Solutions;
-using NugetAnalyzer.BLL.Models.Projects;
-using NugetAnalyzer.BLL.Models.Packages;
+using NugetAnalyzer.DTOs.Models;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryAnalyzerService : IRepositoryAnalyzerService
-    {
-        private const string SolutionSearchPattern = "*.sln";
-        private const string CsProjSearchPattern = "*.csproj";
-        private const string PackagesConfigSearchPattern = "packages.config";
+	public class RepositoryAnalyzerService : IRepositoryAnalyzerService
+	{
+		private const string SolutionSearchPattern = "*.sln";
+		private const string CsProjSearchPattern = "*.csproj";
+		private const string PackagesConfigSearchPattern = "packages.config";
 
-        private const string CoreAppPackagesXPath = "//Project/ItemGroup/PackageReference";
-        private const string FrameworkAppPackagesXPath = "//packages/package";
+		private const string CoreAppPackagesXPath = "//ProjectDTO/ItemGroup/PackageReference";
+		private const string FrameworkAppPackagesXPath = "//packages/package";
 
-        private const string PackageVersionAttributeSearchPatternOfCoreApp = "Version";
-        private const string PackageNameAttributeSearchPatternOfCoreApp = "Include";
-        private const string PackageVersionAttributeSearchPatternOfFrameworkApp = "version";
-        private const string PackageNameAttributeSearchPatternOfFrameworkApp = "id";
+		private const string PackageVersionAttributeSearchPatternOfCoreApp = "Version";
+		private const string PackageNameAttributeSearchPatternOfCoreApp = "Include";
+		private const string PackageVersionAttributeSearchPatternOfFrameworkApp = "version";
+		private const string PackageNameAttributeSearchPatternOfFrameworkApp = "id";
 
-        private readonly IDirectoryService directoryService;
-        private readonly IFileService fileService;
+		private readonly IDirectoryService directoryService;
+		private readonly IFileService fileService;
 
-        public RepositoryAnalyzerService(IDirectoryService directoryService, IFileService fileService)
-        {
-            this.directoryService = directoryService ?? throw new ArgumentNullException(nameof(directoryService));
-            this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
-        }
+		public RepositoryAnalyzerService(IDirectoryService directoryService, IFileService fileService)
+		{
+			this.directoryService = directoryService ?? throw new ArgumentNullException(nameof(directoryService));
+			this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
+		}
 
-        private enum FrameworkType
-        {
-            Core = 0,
-            Framework = 1
-        }
+		private enum FrameworkType
+		{
+			Core = 0,
+			Framework = 1
+		}
 
-        public async Task<Repository> GetParsedRepositoryAsync(string repositoryPath)
-        {
-            if (!directoryService.Exists(repositoryPath))
-            {
-                return null;
-            }
+		public async Task<RepositoryDTO> GetParsedRepositoryAsync(string repositoryPath)
+		{
+			if (!directoryService.Exists(repositoryPath))
+			{
+				return null;
+			}
 
-            var repository = new Repository
-            {
-                Name = directoryService.GetName(repositoryPath),
-                Path = repositoryPath
-            };
+			RepositoryDTO repositoryDTO = new RepositoryDTO
+			{
+				Name = directoryService.GetName(repositoryPath),
+				Path = repositoryPath
+			};
 
-            await AddSolutionsToRepositoryAsync(repository);
+			await AddSolutionsToRepositoryAsync(repositoryDTO);
 
-            return repository;
-        }
+			return repositoryDTO;
+		}
 
-        private async Task AddSolutionsToRepositoryAsync(Repository repository)
-        {
-            var solutionsFilesPaths = fileService.GetFilesPaths(repository.Path, SolutionSearchPattern);
+		#region Private Methods
 
-            foreach (var solutionDirectoryPath in fileService.GetFilesDirectoriesPaths(solutionsFilesPaths))
-            {
-                var solution = new Solution
-                {
-                    Name = directoryService.GetName(solutionDirectoryPath),
-                    Path = solutionDirectoryPath
-                };
+		private async Task AddSolutionsToRepositoryAsync(RepositoryDTO repositoryDTO)
+		{
+			string[] solutionsFilesPaths = fileService.GetFilesPaths(repositoryDTO.Path, SolutionSearchPattern);
 
-                await AddProjectsToSolutionAsync(solution);
+			foreach (string solutionDirectoryPath in fileService.GetFilesDirectoriesPaths(solutionsFilesPaths))
+			{
+				SolutionDTO solutionDTO = new SolutionDTO
+				{
+					Name = directoryService.GetName(solutionDirectoryPath),
+					Path = solutionDirectoryPath
+				};
 
-                repository.Solutions.Add(solution);
-            }
-        }
+				await AddProjectsToSolutionAsync(solutionDTO);
 
-        private async Task AddProjectsToSolutionAsync(Solution solution)
-        {
-            var projectsFilesPaths = fileService.GetFilesPaths(solution.Path, CsProjSearchPattern);
+				repositoryDTO.Solutions.Add(solutionDTO);
+			}
+		}
 
-            foreach (var projectDirectoryPath in fileService.GetFilesDirectoriesPaths(projectsFilesPaths))
-            {
-                var project = new Project
-                {
-                    Name = directoryService.GetName(projectDirectoryPath),
-                    Path = projectDirectoryPath
-                };
+		private async Task AddProjectsToSolutionAsync(SolutionDTO solutionDTO)
+		{
+			string[] projectsFilesPaths = fileService.GetFilesPaths(solutionDTO.Path, CsProjSearchPattern);
 
-                await AddPackagesToProjectAsync(project);
+			foreach (string projectDirectoryPath in fileService.GetFilesDirectoriesPaths(projectsFilesPaths))
+			{
+				ProjectDTO projectDTO = new ProjectDTO
+				{
+					Name = directoryService.GetName(projectDirectoryPath),
+					Path = projectDirectoryPath
+				};
 
-                solution.Projects.Add(project);
-            }
-        }
+				await AddPackagesToProjectAsync(projectDTO);
 
-        private async Task AddPackagesToProjectAsync(Project project)
-        {
-            if (fileService.GetFilePath(project.Path, PackagesConfigSearchPattern) != null)
-            {
-                var filePath = fileService.GetFilePath(project.Path, PackagesConfigSearchPattern);
+				solutionDTO.Projects.Add(projectDTO);
+			}
+		}
 
-                project.Packages = await GetPackagesAsync(FrameworkType.Framework, filePath);
-            }
-            else
-            {
-                var filePath = fileService.GetFilePath(project.Path, CsProjSearchPattern);
+		private async Task AddPackagesToProjectAsync(ProjectDTO projectDTO)
+		{
+			if (fileService.GetFilePath(projectDTO.Path, PackagesConfigSearchPattern) != null)
+			{
+				string filePath = fileService.GetFilePath(projectDTO.Path, PackagesConfigSearchPattern);
 
-                project.Packages = await GetPackagesAsync(FrameworkType.Core, filePath);
-            }
-        }
+				projectDTO.Packages = await GetPackagesAsync(FrameworkType.Framework, filePath);
+			}
+			else
+			{
+				string filePath = fileService.GetFilePath(projectDTO.Path, CsProjSearchPattern);
 
-        private async Task<ICollection<Package>> GetPackagesAsync(FrameworkType frameworkType, string filePath)
-        {
-            var packages = new List<Package>();
-            var document = new XmlDocument();
+				projectDTO.Packages = await GetPackagesAsync(FrameworkType.Core, filePath);
+			}
+		}
 
-            var fileContent = await fileService.GetContentAsync(filePath);
-            document.LoadXml(fileContent);
+		private async Task<ICollection<PackageDTO>> GetPackagesAsync(FrameworkType frameworkType, string filePath)
+		{
+			List<PackageDTO> packages = new List<PackageDTO>();
+			XmlDocument document = new XmlDocument();
 
-            var nodesList = GetXmlNodeListWithPackagesOfXmlDocument(document, frameworkType);
+			string fileContent = await fileService.GetContentAsync(filePath);
+			document.LoadXml(fileContent);
 
-            AddPackagesToPackagesList(frameworkType, packages, nodesList);
+			XmlNodeList nodesList = GetXmlNodeListWithPackages(document, frameworkType);
 
-            return packages;
-        }
+			AddPackagesToPackagesList(frameworkType, packages, nodesList);
 
-        private XmlNodeList GetXmlNodeListWithPackagesOfXmlDocument(XmlDocument document, FrameworkType frameworkType)
-        {
-            switch (frameworkType)
-            {
-                case FrameworkType.Core:
-                {
-                    return document.SelectNodes(CoreAppPackagesXPath);
-                }
-                case FrameworkType.Framework:
-                {
-                    return document.SelectNodes(FrameworkAppPackagesXPath);
-                }
-                default:
-                {
-                    return null;
-                }
-            }
-        }
+			return packages;
+		}
 
-        private void AddPackagesToPackagesList(FrameworkType frameworkType, ICollection<Package> packages, XmlNodeList nodesList)
-        {
-            switch (frameworkType)
-            {
-                case FrameworkType.Core:
-                {
-                    AddPackagesToPackagesListForCoreApp(packages, nodesList);
-                    break;
-                }
-                case FrameworkType.Framework:
-                {
-                    AddPackagesToPackagesListForFrameworkApp(packages, nodesList);
-                    break;
-                }
-            }
-        }
+		private XmlNodeList GetXmlNodeListWithPackages(XmlDocument document, FrameworkType frameworkType)
+		{
+			switch (frameworkType)
+			{
+				case FrameworkType.Core:
+					{
+						return document.SelectNodes(CoreAppPackagesXPath);
+					}
+				case FrameworkType.Framework:
+					{
+						return document.SelectNodes(FrameworkAppPackagesXPath);
+					}
+				default:
+					{
+						return null;
+					}
+			}
+		}
 
-        private void AddPackagesToPackagesListForCoreApp(ICollection<Package> packages, XmlNodeList nodesList)
-        {
-            foreach (XmlNode node in nodesList)
-            {
-                if (node.Attributes[PackageVersionAttributeSearchPatternOfCoreApp] != null)
-                {
-                    packages.Add(
-                        new Package
-                        {
-                            Name = node.Attributes[PackageNameAttributeSearchPatternOfCoreApp].Value,
-                            Version = node.Attributes[PackageVersionAttributeSearchPatternOfCoreApp].Value
-                        });
-                }
-            }
-        }
+		private void AddPackagesToPackagesList(FrameworkType frameworkType, ICollection<PackageDTO> packages, XmlNodeList nodesList)
+		{
+			switch (frameworkType)
+			{
+				case FrameworkType.Core:
+					{
+						AddPackagesToPackagesListForCoreApp(packages, nodesList);
+						break;
+					}
+				case FrameworkType.Framework:
+					{
+						AddPackagesToPackagesListForFrameworkApp(packages, nodesList);
+						break;
+					}
+			}
+		}
 
-        private void AddPackagesToPackagesListForFrameworkApp(ICollection<Package> packages, XmlNodeList nodesList)
-        {
-            foreach (XmlNode node in nodesList)
-            {
-                if (node.Attributes[PackageVersionAttributeSearchPatternOfFrameworkApp] != null)
-                {
-                    packages.Add(
-                        new Package
-                        {
-                            Name = node.Attributes[PackageNameAttributeSearchPatternOfFrameworkApp].Value,
-                            Version = node.Attributes[PackageVersionAttributeSearchPatternOfFrameworkApp].Value
-                        });
-                }
-            }
-        }
-    }
+		private void AddPackagesToPackagesListForCoreApp(ICollection<PackageDTO> packages, XmlNodeList nodesList)
+		{
+			foreach (XmlNode node in nodesList)
+			{
+				if (node.Attributes[PackageVersionAttributeSearchPatternOfCoreApp] != null)
+				{
+					packages.Add(
+						new PackageDTO
+						{
+							Name = node.Attributes[PackageNameAttributeSearchPatternOfCoreApp].Value,
+							Version = node.Attributes[PackageVersionAttributeSearchPatternOfCoreApp].Value
+						});
+				}
+			}
+		}
+
+		private void AddPackagesToPackagesListForFrameworkApp(ICollection<PackageDTO> packages, XmlNodeList nodesList)
+		{
+			foreach (XmlNode node in nodesList)
+			{
+				if (node.Attributes[PackageVersionAttributeSearchPatternOfFrameworkApp] != null)
+				{
+					packages.Add(
+						new PackageDTO
+						{
+							Name = node.Attributes[PackageNameAttributeSearchPatternOfFrameworkApp].Value,
+							Version = node.Attributes[PackageVersionAttributeSearchPatternOfFrameworkApp].Value
+						});
+				}
+			}
+		}
+
+		#endregion Private Methods
+	}
 }
