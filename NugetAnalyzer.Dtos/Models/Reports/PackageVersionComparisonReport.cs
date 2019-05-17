@@ -1,6 +1,6 @@
-﻿using NugetAnalyzer.Dtos.Models.Enums;
+﻿using NugetAnalyzer.DTOs.Models.Enums;
 
-namespace NugetAnalyzer.Dtos.Models.Reports
+namespace NugetAnalyzer.DTOs.Models.Reports
 {
     public struct PackageVersionComparisonReport
     {

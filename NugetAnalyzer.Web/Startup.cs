@@ -6,24 +6,28 @@ using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common;
+using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
+using NugetAnalyzer.DAL;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
-using NugetAnalyzer.Common.Configurations;
-using NugetAnalyzer.DAL;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Web.Infrastructure.Extensions;
+using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
 using NugetAnalyzer.Web.Middleware;
 
 namespace NugetAnalyzer.Web
 {
     public class Startup
     {
+        private const string ResourcePath = "Resources";
         public Startup(IHostingEnvironment environment)
         {
             Configuration = new ConfigurationBuilder()
                                 .SetBasePath(environment.ContentRootPath)
-                                .AddJsonFile("appsettings.json")
+                                .AddJsonFile("appsettings.json", optional: false)
+                                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
                                 .Build();
         }
 
@@ -36,7 +40,16 @@ namespace NugetAnalyzer.Web
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
+            services.AddConverters();
+
             services.Configure<NugetSettings>(Configuration.GetSection("NugetEndpoints"));
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextInfoProvider>();
+
+            IConfigurationSection gitHubEndPointsSection = Configuration.GetSection("GitHubEndPoints");
+            IConfigurationSection gitHubAppSettingsSection = Configuration.GetSection("GitHubAppSettings");
+            services.AddGitHubOAuth(gitHubEndPointsSection, gitHubAppSettingsSection);
             services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
 
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
@@ -58,6 +71,10 @@ namespace NugetAnalyzer.Web
 
             services.AddHttpClient<INugetHttpService, NugetHttpService>();
             services.AddMvc();
+
+            services.AddNugetAnalyzerRepositories();
+            services.AddNugetAnalyzerServices();
+            services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -72,8 +89,13 @@ namespace NugetAnalyzer.Web
                 app.UseStatusCodePagesWithRedirects("/Error/NotFoundError");
             }
 
+            app.UseConfiguredLocalization();
+
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseStaticFiles();
+
+            app.UseAuthentication();
+
             app.UseMvcWithDefaultRoute();
         }
     }

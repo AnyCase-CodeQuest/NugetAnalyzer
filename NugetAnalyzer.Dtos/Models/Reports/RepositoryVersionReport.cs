@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NugetAnalyzer.Dtos.Models.Reports
+namespace NugetAnalyzer.DTOs.Models.Reports
 {
     public class RepositoryVersionReport : BaseVersionReport
     {

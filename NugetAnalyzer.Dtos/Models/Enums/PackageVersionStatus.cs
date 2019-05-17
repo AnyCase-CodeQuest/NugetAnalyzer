@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.Dtos.Models.Enums
+﻿namespace NugetAnalyzer.DTOs.Models.Enums
 {
     // Don't change the order
     public enum PackageVersionStatus : byte

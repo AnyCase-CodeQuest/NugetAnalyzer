@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using NugetAnalyzer.Dtos.Converters;
+using NugetAnalyzer.DTOs.Converters;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Services
 {

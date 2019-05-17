@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NugetAnalyzer.BLL\NugetAnalyzer.BLL.csproj" />
+    <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.DTOs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

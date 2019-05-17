@@ -84,7 +84,6 @@ namespace NugetAnalyzer.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(item));
             }
-
             context.Entry(item).State = EntityState.Modified;
         }
     }

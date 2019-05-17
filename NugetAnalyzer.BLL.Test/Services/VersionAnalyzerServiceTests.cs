@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Moq;
-using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Enums;
+using NugetAnalyzer.DTOs.Models.Reports;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
