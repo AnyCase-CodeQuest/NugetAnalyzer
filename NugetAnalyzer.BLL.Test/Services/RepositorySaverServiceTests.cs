@@ -12,7 +12,7 @@ using Solution = NugetAnalyzer.BLL.Models.Solutions.Solution;
 namespace NugetAnalyzer.BLL.Test.Services
 {
     [TestFixture(Category = "UnitTests")]
-    public class RepositoryServiceTests
+    public class RepositorySaverServiceTests
     {
         private const int UserId = 1;
         private const int NullUserId = 0;
@@ -30,7 +30,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IRepository<Repository>> databaseRepositoryMock;
         private Mock<IRepository<PackageVersion>> packageVersionRepositoryMock;
         private Mock<IRepository<Package>> packageRepositoryMock;
-        private IRepositoryService repositoryService;
+        private IRepositorySaverService repositoryService;
 
         [SetUp]
         public void SetUp()
@@ -45,7 +45,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Returns(packageVersionRepositoryMock.Object);
             unitOfWorkMock.Setup(UnitOfWork => UnitOfWork.GetRepository<Package>())
                 .Returns(packageRepositoryMock.Object);
-            repositoryService = new RepositoryService(unitOfWorkMock.Object);
+            repositoryService = new RepositorySaverService(unitOfWorkMock.Object);
         }
 
         [OneTimeSetUp]
@@ -105,7 +105,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void RepositoryServiceInitialization_ShouldThrowArgumentNullException_WhenUnitOfWorkIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => repositoryService = new RepositoryService(NullUnitOfWork));
+            Assert.Throws<ArgumentNullException>(() => repositoryService = new RepositorySaverService(NullUnitOfWork));
         }
 
         [Test]
