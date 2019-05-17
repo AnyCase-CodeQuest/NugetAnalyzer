@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DeepEqual.Syntax;
 using Moq;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
@@ -276,40 +275,40 @@ namespace NugetAnalyzer.BLL.Test.Services
             };
         }
 
-        private ICollection<RepositoryWithVersionReport> GetAnalyzedRepositories()
+        private ICollection<RepositoryVersionReport> GetAnalyzedRepositories()
         {
-            return new List<RepositoryWithVersionReport>
+            return new List<RepositoryVersionReport>
             {
-                new RepositoryWithVersionReport
+                new RepositoryVersionReport
                 {
                     Report = report,
-                    Solutions = new List<SolutionWithVersionReport>
+                    Solutions = new List<SolutionVersionReport>
                     {
-                        new SolutionWithVersionReport
+                        new SolutionVersionReport
                         {
                             Report = report,
-                            Projects = new List<ProjectWithVersionReport>
+                            Projects = new List<ProjectVersionReport>
                             {
-                                new ProjectWithVersionReport
+                                new ProjectVersionReport
                                 {
                                     Report = report
                                 },
-                                new ProjectWithVersionReport
+                                new ProjectVersionReport
                                 {
                                     Report = report
                                 },
                             }
                         },
-                        new SolutionWithVersionReport
+                        new SolutionVersionReport
                         {
                             Report = report,
-                            Projects = new List<ProjectWithVersionReport>
+                            Projects = new List<ProjectVersionReport>
                             {
-                                new ProjectWithVersionReport
+                                new ProjectVersionReport
                                 {
                                     Report = report
                                 },
-                                new ProjectWithVersionReport
+                                new ProjectVersionReport
                                 {
                                     Report = report
                                 },

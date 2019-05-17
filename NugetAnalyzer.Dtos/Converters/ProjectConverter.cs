@@ -5,11 +5,11 @@ namespace NugetAnalyzer.Dtos.Converters
 {
 	public static class ProjectConverter
 	{
-		public static ProjectWithVersionReport ProjectToProjectVersionReport(Project project)
+		public static ProjectVersionReport ProjectToProjectVersionReport(Project project)
 		{
 			return project == null
 				? null
-				: new ProjectWithVersionReport
+				: new ProjectVersionReport
 				{
 					Id = project.Id,
 					Name = project.Name

@@ -26,7 +26,7 @@ namespace NugetAnalyzer.BLL.Services
 		private IRepositoriesRepository RepositoriesRepository =>
 			repositoriesRepository ?? (repositoriesRepository = uow.RepositoriesRepository);
 
-		public async Task<ICollection<RepositoryWithVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
+		public async Task<ICollection<RepositoryVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
 		{
 			IReadOnlyCollection<Repository> repositories = await RepositoriesRepository.GetRepositoriesWithIncludesAsync(expression);
 
@@ -34,9 +34,9 @@ namespace NugetAnalyzer.BLL.Services
             Dictionary<int, PackageVersion> latestPackageVersions
 				= await uow.PackageVersionsRepository.GetLatestPackageVersionsAsync(packageIds);
 
-			ICollection<RepositoryWithVersionReport> repositoriesWithVersionReport = Analyze(repositories, latestPackageVersions);
+			ICollection<RepositoryVersionReport> repositoriesVersionReport = Analyze(repositories, latestPackageVersions);
 
-			return repositoriesWithVersionReport;
+			return repositoriesVersionReport;
 		}
 
 
@@ -52,11 +52,11 @@ namespace NugetAnalyzer.BLL.Services
 			return new HashSet<int>(packageIds);
 		}
 
-		private ICollection<RepositoryWithVersionReport> Analyze(
+		private ICollection<RepositoryVersionReport> Analyze(
 			IReadOnlyCollection<Repository> repositories,
             Dictionary<int, PackageVersion> latestPackageVersions)
 		{
-			List<RepositoryWithVersionReport> repositoriesWithVersionReport
+			List<RepositoryVersionReport> repositoriesVersionReports
 				= repositories.Select(RepositoryConverter.RepositoryToRepositoryVersionReport).ToList();
 
 			for (int i = 0; i < repositories.Count; i++)
@@ -81,24 +81,24 @@ namespace NugetAnalyzer.BLL.Services
                         projectPackageVersion.PackageVersion))
 							.ToList();
 
-						repositoriesWithVersionReport[i].Solutions[j].Projects[k].Report = versionsService.CalculateMaxReportLevelStatus(reports);
+                        repositoriesVersionReports[i].Solutions[j].Projects[k].Report = versionsService.CalculateMaxReportLevelStatus(reports);
 					}
 
-					repositoriesWithVersionReport[i].Solutions[j].Report = versionsService
-						.CalculateMaxReportLevelStatus(repositoriesWithVersionReport[i]
+                    repositoriesVersionReports[i].Solutions[j].Report = versionsService
+						.CalculateMaxReportLevelStatus(repositoriesVersionReports[i]
 							.Solutions[j].Projects
-							.Select(projectWithVersionReport => projectWithVersionReport.Report)
+							.Select(projectVersionReport => projectVersionReport.Report)
 							.ToList());
 				}
 
-				repositoriesWithVersionReport[i].Report = versionsService
-					.CalculateMaxReportLevelStatus(repositoriesWithVersionReport[i]
+                repositoriesVersionReports[i].Report = versionsService
+					.CalculateMaxReportLevelStatus(repositoriesVersionReports[i]
 						.Solutions
-						.Select(solutionWithVersionReport => solutionWithVersionReport.Report)
+						.Select(solutionVersionReport => solutionVersionReport.Report)
 						.ToList());
 			}
 
-			return repositoriesWithVersionReport;
+			return repositoriesVersionReports;
 		}
 	}
 }

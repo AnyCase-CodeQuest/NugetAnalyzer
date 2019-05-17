@@ -18,6 +18,6 @@ namespace NugetAnalyzer.BLL.Interfaces
         /// </summary>
         /// <param name="expression">Linq lambda expressions filter</param>
         /// <returns>A collection of analyzed repositories</returns>
-        Task<ICollection<RepositoryWithVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression);
+        Task<ICollection<RepositoryVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression);
     }
 }
