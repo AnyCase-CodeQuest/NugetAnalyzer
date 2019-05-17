@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {

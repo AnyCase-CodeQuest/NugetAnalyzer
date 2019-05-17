@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace NugetAnalyzer.Web.Middleware
 {
@@ -27,16 +25,7 @@ namespace NugetAnalyzer.Web.Middleware
             catch (Exception ex)
             {
                 logger.LogError(ex, ex.Message);
-                await HandleExceptionAsync(context, ex);
             }
-        }
-
-        protected virtual Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            var result = JsonConvert.SerializeObject(new { error = exception.Message });
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return context.Response.WriteAsync(result);
         }
     }
 }

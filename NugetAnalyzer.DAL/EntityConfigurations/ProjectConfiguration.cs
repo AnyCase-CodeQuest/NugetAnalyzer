@@ -11,12 +11,12 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("Projects");
 
             builder
-                .Property(p => p.Name)
+                .Property(project => project.Name)
                 .IsRequired()
                 .HasMaxLength(4096);
 
             builder
-                .Property(p => p.SolutionId)
+                .Property(project => project.SolutionId)
                 .IsRequired();
         }
     }

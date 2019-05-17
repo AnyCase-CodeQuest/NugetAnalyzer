@@ -1,10 +1,22 @@
 ﻿[
   {
-    "outputFile": "wwwroot/stylesheets/Home/Home.css",
-    "inputFile": "wwwroot/stylesheets/Home/Home.scss"
+    "outputFile": "wwwroot/stylesheets/Home/Index.css",
+    "inputFile": "wwwroot/stylesheets/Home/Index.scss"
   },
   {
     "outputFile": "wwwroot/stylesheets/Shared/_Layout.css",
     "inputFile": "wwwroot/stylesheets/Shared/_Layout.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Shared/SignIn.css",
+    "inputFile": "wwwroot/stylesheets/Shared/SignIn.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Account/Profile.css",
+    "inputFile": "wwwroot/stylesheets/Account/Profile.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/OAuthSignIn/SourceChoice.css",
+    "inputFile": "wwwroot/stylesheets/OAuthSignIn/SourceChoice.scss"
   }
 ]

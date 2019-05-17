@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NugetAnalyzer.Dtos.Models.Reports;
-using NugetAnalyzer.Dtos.Models.Repositories;
+using NugetAnalyzer.Domain;
+using NugetAnalyzer.DTOs.Models.Reports;
 
-namespace NugetAnalyzer.Dtos.Converters
+namespace NugetAnalyzer.DTOs.Converters
 {
 	public static class RepositoryConverter
 	{
