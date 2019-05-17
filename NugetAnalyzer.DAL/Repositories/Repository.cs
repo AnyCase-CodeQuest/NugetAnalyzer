@@ -68,7 +68,7 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public void Delete(int id)
         {
-            var item = DbSet.Find(id);
+            T item = DbSet.Find(id);
 
             if (item == null)
             {

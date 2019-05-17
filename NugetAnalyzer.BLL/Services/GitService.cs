@@ -29,7 +29,7 @@ namespace NugetAnalyzer.BLL.Services
                 throw new ArgumentNullException(nameof(branchName));
             }
 
-            var cloneOptions = new CloneOptions
+            CloneOptions cloneOptions = new CloneOptions
             {
                 CredentialsProvider = (url, user, cred) =>
                     new UsernamePasswordCredentials

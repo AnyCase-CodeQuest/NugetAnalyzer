@@ -25,7 +25,7 @@ namespace NugetAnalyzer.BLL.Services
                 throw new ArgumentNullException(nameof(packageName));
             }
 
-            var data = await nugetHttpService.GetPackageMetadataAsync(packageName);
+            string data = await nugetHttpService.GetPackageMetadataAsync(packageName);
 
             return ParsePackageVersion(data);
         }
@@ -42,7 +42,7 @@ namespace NugetAnalyzer.BLL.Services
                 throw new ArgumentNullException(nameof(packageName));
             }
 
-            var data = await nugetHttpService.GetPackageVersionMetadataAsync(packageName, version);
+            string data = await nugetHttpService.GetPackageVersionMetadataAsync(packageName, version);
 
             return ParsePublishedDate(data);
         }
@@ -59,17 +59,17 @@ namespace NugetAnalyzer.BLL.Services
                 return null;
             }
 
-            var totalHitsString = (string)jsonObject["totalHits"];
+            string totalHitsString = (string)jsonObject["totalHits"];
 
-            if (!int.TryParse(totalHitsString, out var totalHits) || totalHits == 0)
+            if (!int.TryParse(totalHitsString, out int totalHits) || totalHits == 0)
             {
                 return null;
             }
 
-            var data = jsonObject["data"];
+            JToken data = jsonObject["data"];
 
-            var versionString = (string)data[0]["version"];
-            if (Version.TryParse(versionString, out var version))
+            string versionString = (string)data[0]["version"];
+            if (Version.TryParse(versionString, out Version version))
             {
                 return new PackageVersion
                 {
@@ -95,14 +95,14 @@ namespace NugetAnalyzer.BLL.Services
                 return null;
             }
 
-            var publishedString = (string)jsonObject["published"];
+            string publishedString = (string)jsonObject["published"];
             if (DateTime.TryParseExact(
                             publishedString,
                             publishedDateFormat,
                             null,
                             DateTimeStyles.AdjustToUniversal 
                             | DateTimeStyles.AssumeLocal,
-                            out var published))
+                            out DateTime published))
             {
                 return published;
             }

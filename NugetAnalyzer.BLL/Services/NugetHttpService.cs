@@ -26,19 +26,19 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<string> GetPackageVersionMetadataAsync(string packageName, string version)
         {
-            var url = $"{nugetSettings.PackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json";
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            string url = $"{nugetSettings.PackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
 
-            var response = await httpClient.SendAsync(request);
+            HttpResponseMessage response = await httpClient.SendAsync(request);
             return await response.Content.ReadAsStringAsync();
         }
 
         public async Task<string> GetPackageMetadataAsync(string query)
         {
-            var url = $"{nugetSettings.Search}/query?q=PackageId:{WebUtility.UrlEncode(query ?? string.Empty)}&prerelease=false";
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            string url = $"{nugetSettings.Search}/query?q=PackageId:{WebUtility.UrlEncode(query ?? string.Empty)}&prerelease=false";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
 
-            var response = await httpClient.SendAsync(request);
+            HttpResponseMessage response = await httpClient.SendAsync(request);
             return await response.Content.ReadAsStringAsync();
         }
     }

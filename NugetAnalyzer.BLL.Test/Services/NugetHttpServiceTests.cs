@@ -28,7 +28,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 Search = "https://api/test/search.nuget.org",
             };
 
-            var optionsMock = new Mock<IOptions<NugetSettings>>();
+            Mock<IOptions<NugetSettings>> optionsMock = new Mock<IOptions<NugetSettings>>();
             optionsMock
                 .Setup(options => options.Value)
                 .Returns(nugetSettings);
@@ -47,7 +47,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                     Content = new StringContent("[{'id':1,'value':'1'}]"),
                 });
 
-            var httpClient = new HttpClient(handlerMock.Object);
+            HttpClient httpClient = new HttpClient(handlerMock.Object);
 
             nugetHttpService = new NugetHttpService(httpClient, optionsMock.Object);
         }
@@ -55,12 +55,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public async Task GetPackageMetadataAsync_Should_Invoke_SendAsync()
         {
-            var packageName = "NUnit";
-            var version = "4.0.1";
+            string packageName = "NUnit";
+            string version = "4.0.1";
 
             await nugetHttpService.GetPackageVersionMetadataAsync(packageName, version);
 
-            var expectedUri = new Uri($"{nugetSettings.PackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json");
+            Uri expectedUri = new Uri($"{nugetSettings.PackageMetadata}/v3/registration3/{packageName.ToLowerInvariant()}/{version}.json");
 
             handlerMock
                 .Protected()
@@ -77,11 +77,11 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public async Task GetDataOfPackageVersionAsync_Should_Invoke_SendAsync()
         {
-            var packageName = "NUnit";
+            string packageName = "NUnit";
 
             await nugetHttpService.GetPackageMetadataAsync(packageName);
 
-            var expectedUri = new Uri($"{nugetSettings.Search}/query?q=PackageId:{WebUtility.UrlEncode(packageName)}&prerelease=false");
+            Uri expectedUri = new Uri($"{nugetSettings.Search}/query?q=PackageId:{WebUtility.UrlEncode(packageName)}&prerelease=false");
 
             handlerMock
                 .Protected()

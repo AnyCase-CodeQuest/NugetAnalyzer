@@ -94,7 +94,7 @@ namespace NugetAnalyzer.BLL.Services
                 return PackageDateStatus.Undefined;
             }
 
-            var differenceInMonths = publishedDateOfLatestVersion.Value
+            double differenceInMonths = publishedDateOfLatestVersion.Value
                     .Subtract(publishedDateOfCurrentVersion.Value).Days / DaysInTheMonth;
 
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.WarningBottomBorder)

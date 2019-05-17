@@ -166,7 +166,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             await nugetService.RefreshLatestVersionOfAllPackagesAsync();
 
-            var versions = new List<PackageVersion>
+            List<PackageVersion> versions = new List<PackageVersion>
             {
                 nUnitVersion
             };

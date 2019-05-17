@@ -23,18 +23,18 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task RefreshLatestVersionOfAllPackagesAsync()
         {
-            var newPackages = await packageService.GetAllAsync();
+            IReadOnlyCollection<Package> newPackages = await packageService.GetAllAsync();
 
-            var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
+            PackageVersion[] versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
             await versionService.UpdateAllLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
         }
 
         public async Task RefreshLatestVersionOfNewlyAddedPackagesAsync()
         {
-            var newPackages = await packageService.GetNewlyAddedPackagesAsync();
+            IReadOnlyCollection<Package> newPackages = await packageService.GetNewlyAddedPackagesAsync();
 
-            var versions = await GetLatestVersionsOfPackagesAsync(newPackages);
+            PackageVersion[] versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
             await versionService.UpdateLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
         }
@@ -42,7 +42,7 @@ namespace NugetAnalyzer.BLL.Services
 
         private async Task<PackageVersion[]> GetLatestVersionsOfPackagesAsync(IReadOnlyCollection<Package> packages)
         {
-            var packageVersionTasks = packages
+            IEnumerable<Task<PackageVersion>> packageVersionTasks = packages
                 .Select(GetLatestVersionOfPackageAsync);
 
             return await Task.WhenAll(packageVersionTasks);

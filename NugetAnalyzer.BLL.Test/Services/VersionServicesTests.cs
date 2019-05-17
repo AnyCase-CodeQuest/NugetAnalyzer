@@ -43,8 +43,8 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void UpdateLatestVersionOfNewPackagesAsync_Should_Invoke_Add_And_Update_When_Valid_Values()
         {
-            var latestVersions = GetLatestPackageVersions();
-            var versions = GetPackageVersions();
+            List<PackageVersion> latestVersions = GetLatestPackageVersions();
+            List<PackageVersion> versions = GetPackageVersions();
 
             packageVersionsRepositoryMock
                 .Setup(versionRepository => versionRepository.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()))
@@ -67,8 +67,8 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void UpdateLatestVersionOfPackagesAsync_Should_Invoke_Add_And_Update_When_Valid_Values()
         {
-            var latestVersions = GetLatestPackageVersions();
-            var versions = GetPackageVersions();
+            List<PackageVersion> latestVersions = GetLatestPackageVersions();
+            List<PackageVersion> versions = GetPackageVersions();
 
             packageVersionsRepositoryMock
                 .Setup(versionRepository => versionRepository.GetAllLatestVersionsAsync())

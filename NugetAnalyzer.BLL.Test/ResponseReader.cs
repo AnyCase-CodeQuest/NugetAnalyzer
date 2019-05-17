@@ -10,43 +10,43 @@ namespace NugetAnalyzer.BLL.Test
 
         public static Task<string> GetNUnitFromEndpointPackageMetadata()
         {
-            var path = Path.Combine(PathToEndpointPackageMetadata, "NUnitResponse.json");
+            string path = Path.Combine(PathToEndpointPackageMetadata, "NUnitResponse.json");
             return GetContent(path);
         }
 
         public static Task<string> GetNotFoundFromEndpointPackageMetadata()
         {
-            var path = Path.Combine(PathToEndpointPackageMetadata, "NotFoundResponse.xml");
+            string path = Path.Combine(PathToEndpointPackageMetadata, "NotFoundResponse.xml");
             return GetContent(path);
         }
 
         public static Task<string> GetDateFormatIncorrectFromEndpointPackageMetadata()
         {
-            var path = Path.Combine(PathToEndpointPackageMetadata, "DateFormatIncorrectResponse.json");
+            string path = Path.Combine(PathToEndpointPackageMetadata, "DateFormatIncorrectResponse.json");
             return GetContent(path);
         }
 
         public static Task<string> GetNUnitFromEndpointSearch()
         {
-            var path = Path.Combine(PathToEndpointSearch, "NUnitResponse.json");
+            string path = Path.Combine(PathToEndpointSearch, "NUnitResponse.json");
             return GetContent(path);
         }
 
         public static Task<string> GetIncorrectVersionFromEndpointSearch()
         {
-            var path = Path.Combine(PathToEndpointSearch, "IncorrectVersionResponse.json");
+            string path = Path.Combine(PathToEndpointSearch, "IncorrectVersionResponse.json");
             return GetContent(path);
         }
 
         public static Task<string> GetNotExistPackageFromEndpointSearch()
         {
-            var path = Path.Combine(PathToEndpointSearch, "NotExistPackageResponse.json");
+            string path = Path.Combine(PathToEndpointSearch, "NotExistPackageResponse.json");
             return GetContent(path);
         }
 
         private static Task<string> GetContent(string path)
         {
-            var streamReader = new StreamReader(path, System.Text.Encoding.Default);
+            StreamReader streamReader = new StreamReader(path, System.Text.Encoding.Default);
             return streamReader.ReadToEndAsync();
         }
     }

@@ -84,7 +84,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(versionAnalyzerService => versionAnalyzerService.CalculateMaxReportLevelStatus(It.IsAny<ICollection<PackageVersionComparisonReport>>()))
                 .Returns(report);
 
-            var result = await repositoryService.GetAnalyzedRepositoriesAsync(expression);
+            ICollection<RepositoryVersionReport> result = await repositoryService.GetAnalyzedRepositoriesAsync(expression);
 
             Assert.IsTrue(result.IsDeepEqual(GetAnalyzedRepositories()));
         }
