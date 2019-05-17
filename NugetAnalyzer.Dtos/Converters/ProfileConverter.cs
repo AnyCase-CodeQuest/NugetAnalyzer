@@ -1,7 +1,7 @@
 ﻿using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.DTOs.Models;
 
-namespace NugetAnalyzer.Dtos.Converters
+namespace NugetAnalyzer.DTOs.Converters
 {
     public class ProfileConverter
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {

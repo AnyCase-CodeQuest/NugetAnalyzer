@@ -3,11 +3,11 @@ using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Converters;
+using NugetAnalyzer.DTOs.Converters;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {

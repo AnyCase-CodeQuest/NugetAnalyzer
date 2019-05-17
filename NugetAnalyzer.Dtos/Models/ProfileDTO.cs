@@ -1,4 +1,4 @@
-﻿namespace NugetAnalyzer.Dtos.Models
+﻿namespace NugetAnalyzer.DTOs.Models
 {
     public class ProfileDTO
     {

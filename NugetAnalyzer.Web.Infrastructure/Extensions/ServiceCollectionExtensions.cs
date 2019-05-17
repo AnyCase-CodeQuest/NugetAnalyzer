@@ -6,7 +6,13 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
-using NugetAnalyzer.Dtos.Converters;
+using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.DAL;
+using NugetAnalyzer.DAL.Interfaces;
+using NugetAnalyzer.DAL.Repositories;
+using NugetAnalyzer.Domain;
+using NugetAnalyzer.DTOs.Converters;
 using NugetAnalyzer.Web.Infrastructure.Configurations;
 
 namespace NugetAnalyzer.Web.Infrastructure.Extensions
@@ -84,6 +90,33 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
                     }
                 };
             });
+        }
+
+        /// <summary>
+        /// Registers repositories for project
+        /// </summary>
+        /// <param name="services"></param>
+        public static void AddNugetAnalyzerRepositories(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
+            services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
+            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
+            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
+        }
+
+        /// <summary>
+        /// Registers services for project
+        /// </summary>
+        /// <param name="services"></param>
+        public static void AddNugetAnalyzerServices(this IServiceCollection services)
+        {
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<ISourceService, SourceService>();
+            services.AddScoped<IRepositoryService, RepositoryService>();
+            services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
         }
     }
 }

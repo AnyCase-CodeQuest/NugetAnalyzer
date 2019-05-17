@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NugetAnalyzer.Dtos.Converters;
+using NugetAnalyzer.DTOs.Converters;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 

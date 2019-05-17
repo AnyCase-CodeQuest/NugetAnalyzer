@@ -6,8 +6,8 @@ using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Converters;
-using NugetAnalyzer.Dtos.Models;
+using NugetAnalyzer.DTOs.Converters;
+using NugetAnalyzer.DTOs.Models;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services

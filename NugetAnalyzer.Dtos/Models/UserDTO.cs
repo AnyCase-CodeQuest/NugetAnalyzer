@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NugetAnalyzer.Dtos.Models
+namespace NugetAnalyzer.DTOs.Models
 {
     public class UserDTO
     {

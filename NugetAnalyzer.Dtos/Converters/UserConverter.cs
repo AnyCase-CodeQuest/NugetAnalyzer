@@ -1,8 +1,8 @@
-﻿using NugetAnalyzer.Dtos.Models;
+﻿using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.Domain;
 using System.Collections.Generic;
 
-namespace NugetAnalyzer.Dtos.Converters
+namespace NugetAnalyzer.DTOs.Converters
 {
     public class UserConverter
     {
