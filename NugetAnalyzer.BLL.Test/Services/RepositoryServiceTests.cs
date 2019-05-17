@@ -99,12 +99,6 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void SaveAsync_ShouldNotThrowException_WhenRepositoryIsAccurate()
         {
-            databaseRepositoryMock.Setup(Repository =>
-                Repository.GetSingleOrDefaultAsync(Rep => Rep.Name == "TestRepository")).Returns(Task.FromResult(new Repository()));
-            packageRepositoryMock
-                .Setup(dbPackage => dbPackage.GetSingleOrDefaultAsync(Rep => Rep.Name == "AnotherTestPackage"))
-                .Returns(Task.FromResult(new Package()));
-
             Assert.DoesNotThrowAsync(() => repositoryService.SaveAsync(AccurateRepository, UserId));
         }
 
