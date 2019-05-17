@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
-using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 using Project = NugetAnalyzer.BLL.Models.Projects.Project;
@@ -18,8 +16,8 @@ namespace NugetAnalyzer.BLL.Test.Services
     {
         private const int UserId = 1;
         private const int NullUserId = 0;
-        private Models.Repositories.Repository NullRepository = null;
-        private Models.Repositories.Repository AccurateRepository = new Models.Repositories.Repository
+        private readonly Models.Repositories.Repository NullRepository = null;
+        private readonly Models.Repositories.Repository AccurateRepository = new Models.Repositories.Repository
         {
             Name = "TestRepository",
             Solutions = new List<Solution>
