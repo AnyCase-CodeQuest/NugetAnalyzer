@@ -29,7 +29,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var packageName = "NUnit";
             nugetHttpServiceMock
                 .Setup(nugetHttpService => nugetHttpService.GetPackageMetadataAsync(It.IsAny<string>()))
-                .ReturnsAsync(EndpointSearch.NUnitResponse);
+                .ReturnsAsync(await ResponseReader.GetNUnitFromEndpointSearch());
 
             var packageVersion = await nugetApiService
                 .GetLatestPackageVersionAsync(packageName);
@@ -53,7 +53,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var packageName = "NonExistentPackage";
             nugetHttpServiceMock
                 .Setup(nugetHttpService => nugetHttpService.GetPackageMetadataAsync(It.IsAny<string>()))
-                .ReturnsAsync(EndpointSearch.NotExistPackageResponse);
+                .ReturnsAsync(await ResponseReader.GetNotExistPackageFromEndpointSearch());
 
             var packageVersion = await nugetApiService
                 .GetLatestPackageVersionAsync(packageName);
@@ -85,7 +85,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var packageName = "NUnit";
             nugetHttpServiceMock
                 .Setup(nugetHttpService => nugetHttpService.GetPackageMetadataAsync(It.IsAny<string>()))
-                .ReturnsAsync(EndpointSearch.IncorrectVersionResponse);
+                .ReturnsAsync(await ResponseReader.GetIncorrectVersionFromEndpointSearch());
 
             var packageVersion = await nugetApiService
                 .GetLatestPackageVersionAsync(packageName);
@@ -108,7 +108,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             var version = "3.9.0";
             nugetHttpServiceMock
                 .Setup(nugetHttpService => nugetHttpService.GetPackageVersionMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(EndpointPackageMetadata.NUnitResponse);
+                .ReturnsAsync(await ResponseReader.GetNUnitFromEndpointPackageMetadata());
 
             var publishedDate = await nugetApiService
                 .GetPackagePublishedDateByVersionAsync(packageName, version);
@@ -129,7 +129,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             nugetHttpServiceMock
                 .Setup(nugetHttpService => nugetHttpService.GetPackageVersionMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(EndpointPackageMetadata.NotFoundResponse);
+                .ReturnsAsync(await ResponseReader.GetNotFoundFromEndpointPackageMetadata());
 
             var publishedDate = await nugetApiService
                 .GetPackagePublishedDateByVersionAsync(packageName, version);
@@ -146,7 +146,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             nugetHttpServiceMock
                 .Setup(nugetHttpService => nugetHttpService.GetPackageVersionMetadataAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(EndpointPackageMetadata.DateFormatIncorrectResponse);
+                .ReturnsAsync(await ResponseReader.GetDateFormatIncorrectFromEndpointPackageMetadata());
 
             var publishedDate = await nugetApiService
                 .GetPackagePublishedDateByVersionAsync(packageName, version);

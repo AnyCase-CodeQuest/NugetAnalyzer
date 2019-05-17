@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,27 +19,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="EndpointPackageMetadata.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EndpointPackageMetadata.resx</DependentUpon>
-    </Compile>
-    <Compile Update="EndpointSearch.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EndpointSearch.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="EndpointPackageMetadata.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EndpointPackageMetadata.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="EndpointSearch.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EndpointSearch.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <None Update="Response\EndpointPackageMetadata\DateFormatIncorrectResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Response\EndpointPackageMetadata\NotFoundResponse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Response\EndpointPackageMetadata\NUnitResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Response\EndpointSearch\IncorrectVersionResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Response\EndpointSearch\NotExistPackageResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Response\EndpointSearch\NUnitResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   
  </Project>
