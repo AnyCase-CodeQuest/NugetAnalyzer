@@ -4,7 +4,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Interfaces
 {
-    public interface IPackageVersionsRepository
+    public interface IPackageVersionsRepository : IRepository<PackageVersion>
     {
         Task<Dictionary<int, PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds);
     }

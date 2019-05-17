@@ -7,7 +7,7 @@ namespace NugetAnalyzer.Dtos.Converters
 {
 	public static class RepositoryConverter
 	{
-		public static RepositoryVersionReport RepositoryToRepositoryVersionReport(Repository repository)
+		public static RepositoryVersionReport RepositoryToRepositoryVersionReport(NugetAnalyzer.Domain.Repository repository)
 		{
 			return repository == null
 				? null
@@ -31,7 +31,8 @@ namespace NugetAnalyzer.Dtos.Converters
                 {
                     Id = repository.Id,
                     Url = repository.HtmlUrl,
-                    Name = repository.Name
+                    Name = repository.Name,
+                    DefaultBranch = repository.DefaultBranch
                 };
         }
     }

@@ -20,6 +20,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IVersionsAnalyzerService> versionAnalyzerServiceMock;
         private Mock<IRepositoriesRepository> repositoryRepositoryMock;
         private Mock<IPackageVersionsRepository> versionRepositoryMock;
+        private Mock<IGitService> gitServiceMock;
         private Mock<IUnitOfWork> uowMock;
 
         private RepositoryService repositoryService;
@@ -39,18 +40,20 @@ namespace NugetAnalyzer.BLL.Test.Services
             versionAnalyzerServiceMock = new Mock<IVersionsAnalyzerService>();
             repositoryRepositoryMock = new Mock<IRepositoriesRepository>();
             versionRepositoryMock = new Mock<IPackageVersionsRepository>();
+            gitServiceMock = new Mock<IGitService>();
             uowMock = new Mock<IUnitOfWork>();
             uowMock.SetupGet(uow => uow.RepositoriesRepository).Returns(repositoryRepositoryMock.Object);
             uowMock.SetupGet(uow => uow.PackageVersionsRepository).Returns(versionRepositoryMock.Object);
 
-            repositoryService = new RepositoryService(versionAnalyzerServiceMock.Object, uowMock.Object);
+            repositoryService = new RepositoryService(versionAnalyzerServiceMock.Object, gitServiceMock.Object, uowMock.Object);
         }
 
         [Test]
         public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumentIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(null, uowMock.Object));
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionAnalyzerServiceMock.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new RepositoryService(null, gitServiceMock.Object, uowMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionAnalyzerServiceMock.Object,null, uowMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionAnalyzerServiceMock.Object, gitServiceMock.Object, null));
         }
 
         [Test]

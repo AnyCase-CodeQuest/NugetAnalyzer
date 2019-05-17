@@ -29,7 +29,7 @@ function BranchOnClick() {
             branchContainer.innerHTML = GetLoader();
             $.ajax({
                 type: "GET",
-                url: "/Home/Branches?repositoryId=" + $(this)[0].getAttribute("value"),
+                url: "/Repository/Branches?repositoryId=" + $(this)[0].getAttribute("value"),
                 dataType: "json",
                 success: function (data) {
                     branchContainer.innerHTML = GetSelect(data);
@@ -46,7 +46,7 @@ function AddSelectedRepositoriesOnClick() {
             $("body").append(GetFullScreenLoader());
             $.ajax({
                 type: "POST",
-                url: "/Home/AddRepositories",
+                url: "/Repository/AddRepositories",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(checkedRepositories),
                 dataType: "html",
@@ -66,7 +66,7 @@ function AddRepositoriesOnClick() {
             $("body").append(GetFullScreenLoader());
             $.ajax({
                 type: "GET",
-                url: "/Home/AddRepositories",
+                url: "/Repository/AddRepositories",
                 dataType: "html",
                 success: function (data) {
                     $('body').append(data);

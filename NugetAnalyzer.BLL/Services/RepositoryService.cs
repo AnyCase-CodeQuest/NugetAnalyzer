@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -14,12 +15,15 @@ namespace NugetAnalyzer.BLL.Services
 	public class RepositoryService : IRepositoryService
 	{
 		private readonly IVersionsAnalyzerService versionsService;
+        private readonly IGitService gitService;
+
 		private readonly IUnitOfWork uow;
 		private IRepositoriesRepository repositoriesRepository;
 
-		public RepositoryService(IVersionsAnalyzerService versionsService, IUnitOfWork uow)
+		public RepositoryService(IVersionsAnalyzerService versionsService, IGitService gitService, IUnitOfWork uow)
 		{
 			this.versionsService = versionsService ?? throw new ArgumentNullException(nameof(versionsService));
+			this.gitService = gitService ?? throw new ArgumentNullException(nameof(gitService));
 			this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
 		}
 
@@ -39,8 +43,35 @@ namespace NugetAnalyzer.BLL.Services
 			return repositoriesVersionReport;
 		}
 
+        public async Task<IReadOnlyCollection<string>> GetRepositoriesNamesAsync(Expression<Func<Repository, bool>> expression)
+        {
+            return await RepositoriesRepository.GetRepositoriesNamesAsync(expression);
+        }
 
-		private HashSet<int> GetAllPackagesIdsFromRepositories(IEnumerable<Repository> repositories)
+        public async Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken)
+        {
+            var tasks = new List<Task>();
+            foreach (var repository in repositories)
+            {
+                tasks.Add(Task.Run(() =>  // TODO: throws exceptions
+                {
+                    var generatedPath = GeneratePathForClone();
+                    gitService.CloneBranch(repository.Key, generatedPath, userToken, repository.Value);
+                    // Analyze data
+                    // Save to db;
+                    Directory.Delete(generatedPath, true);
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+        }
+
+        private string GeneratePathForClone()
+        {
+            throw new NotImplementedException();
+        }
+
+        private HashSet<int> GetAllPackagesIdsFromRepositories(IEnumerable<Repository> repositories)
 		{
 			IEnumerable<int> packageIds = repositories
 				.SelectMany(repository => repository.Solutions)

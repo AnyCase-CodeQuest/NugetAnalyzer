@@ -19,12 +19,21 @@ namespace NugetAnalyzer.DAL.Repositories
         public async Task<IReadOnlyCollection<Repository>> GetRepositoriesWithIncludesAsync(Expression<Func<Repository, bool>> expression)
         {
             return await DbSet
+                .AsNoTracking()
                 .Where(expression)
                 .Include(r => r.Solutions)
                 .ThenInclude(s => s.Projects)
                 .ThenInclude(p => p.ProjectPackageVersions)
                 .ThenInclude(ppv => ppv.PackageVersion)
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyCollection<string>> GetRepositoriesNamesAsync(Expression<Func<Repository, bool>> expression)
+        {
+            return await DbSet
                 .AsNoTracking()
+                .Where(expression)
+                .Select(repository => repository.Name)
                 .ToListAsync();
         }
     }

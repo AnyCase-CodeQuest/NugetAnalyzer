@@ -19,5 +19,19 @@ namespace NugetAnalyzer.BLL.Interfaces
         /// <param name="expression">Linq lambda expressions filter</param>
         /// <returns>A collection of analyzed repositories</returns>
         Task<ICollection<RepositoryVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression);
+
+        /// <summary>
+        /// Get repositories names  
+        /// </summary>
+        /// <param name="expression">Linq lambda expressions filter</param>
+        /// <returns>A collection of repositories names</returns>
+        Task<IReadOnlyCollection<string>> GetRepositoriesNamesAsync(Expression<Func<Repository, bool>> expression);
+
+        /// <summary>
+        /// Added git repositories for storing by user access token
+        /// </summary>
+        /// <param name="repositories">A dictionary which contains the repository URL as a key and the repository branch as a value</param>
+        /// <param name="userToken">User git access token</param>
+        Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken);
     }
 }

@@ -22,7 +22,7 @@
                                 <tr>
                                     <td><a class="modal__repository-name" target="_blank" rel="noopener noreferrer" href="@repository.Url">@repository.Name</a></td>
                                     <td><input type="checkbox" style="transform: scale(1.5); cursor: pointer" /></td>
-                                    <td><a class="repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch" style="cursor: pointer">default</a></td>
+                                    <td><a class="repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch" style="cursor: pointer">@repository.DefaultBranch <span style="color: gray">(default)</span></a></td>
                                 </tr>
                             }
                         </tbody>
