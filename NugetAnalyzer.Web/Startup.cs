@@ -43,7 +43,6 @@ namespace NugetAnalyzer.Web
             services.AddGitHubOAuth(gitHubEndPointsSection, gitHubAppSettingsSection);
             services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
-
             services.AddNugetAnalyzerRepositories();
             services.AddNugetAnalyzerServices();
             services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);

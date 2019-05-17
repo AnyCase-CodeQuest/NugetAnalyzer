@@ -12,6 +12,6 @@ namespace NugetAnalyzer.Domain
 
         public Repository Repository { get; set; }
 
-        public ICollection<Project> Projects { get; set; }
+        public ICollection<Project> Projects { get; set; } = new List<Project>();
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common.Interfaces;
+using NugetAnalyzer.Common.Services;
 using NugetAnalyzer.DAL;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
@@ -117,6 +119,10 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddScoped<ISourceService, SourceService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
+            services.AddScoped<IRepositorySaverService, RepositorySaverService>();
+            services.AddSingleton<IDirectoryService, DirectoryService>();
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
         }
     }
 }
