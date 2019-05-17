@@ -10,7 +10,8 @@ using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.DAL.Repositories;
-using NugetAnalyzer.DAL.UnitOfWork;
+using NugetAnalyzer.Common.Configurations;
+using NugetAnalyzer.DAL;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.Web.Middleware;
 
@@ -36,20 +37,24 @@ namespace NugetAnalyzer.Web
             });
 
             services.Configure<NugetSettings>(Configuration.GetSection("NugetEndpoints"));
+            services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
 
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
             services.AddSingleton<INugetApiService, NugetApiService>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IVersionRepository, VersionRepository>();
             services.AddScoped<INugetService, NugetService>();
             services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<IPackageService, PackageService>();
 
-            services.AddScoped(
-                typeof(IRepository<PackageVersion>),
-                provider => provider.GetService<IVersionRepository>());
+            services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
+            services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
+            services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
+            services.AddScoped<IRepositoryService, RepositoryService>();
+
+            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
+            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
 
             services.AddHttpClient<INugetHttpService, NugetHttpService>();
             services.AddMvc();
@@ -61,11 +66,14 @@ namespace NugetAnalyzer.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error/ServerError");
+                app.UseStatusCodePagesWithRedirects("/Error/NotFoundError");
+            }
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseStaticFiles();
-            app.UseMvc();
-            
             app.UseMvcWithDefaultRoute();
         }
     }

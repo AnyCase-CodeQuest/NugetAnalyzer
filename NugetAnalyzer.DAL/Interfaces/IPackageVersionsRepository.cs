@@ -6,8 +6,10 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Interfaces
 {
-    public interface IVersionRepository : IRepository<PackageVersion>
+    public interface IPackageVersionsRepository : IRepository<PackageVersion>
     {
+        Task<Dictionary<int, PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds);
+
         Task<IReadOnlyCollection<PackageVersion>> GetLatestVersionsAsync(Expression<Func<PackageVersion, bool>> predicate);
 
         Task<IReadOnlyCollection<PackageVersion>> GetAllLatestVersionsAsync();

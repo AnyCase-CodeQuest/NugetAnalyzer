@@ -18,7 +18,7 @@ namespace NugetAnalyzer.DAL.Repositories
         public Repository(NugetAnalyzerDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.DbSet = context.Set<T>();
+            DbSet = context.Set<T>();
         }
 
         public void Add(T item)

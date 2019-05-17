@@ -15,7 +15,7 @@ namespace NugetAnalyzer.BLL.Services
         private readonly IUnitOfWork uow;
         private readonly IDateTimeProvider dateTimeProvider;
         private IRepository<Package> packageRepository;
-        private IVersionRepository versionRepository;
+        private IPackageVersionsRepository packageVersionsRepository;
 
         public VersionService(IUnitOfWork uow, IDateTimeProvider dateTimeProvider)
         {
@@ -36,23 +36,23 @@ namespace NugetAnalyzer.BLL.Services
             }
         }
 
-        private IVersionRepository VersionRepository
+        private IPackageVersionsRepository PackageVersionsRepository
         {
             get
             {
-                if (versionRepository == null)
+                if (packageVersionsRepository == null)
                 {
-                    versionRepository = uow.VersionRepository;
+                    packageVersionsRepository = uow.PackageVersionsRepository;
                 }
 
-                return versionRepository;
+                return packageVersionsRepository;
             }
         }
 
 
         public async Task UpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions)
         {
-            var latestVersions = await VersionRepository
+            var latestVersions = await PackageVersionsRepository
                 .GetLatestVersionsAsync(latestPackageVersion => versions
                                                         .Select(packageVersion => packageVersion.PackageId)
                                                         .Contains(latestPackageVersion.PackageId));
@@ -62,7 +62,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task UpdateAllLatestVersionsAsync(IEnumerable<PackageVersion> versions)
         {
-            var latestVersions = await VersionRepository.GetAllLatestVersionsAsync();
+            var latestVersions = await PackageVersionsRepository.GetAllLatestVersionsAsync();
 
             await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
         }
@@ -80,11 +80,11 @@ namespace NugetAnalyzer.BLL.Services
                 if (latestVersion.GetVersion() == packageVersion.GetVersion())
                 {
                     latestVersion.PublishedDate = packageVersion.PublishedDate;
-                    VersionRepository.Update(latestVersion);
+                    PackageVersionsRepository.Update(latestVersion);
                 }
                 else
                 {
-                    VersionRepository.Add(packageVersion);
+                    PackageVersionsRepository.Add(packageVersion);
                 }
             }
 
