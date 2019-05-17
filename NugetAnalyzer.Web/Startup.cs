@@ -46,7 +46,6 @@ namespace NugetAnalyzer.Web
             {
                 app.UseExceptionHandler("/Error/ServerError");
                 app.UseStatusCodePagesWithRedirects("/Error/NotFoundError");
-                app.UseHsts();
             }
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
