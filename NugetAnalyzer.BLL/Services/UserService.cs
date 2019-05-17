@@ -33,18 +33,18 @@ namespace NugetAnalyzer.BLL.Services
             }
         }
 
-        public async Task<UserViewModel> CreateUserAsync(UserRegisterModel profile)
+        public async Task<UserDTO> CreateUserAsync(UserRegisterModel profile)
         {
             var user = userConverter.ConvertRegisterModelToUser(profile);
             UserRepository.Add(user);
             await unitOfWork.SaveChangesAsync();
-            return userConverter.ConvertUserToProfile(user);
+            return userConverter.ConvertUserToDTO(user);
         }
 
-        public async Task<UserViewModel> GetUserByIdAsync(int userId)
+        public async Task<UserDTO> GetUserByIdAsync(int userId)
         {
             var user = await UserRepository.GetByIdAsync(userId);
-            return userConverter.ConvertUserToProfile(user);
+            return userConverter.ConvertUserToDTO(user);
         }
     }
 }

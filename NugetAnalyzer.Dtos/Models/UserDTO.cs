@@ -2,7 +2,7 @@
 
 namespace NugetAnalyzer.Dtos.Models
 {
-    public class UserViewModel
+    public class UserDTO
     {
         public int Id { get; set; }
 
@@ -12,6 +12,6 @@ namespace NugetAnalyzer.Dtos.Models
 
         public string AvatarUrl { get; set; }
 
-        public ICollection<ProfileViewModel> Profiles { get; set; }
+        public ICollection<ProfileDTO> Profiles { get; set; }
     }
 }   

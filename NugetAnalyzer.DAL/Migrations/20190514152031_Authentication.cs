@@ -80,6 +80,11 @@ namespace NugetAnalyzer.DAL.Migrations
                 name: "IX_Profiles_UserId",
                 table: "Profiles",
                 column: "UserId");
+
+            migrationBuilder.InsertData(
+                table: "Sources",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { "1", "GitHub" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

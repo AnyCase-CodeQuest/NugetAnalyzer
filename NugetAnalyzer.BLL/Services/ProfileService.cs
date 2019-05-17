@@ -33,7 +33,7 @@ namespace NugetAnalyzer.BLL.Services
             }
         }
 
-        public async Task<ProfileViewModel> GetProfileForUserAsync(UserRegisterModel user, int sourceId)
+        public async Task<ProfileDTO> GetProfileForUserAsync(UserRegisterModel user, int sourceId)
         {
             var gitHubId = user.ExternalId;
 
@@ -47,16 +47,16 @@ namespace NugetAnalyzer.BLL.Services
             return profile;
         }
 
-        public async Task<ProfileViewModel> GetProfileBySourceIdAsync(int sourceId, int externalId)
+        public async Task<ProfileDTO> GetProfileBySourceIdAsync(int sourceId, int externalId)
         {
             var profile = await ProfileRepository
                 .GetSingleOrDefaultAsync(currentProfile =>
                 currentProfile.SourceId == sourceId && currentProfile.ExternalId == externalId);
 
-            return profileConverter.ConvertProfileToViewModel(profile);
+            return profileConverter.ConvertProfileToDTO(profile);
         }
 
-        public async Task UpdateProfileAsync(ProfileViewModel profile)
+        public async Task UpdateProfileAsync(ProfileDTO profile)
         {
             var currentProfile = await ProfileRepository.GetByIdAsync(profile.Id);
             currentProfile.AccessToken = profile.AccessToken;

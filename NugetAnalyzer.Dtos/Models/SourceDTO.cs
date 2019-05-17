@@ -1,6 +1,6 @@
 ﻿namespace NugetAnalyzer.Dtos.Models
 {
-    public class SourceViewModel
+    public class SourceDTO
     {
         public int Id { get; set; }
 

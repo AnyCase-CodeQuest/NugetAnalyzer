@@ -6,24 +6,24 @@ namespace NugetAnalyzer.Dtos.Converters
 {
     public class UserConverter
     {
-        public User ConvertProfileToUser(UserViewModel profile)
+        public User ConvertDTOToUser(UserDTO profile)
         {
             return profile == null
                 ? null
                 : new User
-            {
-                UserName = profile.UserName,
-                Email = profile.Email,
-                AvatarUrl = profile.AvatarUrl,
-                Id = profile.Id
-            };
+                {
+                    UserName = profile.UserName,
+                    Email = profile.Email,
+                    AvatarUrl = profile.AvatarUrl,
+                    Id = profile.Id
+                };
         }
 
-        public UserViewModel ConvertUserToProfile(User user)
+        public UserDTO ConvertUserToDTO(User user)
         {
             return user == null
                 ? null
-                : new UserViewModel
+                : new UserDTO
                 {
                     UserName = user.UserName,
                     Email = user.Email,
@@ -34,8 +34,7 @@ namespace NugetAnalyzer.Dtos.Converters
 
         public User ConvertRegisterModelToUser(UserRegisterModel user)
         {
-            //TODO: REFACTOR
-            if( user == null)
+            if (user == null)
             {
                 return null;
             }

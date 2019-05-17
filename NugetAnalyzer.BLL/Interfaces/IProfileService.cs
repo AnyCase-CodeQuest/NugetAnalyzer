@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NugetAnalyzer.Dtos.Models;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IProfileService
     {
-        Task<ProfileViewModel> GetProfileBySourceIdAsync(int sourceId, int externalId);
+        Task<ProfileDTO> GetProfileBySourceIdAsync(int sourceId, int externalId);
 
-        Task UpdateProfileAsync(ProfileViewModel profile);
+        Task UpdateProfileAsync(ProfileDTO profile);
 
-        Task<ProfileViewModel> GetProfileForUserAsync(UserRegisterModel user, int sourceId);
+        Task<ProfileDTO> GetProfileForUserAsync(UserRegisterModel user, int sourceId);
 
         Task<int> GetUserIdByExternalIdAsync(int sourceId, int externalId);
     }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using NugetAnalyzer.Dtos.Models;
+﻿using System.Threading.Tasks;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {

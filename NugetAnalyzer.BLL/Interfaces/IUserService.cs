@@ -5,8 +5,8 @@ namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IUserService
     {
-        Task<UserViewModel> CreateUserAsync(UserRegisterModel profile);
+        Task<UserDTO> CreateUserAsync(UserRegisterModel profile);
 
-        Task<UserViewModel> GetUserByIdAsync(int userId);
+        Task<UserDTO> GetUserByIdAsync(int userId);
     }
 }

@@ -35,7 +35,7 @@ namespace NugetAnalyzer.Web.Controllers
 
 			string accessToken = await httpContextInfoProvider.GetAccessTokenAsync();
 
-			UserRegisterModel user = new UserRegisterModel
+			var user = new UserRegisterModel
 			{
 				UserName = httpContextInfoProvider.GetUsername(),
 				AvatarUrl = httpContextInfoProvider.GetAvatarUrl(),

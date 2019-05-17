@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Localization;
 
 namespace NugetAnalyzer.Web.Infrastructure.Extensions
 {
-    public static class LocalizationExtensions
+    public static class ApplicationBuilderExtensions
     {
         public static void UseConfiguredLocalization(this IApplicationBuilder app)
         {

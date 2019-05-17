@@ -5,11 +5,11 @@ namespace NugetAnalyzer.Dtos.Converters
 {
     public class ProfileConverter
     {
-        public ProfileViewModel ConvertProfileToViewModel(Profile profile)
+        public ProfileDTO ConvertProfileToDTO(Profile profile)
         {
             return profile == null
                 ? null
-                : new ProfileViewModel
+                : new ProfileDTO
                 {
                     Id = profile.Id,
                     ExternalId = profile.ExternalId,

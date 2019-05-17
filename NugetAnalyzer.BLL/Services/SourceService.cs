@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Converters;
 
 namespace NugetAnalyzer.BLL.Services
 {

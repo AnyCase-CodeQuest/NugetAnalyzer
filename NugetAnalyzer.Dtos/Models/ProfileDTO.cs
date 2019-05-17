@@ -1,6 +1,6 @@
 ﻿namespace NugetAnalyzer.Dtos.Models
 {
-    public class ProfileViewModel
+    public class ProfileDTO
     {
         public int Id { get; set; }
 
