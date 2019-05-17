@@ -2,6 +2,7 @@
 using System.Xml;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Models.Repositories;
@@ -16,6 +17,14 @@ namespace NugetAnalyzer.BLL.Services
         private const string SolutionSearchPattern = "*.sln";
         private const string CsProjSearchPattern = "*.csproj";
         private const string PackagesConfigSearchPattern = "packages.config";
+
+        private const string CoreAppPackagesXPath = "//Project/ItemGroup/PackageReference";
+        private const string FrameworkAppPackagesXPath = "//packages/package";
+
+        private const string PackageVersionAttributeSearchPatternOfCoreApp = "Version";
+        private const string PackageNameAttributeSearchPatternOfCoreApp = "Include";
+        private const string PackageVersionAttributeSearchPatternOfFrameworkApp = "version";
+        private const string PackageNameAttributeSearchPatternOfFrameworkApp = "id";
 
         private readonly IDirectoryService directoryService;
         private readonly IFileService fileService;
@@ -123,11 +132,11 @@ namespace NugetAnalyzer.BLL.Services
             {
                 case FrameworkType.Core:
                 {
-                    return document.SelectNodes("//Project/ItemGroup/PackageReference");
+                    return document.SelectNodes(CoreAppPackagesXPath);
                 }
                 case FrameworkType.Framework:
                 {
-                    return document.SelectNodes("//packages/package");
+                    return document.SelectNodes(FrameworkAppPackagesXPath);
                 }
                 default:
                 {
@@ -157,13 +166,13 @@ namespace NugetAnalyzer.BLL.Services
         {
             foreach (XmlNode node in nodesList)
             {
-                if (node.Attributes["Version"] != null)
+                if (node.Attributes[PackageVersionAttributeSearchPatternOfCoreApp] != null)
                 {
                     packages.Add(
                         new Package
                         {
-                            Name = node.Attributes["Include"].Value,
-                            Version = node.Attributes["Version"].Value
+                            Name = node.Attributes[PackageNameAttributeSearchPatternOfCoreApp].Value,
+                            Version = node.Attributes[PackageVersionAttributeSearchPatternOfCoreApp].Value
                         });
                 }
             }
@@ -173,13 +182,13 @@ namespace NugetAnalyzer.BLL.Services
         {
             foreach (XmlNode node in nodesList)
             {
-                if (node.Attributes["version"] != null)
+                if (node.Attributes[PackageVersionAttributeSearchPatternOfFrameworkApp] != null)
                 {
                     packages.Add(
                         new Package
                         {
-                            Name = node.Attributes["id"].Value,
-                            Version = node.Attributes["version"].Value
+                            Name = node.Attributes[PackageNameAttributeSearchPatternOfFrameworkApp].Value,
+                            Version = node.Attributes[PackageVersionAttributeSearchPatternOfFrameworkApp].Value
                         });
                 }
             }
