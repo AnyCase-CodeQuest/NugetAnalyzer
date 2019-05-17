@@ -1,7 +1,7 @@
 ﻿[
   {
-    "outputFile": "wwwroot/stylesheets/Home/Home.css",
-    "inputFile": "wwwroot/stylesheets/Home/Home.scss"
+    "outputFile": "wwwroot/stylesheets/Home/Index.css",
+    "inputFile": "wwwroot/stylesheets/Home/Index.scss"
   },
   {
     "outputFile": "wwwroot/stylesheets/Shared/_Layout.css",
