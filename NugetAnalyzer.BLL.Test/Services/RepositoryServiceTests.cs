@@ -17,6 +17,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         private const int UserId = 1;
         private const int NullUserId = 0;
         private const string VersionString = "1.1.1.1";
+        private const string FirstPackageName = "TestPackage";
+        private const string SecondPackageName = "AnotherTestPackage";
+        private const string RepositoryName = "TestRepository";
+        private const string SolutionName = "TestSolution";
+        private const string FirstProjectName = "TestProject";
+        private const string SecondProjectName = "SecondTestProject";
         private readonly Models.Repositories.Repository NullRepository = null;
         private Models.Repositories.Repository AccurateRepository;
         private readonly IUnitOfWork NullUnitOfWork = null;
@@ -47,39 +53,39 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             AccurateRepository = new Models.Repositories.Repository
             {
-                Name = "TestRepository",
+                Name = RepositoryName,
                 Solutions = new List<Solution>
                 {
                     new Solution
                     {
-                        Name = "TestSolution",
+                        Name = SolutionName,
                         Projects = new List<Project>
                         {
                             new Project
                             {
-                                Name = "TestProject1",
+                                Name = FirstProjectName,
                                 Packages = new List<Models.Packages.Package>
                                 {
                                     new Models.Packages.Package
                                     {
-                                        Name = "TestPackage",
+                                        Name = FirstPackageName,
                                         Version = VersionString
                                     },
                                     new Models.Packages.Package
                                     {
-                                        Name = "AnotherTestPackage",
+                                        Name = SecondPackageName,
                                         Version = VersionString
                                     }
                                 }
                             },
                             new Project
                             {
-                                Name = "TestProject2",
+                                Name = SecondProjectName,
                                 Packages = new List<Models.Packages.Package>
                                 {
                                     new Models.Packages.Package
                                     {
-                                        Name = "TestPackage",
+                                        Name = FirstPackageName,
                                         Version = VersionString
                                     }
                                 }
