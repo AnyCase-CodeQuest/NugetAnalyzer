@@ -53,6 +53,7 @@ namespace NugetAnalyzer.Web
             services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
 
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
+
             services.AddSingleton<INugetApiService, NugetApiService>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
