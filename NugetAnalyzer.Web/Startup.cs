@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.IOptions;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common;
+using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL;
 using NugetAnalyzer.DAL.Context;
@@ -36,7 +36,7 @@ namespace NugetAnalyzer.Web
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
 
-            services.Configure<PackageVersionAnalysisRules>(options => Configuration.GetSection("PackageStatus").Bind(options));
+            services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

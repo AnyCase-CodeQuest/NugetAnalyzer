@@ -1,8 +1,8 @@
 ﻿using NugetAnalyzer.Dtos.Models.Enums;
 
-namespace NugetAnalyzer.BLL.IOptions
+namespace NugetAnalyzer.Common.Configurations
 {
-    public class PackageVersionAnalysisRules
+    public class PackageVersionConfigurations
     {
         public VersionConfigs VersionStatus { get; set; }
         public DateBordersInMonthsConfigs DateBordersInMonths { get; set; }

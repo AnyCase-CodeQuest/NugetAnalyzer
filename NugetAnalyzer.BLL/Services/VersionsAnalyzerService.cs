@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using NugetAnalyzer.BLL.IOptions;
+using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Dtos.Models.Reports;
 
@@ -15,10 +15,10 @@ namespace NugetAnalyzer.BLL.Services
     {
         private const double DaysInTheMonth = 365.25 / 12;
 
-        private readonly PackageVersionAnalysisRules packageVersionConfiguration;
+        private readonly PackageVersionConfigurations packageVersionConfiguration;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public VersionsAnalyzerService(IOptions<PackageVersionAnalysisRules> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
+        public VersionsAnalyzerService(IOptions<PackageVersionConfigurations> packageVersionConfiguration, IDateTimeProvider dateTimeProvider)
         {
             if (packageVersionConfiguration == null)
             {

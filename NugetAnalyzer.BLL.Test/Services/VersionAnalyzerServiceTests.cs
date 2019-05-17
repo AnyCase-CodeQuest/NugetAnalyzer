@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Moq;
-using NugetAnalyzer.BLL.IOptions;
-using NugetAnalyzer.Dtos.Models;
 using NugetAnalyzer.Dtos.Models.Enums;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.Dtos.Models.Reports;
@@ -19,7 +18,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private VersionsAnalyzerService versionsService;
         private Mock<IDateTimeProvider> dateTimeProviderMock;
 
-        private readonly IOptions<PackageVersionAnalysisRules> packageVersionConfiguration = Options.Create(new PackageVersionAnalysisRules
+        private readonly IOptions<PackageVersionConfigurations> packageVersionConfiguration = Options.Create(new PackageVersionConfigurations
         {
             VersionStatus = new VersionConfigs
             {
