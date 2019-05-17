@@ -33,10 +33,12 @@ namespace NugetAnalyzer.BLL.Test.Services
             packageVersionRepositoryMock = new Mock<IRepository<PackageVersion>>();
             packageRepositoryMock = new Mock<IRepository<Package>>();
             unitOfWorkMock = new Mock<IUnitOfWork>();
-            unitOfWorkMock.Setup(UnitOfWork => UnitOfWork.GetRepository<Repository>()).Returns(databaseRepositoryMock.Object);
+            unitOfWorkMock.Setup(UnitOfWork => UnitOfWork.GetRepository<Repository>())
+                .Returns(databaseRepositoryMock.Object);
             unitOfWorkMock.Setup(UnitOfWork => UnitOfWork.GetRepository<PackageVersion>())
                 .Returns(packageVersionRepositoryMock.Object);
-            unitOfWorkMock.Setup(UnitOfWork => UnitOfWork.GetRepository<Package>()).Returns(packageRepositoryMock.Object);
+            unitOfWorkMock.Setup(UnitOfWork => UnitOfWork.GetRepository<Package>())
+                .Returns(packageRepositoryMock.Object);
             repositoryService = new RepositoryService(unitOfWorkMock.Object);
         }
 
@@ -65,15 +67,15 @@ namespace NugetAnalyzer.BLL.Test.Services
                                     },
                                     new Models.Packages.Package
                                     {
-                                        Name="AnotherTestPackage",
+                                        Name = "AnotherTestPackage",
                                         Version = VersionString
                                     }
                                 }
                             },
                             new Project
                             {
-                                Name="TestProject2",
-                                Packages=new List<Models.Packages.Package>
+                                Name = "TestProject2",
+                                Packages = new List<Models.Packages.Package>
                                 {
                                     new Models.Packages.Package
                                     {
