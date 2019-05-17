@@ -110,13 +110,14 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
         /// Registers services for project
         /// </summary>
         /// <param name="services"></param>
-        public static void AddNugetAnalyzerServices(this IServiceCollection services)
+        public static void AddNugetAnalyzerServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<ISourceService, SourceService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
+            services.AddScoped<IGitHubApiService, GitHubApiService>(provider => new GitHubApiService(configuration["ApplicationName"]));
         }
     }
 }

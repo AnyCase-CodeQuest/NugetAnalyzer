@@ -51,7 +51,7 @@ namespace NugetAnalyzer.BLL.Services
         public async Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken)
         {
             var tasks = new List<Task>();
-            foreach (var repository in repositories)
+            foreach (var repository in repositories) //parallel async
             {
                 tasks.Add(Task.Run(() =>  // TODO: throws exceptions
                 {

@@ -33,31 +33,21 @@ namespace NugetAnalyzer.Web
             {
                 options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
             });
-            services.AddConverters();
-
-            services.AddHttpContextAccessor();
-            services.AddScoped<HttpContextInfoProvider>();
 
             IConfigurationSection gitHubEndPointsSection = Configuration.GetSection("GitHubEndPoints");
             IConfigurationSection gitHubAppSettingsSection = Configuration.GetSection("GitHubAppSettings");
+
             services.AddGitHubOAuth(gitHubEndPointsSection, gitHubAppSettingsSection);
+            services.AddConverters();
+            services.AddNugetAnalyzerRepositories();
+            services.AddNugetAnalyzerServices(Configuration);
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextInfoProvider>();
+           
             services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
 
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
-            services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
-            services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
-            services.AddScoped<IRepositoryService, RepositoryService>();
-
-            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
-            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
-
-            services.AddScoped<IGitHubApiService, GitHubApiService>(provider => new GitHubApiService(Configuration["ApplicationName"]));
-
-            services.AddNugetAnalyzerRepositories();
-            services.AddNugetAnalyzerServices();
             services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }
 
