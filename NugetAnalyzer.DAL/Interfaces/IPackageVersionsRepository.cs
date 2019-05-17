@@ -6,6 +6,6 @@ namespace NugetAnalyzer.DAL.Interfaces
 {
     public interface IPackageVersionsRepository
     {
-        Task<IReadOnlyCollection<PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds);
+        Task<Dictionary<int, PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds);
     }
 }

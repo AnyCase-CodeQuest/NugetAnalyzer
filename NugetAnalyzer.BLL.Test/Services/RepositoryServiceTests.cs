@@ -90,36 +90,45 @@ namespace NugetAnalyzer.BLL.Test.Services
             Assert.IsTrue(result.IsDeepEqual(GetAnalyzedRepositories()));
         }
 
-        private IReadOnlyCollection<PackageVersion> GetLatestPackageVersions()
+        private Dictionary<int, PackageVersion> GetLatestPackageVersions()
         {
-            return new List<PackageVersion>
+            return new Dictionary<int, PackageVersion>
             {
-                new PackageVersion
                 {
-                    Major = 1,
-                    Minor = 1,
-                    Build = 5,
-                    Revision = 5,
-                    PublishedDate = new DateTime(2019, 1, 5),
-                    PackageId = 1,
+                    1,
+                    new PackageVersion
+                    {
+                        Major = 1,
+                        Minor = 1,
+                        Build = 5,
+                        Revision = 5,
+                        PublishedDate = new DateTime(2019, 1, 5),
+                        PackageId = 1,
+                    }
                 },
-                new PackageVersion
                 {
-                    Major = 2,
-                    Minor = 2,
-                    Build = 3,
-                    Revision = 1,
-                    PublishedDate = new DateTime(2018, 1, 5),
-                    PackageId = 2,
+                    2,
+                    new PackageVersion
+                    {
+                        Major = 2,
+                        Minor = 2,
+                        Build = 3,
+                        Revision = 1,
+                        PublishedDate = new DateTime(2018, 1, 5),
+                        PackageId = 2,
+                    }
                 },
-                new PackageVersion
                 {
-                    Major = 4,
-                    Minor = 4,
-                    Build = 4,
-                    Revision = 4,
-                    PublishedDate = new DateTime(2019, 1, 5),
-                    PackageId = 3
+                    3,
+                    new PackageVersion
+                    {
+                        Major = 4,
+                        Minor = 4,
+                        Build = 4,
+                        Revision = 4,
+                        PublishedDate = new DateTime(2019, 1, 5),
+                        PackageId = 3
+                    }
                 }
             };
         }

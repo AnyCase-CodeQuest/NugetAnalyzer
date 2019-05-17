@@ -31,7 +31,7 @@ namespace NugetAnalyzer.BLL.Services
 			IReadOnlyCollection<Repository> repositories = await RepositoriesRepository.GetRepositoriesWithIncludesAsync(expression);
 
 			HashSet<int> packageIds = GetAllPackagesIdsFromRepositories(repositories);
-			IReadOnlyCollection<PackageVersion> latestPackageVersions
+            Dictionary<int, PackageVersion> latestPackageVersions
 				= await uow.PackageVersionsRepository.GetLatestPackageVersionsAsync(packageIds);
 
 			ICollection<RepositoryWithVersionReport> repositoriesWithVersionReport = Analyze(repositories, latestPackageVersions);
@@ -52,10 +52,9 @@ namespace NugetAnalyzer.BLL.Services
 			return new HashSet<int>(packageIds);
 		}
 
-		// TODO: give me an advice on this method, please =)
 		private ICollection<RepositoryWithVersionReport> Analyze(
 			IReadOnlyCollection<Repository> repositories,
-			IReadOnlyCollection<PackageVersion> latestPackageVersions)
+            Dictionary<int, PackageVersion> latestPackageVersions)
 		{
 			List<RepositoryWithVersionReport> repositoriesWithVersionReport
 				= repositories.Select(RepositoryConverter.RepositoryToRepositoryVersionReport).ToList();
@@ -78,9 +77,8 @@ namespace NugetAnalyzer.BLL.Services
 						List<PackageVersionComparisonReport> reports = projects[k]
 							.ProjectPackageVersions
 							.Select(projectPackageVersion => versionsService
-								.Compare(latestPackageVersions
-									.First(packageVersion => packageVersion.PackageId == projectPackageVersion.PackageVersion.PackageId),
-									projectPackageVersion.PackageVersion))
+								.Compare(latestPackageVersions[projectPackageVersion.PackageVersion.PackageId],
+                        projectPackageVersion.PackageVersion))
 							.ToList();
 
 						repositoriesWithVersionReport[i].Solutions[j].Projects[k].Report = versionsService.CalculateMaxReportLevelStatus(reports);

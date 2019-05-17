@@ -14,7 +14,7 @@ namespace NugetAnalyzer.DAL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds)
+        public async Task<Dictionary<int, PackageVersion>> GetLatestPackageVersionsAsync(ICollection<int> packageIds)
         {
             return await DbSet
                 .Where(pv => packageIds.Contains(pv.PackageId))
@@ -26,7 +26,7 @@ namespace NugetAnalyzer.DAL.Repositories
                     .ThenByDescending(p => p.Revision)
                     .First())
                 .AsNoTracking()
-                .ToListAsync();
+                .ToDictionaryAsync(packageVersion => packageVersion.PackageId, packageVersion => packageVersion);
         }
     }
 }
