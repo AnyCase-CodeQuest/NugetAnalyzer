@@ -8,7 +8,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class RepositoryService : IRepositoryService
+    public class RepositorySaverService : IRepositorySaverService
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -55,7 +55,7 @@ namespace NugetAnalyzer.BLL.Services
             }
         }
 
-        public RepositoryService(IUnitOfWork unitOfWork)
+        public RepositorySaverService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
