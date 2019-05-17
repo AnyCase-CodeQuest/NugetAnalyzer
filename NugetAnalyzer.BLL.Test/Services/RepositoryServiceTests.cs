@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using DeepEqual.Syntax;
 using Moq;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.Dtos.Models.Enums;
+using NugetAnalyzer.DTOs.Models.Enums;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.Dtos.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Reports;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
@@ -84,7 +84,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(versionAnalyzerService => versionAnalyzerService.CalculateMaxReportLevelStatus(It.IsAny<ICollection<PackageVersionComparisonReport>>()))
                 .Returns(report);
 
-            var result = await repositoryService.GetAnalyzedRepositoriesAsync(expression);
+            ICollection<RepositoryVersionReport> result = await repositoryService.GetAnalyzedRepositoriesAsync(expression);
 
             Assert.IsTrue(result.IsDeepEqual(GetAnalyzedRepositories()));
         }

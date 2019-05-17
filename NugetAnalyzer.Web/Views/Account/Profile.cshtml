@@ -1,0 +1,26 @@
+﻿@model NugetAnalyzer.DTOs.Models.UserDTO
+@{
+    ViewData["Title"] = Localizer["Profile"];
+}
+
+@section Styles {
+    <link href="~/stylesheets/Account/Profile.css" rel="stylesheet" />
+}
+
+<div class="row ">
+    <div class="column profile__column">
+        <img class="profile__column_item profile__avatar" src=@Model.AvatarUrl />
+        <h3 class="profile__column_item">@Model.UserName</h3>
+        <button class="w-100 profile__column_item">@Localizer["Edit"]</button>
+    </div>
+    <div class="column ml-4">
+        <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link nav__link_profile_tab active" data-toggle="tab" href="#overview">@Localizer["Overview"]</a></li>
+            <li class="nav-item"><a class="nav-link nav__link_profile_tab" data-toggle="tab" href="#repostiories">@Localizer["Repositories"]</a></li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">@Localizer["Overview"]</div>
+            <div class="tab-pane fade" id="repostiories" role="tabpanel" aria-labelledby="repostiories-tab">@Localizer["Repositories"]</div>
+        </div>
+    </div>
+</div>

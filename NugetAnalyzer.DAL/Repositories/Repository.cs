@@ -68,7 +68,7 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public void Delete(int id)
         {
-            var item = DbSet.Find(id);
+            T item = DbSet.Find(id);
 
             if (item == null)
             {
@@ -84,7 +84,6 @@ namespace NugetAnalyzer.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(item));
             }
-
             context.Entry(item).State = EntityState.Modified;
         }
     }

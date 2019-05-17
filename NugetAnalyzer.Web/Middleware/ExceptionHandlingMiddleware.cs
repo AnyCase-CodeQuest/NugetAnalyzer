@@ -26,8 +26,6 @@ namespace NugetAnalyzer.Web.Middleware
             {
                 logger.LogError(ex, ex.Message);
             }
-
-            await nextRequestDelegate.Invoke(context);
         }
     }
 }

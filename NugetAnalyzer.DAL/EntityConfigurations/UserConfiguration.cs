@@ -11,21 +11,14 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("Users");
 
             builder
-                .Property(p => p.Email)
-                .HasMaxLength(256);
+                .Property(user => user.Email)
+                .HasMaxLength(256)
+                .IsRequired();
 
             builder
-                .Property(p => p.UserName)
-                .IsRequired()
-                .HasMaxLength(256);
-
-            builder
-                .Property(p => p.FirstName)
-                .HasMaxLength(256);
-
-            builder
-                .Property(p => p.LastName)
-                .HasMaxLength(256);
+                .Property(user => user.UserName)
+                .HasMaxLength(256)
+                .IsRequired();
         }
     }
 }
