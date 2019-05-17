@@ -31,8 +31,9 @@ namespace NugetAnalyzer.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<PartialViewResult> AddRepositories(Dictionary<long, string> repositories)
+        public async Task<PartialViewResult> AddRepositories(Dictionary<string, string> repositories)
         {
+
             return PartialView("RepositoriesPopUp", null);
         }
 

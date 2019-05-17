@@ -20,8 +20,8 @@
                             @foreach (var repository in Model)
                             {
                                 <tr>
-                                    <td><a target="_blank" rel="noopener noreferrer" href="@repository.Url">@repository.Name</a></td>
-                                    <td><input type="checkbox" value="@repository.Id" style="transform: scale(1.5); cursor: pointer" /></td>
+                                    <td><a class="modal__repository-name" target="_blank" rel="noopener noreferrer" href="@repository.Url">@repository.Name</a></td>
+                                    <td><input type="checkbox" style="transform: scale(1.5); cursor: pointer" /></td>
                                     <td><a class="repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch" style="cursor: pointer">default</a></td>
                                 </tr>
                             }
@@ -29,7 +29,7 @@
                     </table>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-dark">Add</button>
+                    <input type="submit" class="btn btn-dark" value="Add"/>
                 </div>
             </div>
         </div>

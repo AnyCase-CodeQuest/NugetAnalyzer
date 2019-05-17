@@ -1,5 +1,5 @@
 ﻿function GetSelect(selectListData) {
-    var selectList = '<select class="form-control" style="height: unset; padding: unset">';
+    var selectList = '<select class="form-control modal__select__branch" style="height: unset; padding: unset">';
     for (var i = 0; i < selectListData.length; i++) {
         selectList += '<option>' + selectListData[i] + '</option>';
     }
@@ -7,19 +7,54 @@
     return selectList;
 }
 
+function GetSelectedRepositories() {
+    var selectedCheckboxes = $(".modal input[type='checkbox']:checked");
+    var selectedRepositories = {};
+    
+    for (var i = 0; i < selectedCheckboxes.length; i++) {
+        var node = selectedCheckboxes.item(i).parent().parent();
+        
+        selectedRepositories[node.find(".modal__repository-name")[0].getAttribute("href")] =
+            node.find(".modal__select__branch :selected").text();
+
+    }
+    //console.log(selectedRepositories);
+    return selectedRepositories;
+}
+
 function BranchOnClick() {
-    $(".repository-branch").on('click',
+    $(".modal .repository-branch").on('click',
         function () {
-            var container = $(this).parent()[0];
-            container.innerHTML = GetLoader();
+            var branchContainer = $(this).parent()[0];
+            branchContainer.innerHTML = GetLoader();
             $.ajax({
                 type: "GET",
                 url: "/Home/Branches?repositoryId=" + $(this)[0].getAttribute("value"),
                 dataType: "json",
                 success: function (data) {
-                    container.innerHTML = GetSelect(data);
+                    branchContainer.innerHTML = GetSelect(data);
+                }
+            });
+        });
+}
+
+function AddSelectedRepositoriesOnClick() {
+    $('.modal input[type="submit"]').on('click',
+        function () {
+            var checkedRepositories = GetSelectedRepositories();
+            $(".modal-wrapper").remove();
+            $("body").append(GetFullScreenLoader());
+            $.ajax({
+                type: "POST",
+                url: "/Home/AddRepositories",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(checkedRepositories),
+                dataType: "html",
+                success: function (data) {
+
                 },
                 complete: function () {
+                    $(".loader-wrapper").remove();
                 }
             });
         });
@@ -32,9 +67,11 @@ function AddRepositoriesOnClick() {
             $.ajax({
                 type: "GET",
                 url: "/Home/AddRepositories",
+                dataType: "html",
                 success: function (data) {
                     $('body').append(data);
                     BranchOnClick();
+                    AddSelectedRepositoriesOnClick();
                 },
                 complete: function () {
                     $(".loader-wrapper").remove();
