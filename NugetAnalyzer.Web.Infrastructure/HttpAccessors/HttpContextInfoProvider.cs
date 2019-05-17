@@ -58,7 +58,7 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 
         public int GetExternalId()
         {
-            var stringId = httpContextAccessor
+            string stringId = httpContextAccessor
                 .HttpContext
                 .User
                 .FindFirstValue(Constants.NugetAnalyzerClaimTypes.ExternalIdClaimType);

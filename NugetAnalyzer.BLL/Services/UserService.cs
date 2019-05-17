@@ -35,7 +35,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<UserDTO> CreateUserAsync(UserRegisterModel profile)
         {
-            var user = userConverter.ConvertRegisterModelToUser(profile);
+            User user = userConverter.ConvertRegisterModelToUser(profile);
             UserRepository.Add(user);
             await unitOfWork.SaveChangesAsync();
             return userConverter.ConvertUserToDTO(user);
@@ -43,7 +43,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<UserDTO> GetUserByIdAsync(int userId)
         {
-            var user = await UserRepository.GetByIdAsync(userId);
+            User user = await UserRepository.GetByIdAsync(userId);
             return userConverter.ConvertUserToDTO(user);
         }
     }

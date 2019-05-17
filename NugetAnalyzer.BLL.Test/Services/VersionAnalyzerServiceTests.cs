@@ -118,7 +118,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void Compare_Should_ReturnsReportWithObsoleteTrueValue_When_LatestVersionIsObsolete()
         {
-            var report = versionsService.Compare(obsoletePackageVersion, packageVersionWithErrorDateStatus);
+            PackageVersionComparisonReport report = versionsService.Compare(obsoletePackageVersion, packageVersionWithErrorDateStatus);
 
             Assert.AreEqual(report.IsObsolete, true);
         }
@@ -126,7 +126,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void Compare_Should_ReturnsReportWithUndefinedDateValueAndFalseObsoleteValue_When_DateOfVersionIsUndefined()
         {
-            var report = versionsService.Compare(packageVersionWithUndefinedDate, packageVersionWithUndefinedDate);
+            PackageVersionComparisonReport report = versionsService.Compare(packageVersionWithUndefinedDate, packageVersionWithUndefinedDate);
 
             Assert.AreEqual(report.DateStatus, PackageDateStatus.Undefined);
             Assert.AreEqual(report.IsObsolete, false);
@@ -135,7 +135,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void Compare_Should_ReturnsReportWithDateErrorValue_When_DateOfCurrentVersionIsOld()
         {
-            var report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorDateStatus);
+            PackageVersionComparisonReport report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorDateStatus);
 
             Assert.AreEqual(report.DateStatus, PackageDateStatus.Error);
             Assert.AreEqual(report.VersionStatus, PackageVersionStatus.Actual);
@@ -144,7 +144,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void Compare_Should_ReturnsReportWithVersionErrorValue_When_MajorVersionOfCurrentVersionIsChanged()
         {
-            var report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorVersionStatus);
+            PackageVersionComparisonReport report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorVersionStatus);
 
             Assert.AreEqual(report.DateStatus, PackageDateStatus.Normal);
             Assert.AreEqual(report.VersionStatus, PackageVersionStatus.Error);
@@ -159,7 +159,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void CalculateMaxReportLevelStatus_Should_ReturnsReportWithAllGoodValues_When_ReportsCountIsZero()
         {
-            var report = versionsService.CalculateMaxReportLevelStatus(new List<PackageVersionComparisonReport>(0));
+            PackageVersionComparisonReport report = versionsService.CalculateMaxReportLevelStatus(new List<PackageVersionComparisonReport>(0));
 
             Assert.AreEqual(report, new PackageVersionComparisonReport());
         }
@@ -167,8 +167,8 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void CalculateMaxReportLevelStatus_CheckReturnsValues()
         {
-            var report1 = versionsService.CalculateMaxReportLevelStatus(GetTestReports1());
-            var report2 = versionsService.CalculateMaxReportLevelStatus(GetTestReports2());
+            PackageVersionComparisonReport report1 = versionsService.CalculateMaxReportLevelStatus(GetTestReports1());
+            PackageVersionComparisonReport report2 = versionsService.CalculateMaxReportLevelStatus(GetTestReports2());
 
             Assert.AreEqual(report1, new PackageVersionComparisonReport
             {

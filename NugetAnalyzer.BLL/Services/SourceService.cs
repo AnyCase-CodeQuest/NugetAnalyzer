@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Interfaces;
@@ -32,7 +33,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<int> GetSourceIdByName(string sourceName)
         {
-            var sources = await SourcesRepository.GetAllAsync();
+            IReadOnlyCollection<Source> sources = await SourcesRepository.GetAllAsync();
             return sources.First(source => source.Name == sourceName).Id;
         }
     }

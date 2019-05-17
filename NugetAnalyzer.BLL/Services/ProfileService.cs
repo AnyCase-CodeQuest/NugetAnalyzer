@@ -35,9 +35,9 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<ProfileDTO> GetProfileForUserAsync(UserRegisterModel user, int sourceId)
         {
-            var gitHubId = user.ExternalId;
+            int gitHubId = user.ExternalId;
 
-            var profile = await GetProfileBySourceIdAsync(sourceId, gitHubId);
+            ProfileDTO profile = await GetProfileBySourceIdAsync(sourceId, gitHubId);
 
             if (profile != null)
             {
@@ -49,7 +49,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<ProfileDTO> GetProfileBySourceIdAsync(int sourceId, int externalId)
         {
-            var profile = await ProfileRepository
+            Profile profile = await ProfileRepository
                 .GetSingleOrDefaultAsync(currentProfile =>
                 currentProfile.SourceId == sourceId && currentProfile.ExternalId == externalId);
 
@@ -58,7 +58,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task UpdateProfileAsync(ProfileDTO profile)
         {
-            var currentProfile = await ProfileRepository.GetByIdAsync(profile.Id);
+            Profile currentProfile = await ProfileRepository.GetByIdAsync(profile.Id);
             currentProfile.AccessToken = profile.AccessToken;
             ProfileRepository.Update(currentProfile);
             await unitOfWork.SaveChangesAsync();
@@ -66,7 +66,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<int> GetUserIdByExternalIdAsync(int sourceId, int externalId)
         {
-            var profile = await ProfileRepository
+            Profile profile = await ProfileRepository
                 .GetSingleOrDefaultAsync(currentProfile =>
                 currentProfile.SourceId == sourceId && currentProfile.ExternalId == externalId);
 
