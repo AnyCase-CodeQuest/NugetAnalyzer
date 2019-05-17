@@ -11,6 +11,6 @@ namespace NugetAnalyzer.Domain
 
         public DateTime? LastUpdateTime { get; set; }
 
-        public ICollection<PackageVersion> Versions { get; set; }
+        public ICollection<PackageVersion> Versions { get; set; } = new List<PackageVersion>();
     }
 }

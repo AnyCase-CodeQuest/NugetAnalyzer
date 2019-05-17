@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
@@ -142,9 +141,11 @@ namespace NugetAnalyzer.BLL.Services
             if (package != null)
             {
                 tempPackageVersion = await PackageVersionRepository.GetSingleOrDefaultAsync(dbPackageVersion =>
-                    dbPackageVersion.Package.Name == packageName && dbPackageVersion.Major == packageVersion.Major &&
-                    dbPackageVersion.Minor == packageVersion.Minor && dbPackageVersion.Build == packageVersion.Build &&
-                    dbPackageVersion.Revision == packageVersion.Revision);
+                    dbPackageVersion.Package.Name == packageName
+                    && dbPackageVersion.Major == packageVersion.Major
+                    && dbPackageVersion.Minor == packageVersion.Minor
+                    && dbPackageVersion.Build == packageVersion.Build
+                    && dbPackageVersion.Revision == packageVersion.Revision);
                 if (tempPackageVersion != null)
                 {
                     return new ProjectPackageVersion
@@ -188,8 +189,7 @@ namespace NugetAnalyzer.BLL.Services
             tempPackageVersion = CreatePackageVersion(packageVersion);
             var tempPackage = new Package
             {
-                Name = packageName,
-                Versions = new List<PackageVersion>()
+                Name = packageName
             };
             tempPackage.Versions.Add(tempPackageVersion);
             tempPackageVersion.Package = tempPackage;
