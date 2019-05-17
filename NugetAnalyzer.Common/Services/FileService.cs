@@ -36,7 +36,7 @@ namespace NugetAnalyzer.Common.Services
 
             var filesPaths = GetFilesPaths(directoryPath, searchPattern);
 
-            return filesPaths.Count() == 0 ? null : filesPaths[0];
+            return filesPaths.Count() == 0 ? null : filesPaths.First();
         }
 
         public Task<string> GetContentAsync(string filePath)

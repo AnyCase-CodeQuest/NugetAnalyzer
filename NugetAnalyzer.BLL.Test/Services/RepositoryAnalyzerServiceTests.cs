@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using NugetAnalyzer.BLL.Interfaces;
@@ -104,28 +104,28 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             // Arrange
             directoryServiceMock
-                .Setup(directoryService => directoryService.Exists(TestList[0]))
+                .Setup(directoryService => directoryService.Exists(TestList.First()))
                 .Returns(true);
-            directoryServiceMock.Setup(directoryService => directoryService.GetName(TestList[0]))
-                .Returns(TestList[0]);
+            directoryServiceMock.Setup(directoryService => directoryService.GetName(TestList.First()))
+                .Returns(TestList.First());
             fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList[0], SolutionSearchPattern))
+                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), SolutionSearchPattern))
                 .Returns(TestArray);
             fileServiceMock
                 .Setup(fileService => fileService.GetFilesDirectoriesPaths(TestArray))
                 .Returns(TestList);
             fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList[0], CsProjSearchPattern))
+                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), CsProjSearchPattern))
                 .Returns(TestArray);
             fileServiceMock
-                .Setup(fileService => fileService.GetFilePath(TestList[0], PackagesConfigSearchPattern))
-                .Returns(TestList[0]);
+                .Setup(fileService => fileService.GetFilePath(TestList.First(), PackagesConfigSearchPattern))
+                .Returns(TestList.First());
             fileServiceMock
-                .Setup(fileService => fileService.GetContentAsync(TestList[0]))
+                .Setup(fileService => fileService.GetContentAsync(TestList.First()))
                 .ReturnsAsync(TestPackagesConfigFileContent);
 
             // Act
-            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList[0]);
+            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList.First());
 
             // Assert
             Assert.IsNotNull(repotitory);
@@ -137,32 +137,32 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             // Arrange
             directoryServiceMock
-                .Setup(directoryService => directoryService.Exists(TestList[0]))
+                .Setup(directoryService => directoryService.Exists(TestList.First()))
                 .Returns(true);
             directoryServiceMock
-                .Setup(directoryService => directoryService.GetName(TestList[0]))
-                .Returns(TestList[0]);
+                .Setup(directoryService => directoryService.GetName(TestList.First()))
+                .Returns(TestList.First());
             fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList[0], SolutionSearchPattern))
+                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), SolutionSearchPattern))
                 .Returns(TestArray);
             fileServiceMock
                 .Setup(fileService => fileService.GetFilesDirectoriesPaths(TestArray))
                 .Returns(TestList);
             fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList[0], CsProjSearchPattern))
+                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), CsProjSearchPattern))
                 .Returns(TestArray);
             fileServiceMock
-                .Setup(fileService => fileService.GetFilePath(TestList[0], PackagesConfigSearchPattern))
+                .Setup(fileService => fileService.GetFilePath(TestList.First(), PackagesConfigSearchPattern))
                 .Returns((string)null);
             fileServiceMock
-                .Setup(fileService => fileService.GetFilePath(TestList[0], CsProjSearchPattern))
-                .Returns(TestList[0]);
+                .Setup(fileService => fileService.GetFilePath(TestList.First(), CsProjSearchPattern))
+                .Returns(TestList.First());
             fileServiceMock
-                .Setup(fileService => fileService.GetContentAsync(TestList[0]))
+                .Setup(fileService => fileService.GetContentAsync(TestList.First()))
                 .ReturnsAsync(TestCsProjFileContent);
 
             // Act
-            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList[0]);
+            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList.First());
 
             // Assert
             Assert.IsNotNull(repotitory);
