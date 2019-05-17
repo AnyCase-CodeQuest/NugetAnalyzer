@@ -2,8 +2,8 @@
 
 namespace NugetAnalyzer.Dtos.Models.Reports
 {
-    public class RepositoryWithVersionReport : BaseVersionReport
+    public class RepositoryVersionReport : BaseVersionReport
     {
-        public List<SolutionWithVersionReport> Solutions { get; set; }
+        public List<SolutionVersionReport> Solutions { get; set; }
     }
 }
