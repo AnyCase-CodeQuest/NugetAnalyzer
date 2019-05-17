@@ -63,7 +63,7 @@ namespace NugetAnalyzer.BLL.Services
         public async Task SaveAsync(Models.Repositories.Repository repository, int userId)
         {
             unitOfWork.GetRepository<Repository>().Add(await ToDomainAsync(repository, userId));
-            unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
         }
 
         #region PrivateMethods
@@ -109,8 +109,7 @@ namespace NugetAnalyzer.BLL.Services
             return new Repository
             {
                 Name = name,
-                UserId = userId,
-                Solutions = new List<Solution>()
+                UserId = userId
             };
         }
 
@@ -118,8 +117,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             return new Solution
             {
-                Name = name,
-                Projects = new List<Project>(),
+                Name = name
             };
         }
 
@@ -127,8 +125,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             return new Project
             {
-                Name = name,
-                ProjectPackageVersions = new List<ProjectPackageVersion>()
+                Name = name
             };
         }
 

@@ -110,14 +110,14 @@ namespace NugetAnalyzer.BLL.Services
             var fileContent = await fileService.GetContentAsync(filePath);
             document.LoadXml(fileContent);
 
-            var nodesList = GetXmlNodeList(document, frameworkType);
+            var nodesList = GetXmlNodeListWithPackagesOfXmlDocument(document, frameworkType);
 
             AddPackagesToPackagesList(frameworkType, packages, nodesList);
 
             return packages;
         }
 
-        private XmlNodeList GetXmlNodeList(XmlDocument document, FrameworkType frameworkType)
+        private XmlNodeList GetXmlNodeListWithPackagesOfXmlDocument(XmlDocument document, FrameworkType frameworkType)
         {
             switch (frameworkType)
             {
