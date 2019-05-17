@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
+using NugetAnalyzer.Domain;
 
-namespace NugetAnalyzer.DAL.UnitOfWork
+namespace NugetAnalyzer.DAL
 {
     public sealed class UnitOfWork : IUnitOfWork
     {
@@ -16,6 +17,10 @@ namespace NugetAnalyzer.DAL.UnitOfWork
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
+
+        public IRepositoriesRepository RepositoriesRepository => (IRepositoriesRepository)GetRepository<Repository>();
+        public IPackageVersionsRepository PackageVersionsRepository => (IPackageVersionsRepository)GetRepository<PackageVersion>();
+
 
         public IRepository<T> GetRepository<T>()
             where T : class
