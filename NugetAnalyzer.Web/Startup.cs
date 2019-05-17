@@ -6,10 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NugetAnalyzer.Common;
 using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
-using NugetAnalyzer.Common.Services;
-using NugetAnalyzer.Common.Interfaces;
-using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.Web.Infrastructure.Extensions;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
@@ -47,13 +43,6 @@ namespace NugetAnalyzer.Web
             services.AddGitHubOAuth(gitHubEndPointsSection, gitHubAppSettingsSection);
             services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<IDirectoryService, DirectoryService>();
-            services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
-            services.AddScoped<IRepositorySaverService, RepositorySaverService>();
-
             services.AddNugetAnalyzerRepositories();
             services.AddNugetAnalyzerServices();
             services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
