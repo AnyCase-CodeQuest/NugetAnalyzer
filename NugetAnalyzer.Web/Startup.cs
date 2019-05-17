@@ -58,11 +58,14 @@ namespace NugetAnalyzer.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error/ServerError");
+                app.UseStatusCodePagesWithRedirects("/Error/NotFoundError");
+            }
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseStaticFiles();
-            app.UseMvc();
-            
             app.UseMvcWithDefaultRoute();
         }
     }
