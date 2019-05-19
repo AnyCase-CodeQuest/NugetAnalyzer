@@ -11,17 +11,17 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("ProjectPackageVersions");
 
             builder
-                .HasKey(p => new {p.ProjectId, p.PackageVersionId});
+                .HasKey(projectPackageVersion => new { projectPackageVersion.ProjectId, projectPackageVersion.PackageVersionId});
 
             builder
-                .HasOne(p => p.Project)
-                .WithMany(p => p.ProjectPackageVersions)
-                .HasForeignKey(p => p.ProjectId);
+                .HasOne(projectPackageVersion => projectPackageVersion.Project)
+                .WithMany(project => project.ProjectPackageVersions)
+                .HasForeignKey(projectPackageVersion => projectPackageVersion.ProjectId);
 
             builder
-                .HasOne(p => p.PackageVersion)
-                .WithMany(p => p.ProjectPackageVersions)
-                .HasForeignKey(p => p.PackageVersionId);
+                .HasOne(projectPackageVersion => projectPackageVersion.PackageVersion)
+                .WithMany(packageVersion => packageVersion.ProjectPackageVersions)
+                .HasForeignKey(projectPackageVersion => projectPackageVersion.PackageVersionId);
         }
     }
 }

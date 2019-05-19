@@ -3,7 +3,7 @@ $logo-fill-color: rgba(0,0,0,.2);
 
 // -------------------- navbar --------------------
 
-.nav-link:hover {
+.nav__link_navbar:hover {
     color: $link-hover-color !important;
 }
 
@@ -14,18 +14,6 @@ $logo-fill-color: rgba(0,0,0,.2);
         outline: none !important;
         box-shadow: none !important;
         color: $link-hover-color !important;
-    }
-}
-
-.navbar__logo {
-    svg {
-        fill: #fff;
-    }
-
-    &:hover {
-        svg {
-            fill: $link-hover-color;
-        }
     }
 }
 
@@ -70,18 +58,6 @@ $logo-fill-color: rgba(0,0,0,.2);
 .footer__container {
     border-top: 1px solid $logo-fill-color;
     margin-top: 20px;
-}
-
-.footer__logo {
-    svg {
-        fill: $logo-fill-color;
-    }
-
-    &:hover {
-        svg {
-            fill: rgba(0,0,0,.4);
-        }
-    }
 }
 
 .footer__row_margin {

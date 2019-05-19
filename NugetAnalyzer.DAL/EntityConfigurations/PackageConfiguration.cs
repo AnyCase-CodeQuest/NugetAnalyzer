@@ -11,7 +11,7 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
             builder.ToTable("Packages");
 
             builder
-                .Property(p => p.Name)
+                .Property(package => package.Name)
                 .IsRequired()
                 .HasMaxLength(4096);
         }

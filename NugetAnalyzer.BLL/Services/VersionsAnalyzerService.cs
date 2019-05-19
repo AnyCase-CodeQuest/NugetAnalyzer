@@ -1,4 +1,4 @@
-﻿using NugetAnalyzer.Dtos.Models.Enums;
+﻿using NugetAnalyzer.DTOs.Models.Enums;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Domain;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
-using NugetAnalyzer.Dtos.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Services
 {
@@ -94,7 +94,7 @@ namespace NugetAnalyzer.BLL.Services
                 return PackageDateStatus.Undefined;
             }
 
-            var differenceInMonths = publishedDateOfLatestVersion.Value
+            double differenceInMonths = publishedDateOfLatestVersion.Value
                     .Subtract(publishedDateOfCurrentVersion.Value).Days / DaysInTheMonth;
 
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.WarningBottomBorder)

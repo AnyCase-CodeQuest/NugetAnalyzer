@@ -1,0 +1,35 @@
+﻿$tab-inactive-color: #586069;
+$tab-inactive-text-color: #586069;
+$tab-active-color: #e36209;
+$tab-active-text-color: #24292e;
+
+.profile__column_item{
+    margin-bottom: 20px
+}
+
+.profile__avatar{
+    width: 230px;
+    height: 230px;
+}
+
+.profile__column{
+    max-width: 230px;
+}
+
+.nav__link_profile_tab:hover {
+    color: $tab-inactive-text-color;
+    border: none;
+    border-bottom: solid;
+    border-bottom-color: $tab-inactive-color;
+}
+
+.nav__link_profile_tab.active {
+    border: none !important;
+    border-bottom: solid !important;
+    border-bottom-color: $tab-active-color !important;
+    color: $tab-active-text-color;
+    font-weight: 600;
+}
+.nav__link_profile_tab {
+    color: $tab-inactive-text-color;
+}

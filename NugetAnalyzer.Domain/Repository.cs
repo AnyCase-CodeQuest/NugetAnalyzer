@@ -12,6 +12,6 @@ namespace NugetAnalyzer.Domain
 
         public User User { get; set; }
 
-        public ICollection<Solution> Solutions { get; set; }
+        public ICollection<Solution> Solutions { get; set; } = new List<Solution>();
     }
 }
