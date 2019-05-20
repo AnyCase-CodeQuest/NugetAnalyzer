@@ -7,14 +7,15 @@ using NUnit.Framework;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common.Interfaces;
+using NugetAnalyzer.DTOs.Models;
 
 namespace NugetAnalyzer.BLL.Test.Services
 {
-    [TestFixture(Category = "UnitTests")]
-    public class RepositoryAnalyzerServiceTests
-    {
-        private const string TestPackagesConfigFileContent =
-            @"<?xml version=""1.0"" encoding=""utf-8""?>
+	[TestFixture(Category = "UnitTests")]
+	public class RepositoryAnalyzerServiceTests
+	{
+		private const string TestPackagesConfigFileContent =
+			@"<?xml version=""1.0"" encoding=""utf-8""?>
                 <packages>
                   <package id = ""Antlr"" targetFramework=""net46"" />
                   <package id = ""Autofac"" version=""4.9.1"" targetFramework=""net46"" />
@@ -22,8 +23,8 @@ namespace NugetAnalyzer.BLL.Test.Services
                   <package id = ""EntityFramework"" version=""6.2.0"" targetFramework=""net46"" />
                 </packages>";
 
-        private const string TestCsProjFileContent =
-           @"<Project Sdk=""Microsoft.NET.Sdk.Web"">
+		private const string TestCsProjFileContent =
+		   @"<Project Sdk=""Microsoft.NET.Sdk.Web"">
               <PropertyGroup>
                 <TargetFramework>netcoreapp2.2</TargetFramework>
                 <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
@@ -38,135 +39,135 @@ namespace NugetAnalyzer.BLL.Test.Services
               </ItemGroup>
             </Project> ";
 
-        private const string SolutionSearchPattern = "*.sln";
-        private const string CsProjSearchPattern = "*.csproj";
-        private const string PackagesConfigSearchPattern = "packages.config";
-        private const string SolutionPath = @"C:\temp\solution";
+		private const string SolutionSearchPattern = "*.sln";
+		private const string CsProjSearchPattern = "*.csproj";
+		private const string PackagesConfigSearchPattern = "packages.config";
+		private const string SolutionPath = @"C:\temp\solution";
 
+		private readonly IList<string> testList = new List<string>
+		{
+			SolutionPath
+		};
 
-        private readonly IList<string> TestList = new List<string>
-        {
-            SolutionPath
-        };
-        private readonly string[] TestArray = new string[]
-        {
-            SolutionPath
-        };
+		private Mock<IDirectoryService> directoryServiceMock;
+		private Mock<IFileService> fileServiceMock;
 
-        private Mock<IDirectoryService> directoryServiceMock;
-        private Mock<IFileService> fileServiceMock;
+		private IRepositoryAnalyzerService repositoryAnalyzerService;
 
-        private IRepositoryAnalyzerService repositoryAnalyzerService;
+		[SetUp]
+		public void Init()
+		{
+			directoryServiceMock = new Mock<IDirectoryService>();
+			fileServiceMock = new Mock<IFileService>();
 
-        [SetUp]
-        public void Init()
-        {
-            directoryServiceMock = new Mock<IDirectoryService>();
-            fileServiceMock = new Mock<IFileService>();
+			repositoryAnalyzerService = new RepositoryAnalyzerService(
+				directoryServiceMock.Object,
+				fileServiceMock.Object);
+		}
 
-            repositoryAnalyzerService = new RepositoryAnalyzerService(
-                directoryServiceMock.Object,
-                fileServiceMock.Object);
-        }
+		[Test]
+		public void GetParsedRepositoryAsync_ShouldThrowArgumentNullException_WhenRepositoryPathNull()
+		{
+			// Arrange
+			const string NullRepositoryPath = null;
+			directoryServiceMock
+				.Setup(directoryService => directoryService.Exists(NullRepositoryPath))
+				.Throws(new ArgumentNullException());
 
-        [Test]
-        public void GetParsedRepositoryAsync_ShouldThrowArgumentNullException_WhenRepositoryPathNull()
-        {
-            // Arrange
-            const string NullRepositoryPath = null;
-            directoryServiceMock
-                .Setup(directoryService => directoryService.Exists(NullRepositoryPath))
-                .Throws(new ArgumentNullException());
+			// Assert
+			Assert.ThrowsAsync<ArgumentNullException>(
+				() => repositoryAnalyzerService.GetParsedRepositoryAsync(NullRepositoryPath));
+		}
 
-            // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(
-                () => repositoryAnalyzerService.GetParsedRepositoryAsync(NullRepositoryPath));
-        }
+		[Test]
+		public async Task GetParsedRepositoryAsync_ShouldRepositoryNull_WhenRepositoryPathNotExist()
+		{
+			// Arrange
+			const string EmptyRepositoryPath = "";
+			directoryServiceMock
+				.Setup(directoryService => directoryService.Exists(EmptyRepositoryPath))
+				.Returns(false);
 
-        [Test]
-        public async Task GetParsedRepositoryAsync_ShouldRepositoryNull_WhenRepositoryPathNotExist()
-        {
-            // Arrange
-            const string EmptyRepositoryPath = "";
-            directoryServiceMock
-                .Setup(directoryService => directoryService.Exists(EmptyRepositoryPath))
-                .Returns(false);
+			// Act
+			var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(EmptyRepositoryPath);
 
-            // Act
-            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(EmptyRepositoryPath);
+			// Assert
+			Assert.IsNull(repotitory);
+		}
 
-            // Assert
-            Assert.IsNull(repotitory);
-        }
+		[Test]
+		public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount3_WhenFrameworkAppType()
+		{
+			string[] filesPaths = testList.ToArray();
+			// Arrange
+			directoryServiceMock
+				.Setup(directoryService => directoryService.Exists(testList.First()))
+				.Returns(true);
+			directoryServiceMock.Setup(directoryService => directoryService.GetName(testList.First()))
+				.Returns(testList.First());
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilesPaths(testList.First(), SolutionSearchPattern))
+				.Returns(filesPaths);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilesDirectoriesPaths(filesPaths))
+				.Returns(testList);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilesPaths(testList.First(), CsProjSearchPattern))
+				.Returns(filesPaths);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilePath(testList.First(), PackagesConfigSearchPattern))
+				.Returns(testList.First());
+			fileServiceMock
+				.Setup(fileService => fileService.GetContentAsync(testList.First()))
+				.ReturnsAsync(TestPackagesConfigFileContent);
 
-        [Test]
-        public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount3_WhenFrameworkAppType()
-        {
-            // Arrange
-            directoryServiceMock
-                .Setup(directoryService => directoryService.Exists(TestList.First()))
-                .Returns(true);
-            directoryServiceMock.Setup(directoryService => directoryService.GetName(TestList.First()))
-                .Returns(TestList.First());
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), SolutionSearchPattern))
-                .Returns(TestArray);
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilesDirectoriesPaths(TestArray))
-                .Returns(TestList);
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), CsProjSearchPattern))
-                .Returns(TestArray);
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilePath(TestList.First(), PackagesConfigSearchPattern))
-                .Returns(TestList.First());
-            fileServiceMock
-                .Setup(fileService => fileService.GetContentAsync(TestList.First()))
-                .ReturnsAsync(TestPackagesConfigFileContent);
+			// Act
+			var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(testList.First());
 
-            // Act
-            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList.First());
+			// Assert
+			Assert.IsNotNull(repotitory);
+			Assert.AreEqual(3, repotitory.Solutions.First().Projects.First().Packages.Count);
+		}
 
-            // Assert
-            Assert.IsNotNull(repotitory);
-            Assert.AreEqual(3, repotitory.Solutions.First().Projects.First().Packages.Count);
-        }
+		[Test]
+		public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount5_WhenCoreAppType()
+		{
+			string[] filesPaths = testList.ToArray();
+			string repositoryPath = testList.First();
 
-        [Test]
-        public async Task GetParsedRepositoryAsync_ShouldRepositoryNotNullAndPackagesCount5_WhenCoreAppType()
-        {
-            // Arrange
-            directoryServiceMock
-                .Setup(directoryService => directoryService.Exists(TestList.First()))
-                .Returns(true);
-            directoryServiceMock
-                .Setup(directoryService => directoryService.GetName(TestList.First()))
-                .Returns(TestList.First());
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), SolutionSearchPattern))
-                .Returns(TestArray);
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilesDirectoriesPaths(TestArray))
-                .Returns(TestList);
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilesPaths(TestList.First(), CsProjSearchPattern))
-                .Returns(TestArray);
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilePath(TestList.First(), PackagesConfigSearchPattern))
-                .Returns((string)null);
-            fileServiceMock
-                .Setup(fileService => fileService.GetFilePath(TestList.First(), CsProjSearchPattern))
-                .Returns(TestList.First());
-            fileServiceMock
-                .Setup(fileService => fileService.GetContentAsync(TestList.First()))
-                .ReturnsAsync(TestCsProjFileContent);
+			// Arrange
+			directoryServiceMock
+				.Setup(directoryService => directoryService.Exists(repositoryPath))
+				.Returns(true);
+			directoryServiceMock
+				.Setup(directoryService => directoryService.GetName(repositoryPath))
+				.Returns(repositoryPath);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilesPaths(repositoryPath, SolutionSearchPattern))
+				.Returns(filesPaths);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilesDirectoriesPaths(filesPaths))
+				.Returns(testList);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilesPaths(repositoryPath, CsProjSearchPattern))
+				.Returns(filesPaths);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilePath(repositoryPath, PackagesConfigSearchPattern))
+				.Returns((string)null);
+			fileServiceMock
+				.Setup(fileService => fileService.GetFilePath(repositoryPath, CsProjSearchPattern))
+				.Returns(repositoryPath);
+			fileServiceMock
+				.Setup(fileService => fileService.GetContentAsync(repositoryPath))
+				.ReturnsAsync(TestCsProjFileContent);
 
-            // Act
-            var repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(TestList.First());
+			// Act
+			RepositoryDTO repotitory = await repositoryAnalyzerService.GetParsedRepositoryAsync(repositoryPath);
 
-            // Assert
-            Assert.IsNotNull(repotitory);
-            Assert.AreEqual(5, repotitory.Solutions.First().Projects.First().Packages.Count);
-        }
-    }
+			// Assert
+			Assert.IsNotNull(repotitory);
+			double packagesCount = repotitory.Solutions.First().Projects.First().Packages.Count;
+			Assert.AreEqual(5, packagesCount);
+		}
+	}
 }

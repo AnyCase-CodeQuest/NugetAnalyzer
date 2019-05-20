@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.DTOs.Models;
 
 namespace NugetAnalyzer.BLL.Services
 {
@@ -59,27 +60,27 @@ namespace NugetAnalyzer.BLL.Services
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task SaveAsync(Models.Repositories.Repository repository, int userId)
+        public async Task SaveAsync(RepositoryDTO repositoryDTO, int userId)
         {
-            unitOfWork.GetRepository<Repository>().Add(await ToDomainAsync(repository, userId));
+            unitOfWork.GetRepository<Repository>().Add(await ToDomainAsync(repositoryDTO, userId));
             await unitOfWork.SaveChangesAsync();
         }
 
         #region PrivateMethods
 
-        private async Task<Repository> ToDomainAsync(Models.Repositories.Repository businessRepository, int userId)
+        private async Task<Repository> ToDomainAsync(RepositoryDTO businessRepositoryDTO, int userId)
         {
             var dbRepository =
                 await DatabaseRepository.GetSingleOrDefaultAsync(repository =>
-                    repository.Name == businessRepository.Name);
+                    repository.Name == businessRepositoryDTO.Name);
             if (dbRepository != null)
             {
                 DatabaseRepository.Delete(dbRepository.Id);
             }
 
-            var domainRepository = CreateRepository(businessRepository.Name, userId);
+            var domainRepository = CreateRepository(businessRepositoryDTO.Name, userId);
 
-            foreach (var businessSolution in businessRepository.Solutions)
+            foreach (var businessSolution in businessRepositoryDTO.Solutions)
             {
                 domainRepository.Solutions.Add(CreateSolution(businessSolution.Name));
                 var domainSolution =

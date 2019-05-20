@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.Dtos.csproj" />
+    <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.DTOs.csproj" />
   </ItemGroup>
 
 

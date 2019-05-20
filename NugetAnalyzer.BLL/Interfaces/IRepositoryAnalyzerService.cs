@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.DTOs.Models;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IRepositoryAnalyzerService
     {
-        Task<Repository> GetParsedRepositoryAsync(string repositoryPath);
+        Task<RepositoryDTO> GetParsedRepositoryAsync(string repositoryPath);
     }
 }

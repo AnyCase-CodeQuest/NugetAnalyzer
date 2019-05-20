@@ -1,0 +1,10 @@
+﻿{
+  "@context": {
+    "@vocab": "http://schema.nuget.org/schema#",
+    "@base": "https://api.nuget.org/v3/registration3/"
+  },
+  "totalHits": 0,
+  "lastReopen": "2019-05-05T14:43:52.0630317Z",
+  "index": "v3-lucene2-v2v3-20180914",
+  "data": []
+}

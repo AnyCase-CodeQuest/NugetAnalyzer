@@ -1,6 +1,6 @@
-﻿namespace NugetAnalyzer.BLL.Models.Packages
+﻿namespace NugetAnalyzer.DTOs.Models
 {
-    public class Package
+    public class PackageDTO
     {
         public string Name { get; set; }
 
