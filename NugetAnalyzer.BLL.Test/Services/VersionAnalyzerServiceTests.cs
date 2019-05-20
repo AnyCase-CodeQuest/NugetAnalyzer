@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Moq;
-using NugetAnalyzer.DTOs.Models.Enums;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common.Configurations;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.DTOs.Models.Enums;
 using NugetAnalyzer.DTOs.Models.Reports;
 using NUnit.Framework;
 

@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using NugetAnalyzer.BLL.Models.Repositories;
+using NugetAnalyzer.DTOs.Models;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IRepositorySaverService
     {
-        Task SaveAsync(Repository repository, int userId);
+        Task SaveAsync(RepositoryDTO repositoryDTO, int userId);
     }
 }

@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NugetAnalyzer.BLL\NugetAnalyzer.BLL.csproj" />
     <ProjectReference Include="..\NugetAnalyzer.Common\NugetAnalyzer.Common.csproj" />
+    <ProjectReference Include="..\NugetAnalyzer.DAL\NugetAnalyzer.DAL.csproj" />
     <ProjectReference Include="..\NugetAnalyzer.Dtos\NugetAnalyzer.DTOs.csproj" />
     <ProjectReference Include="..\NugetAnalyzer.Web.Infrastructure\NugetAnalyzer.Web.Infrastructure.csproj" />
   </ItemGroup>
