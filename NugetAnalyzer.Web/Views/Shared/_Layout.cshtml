@@ -13,10 +13,8 @@
 
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark">
-        <a asp-action="Index" asp-controller="Home" class="navbar-brand navbar__logo">
-            <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
-                <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z" />
-            </svg>
+        <a asp-action="Index" asp-controller="Home" class="navbar-brand">
+            <logo width="32px" height="32px" fill-color="#fff" hover-fill-color="hsla(0,0%,100%,.7)"></logo> 
         </a>
 
         <button class="navbar-toggler text-center" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,17 +92,15 @@
         @RenderBody()
         <footer class="container footer__container">
             <div class="row footer__row_margin">
-                <div class="col text-left small">
+                <div class="col text-left small align-self-center">
                     © @System.DateTime.Now.Year Nuget Analyzer
                 </div>
-                <div class="col col-1 text-center">
+                <div class="col col-1 text-center align-self-center">
                     <a asp-action="Index" asp-controller="Home" class="footer__logo text-center">
-                        <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
-                            <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z" />
-                        </svg>
+                        <logo width="24px" height="24px" fill-color="rgba(0,0,0,.2)" hover-fill-color="rgba(0,0,0,.4)"></logo>
                     </a>
                 </div>
-                <div class="col text-right small">
+                <div class="col text-right small align-self-center">
                     <a asp-action="About" asp-controller="Home" class="text-primary navbar__link_text">
                         @Localizer["About"]
                     </a>
