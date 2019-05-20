@@ -20,7 +20,11 @@
     "inputFile": "wwwroot/stylesheets/OAuthSignIn/SourceChoice.scss"
   },
   {
-    "outputFile": "wwwroot/stylesheets/Home/Rules.css",
-    "inputFile": "wwwroot/stylesheets/Home/Rules.scss"
+    "outputFile": "wwwroot/stylesheets/Settings/Rules.css",
+    "inputFile": "wwwroot/stylesheets/Settings/Rules.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Project/Report.css",
+    "inputFile": "wwwroot/stylesheets/Project/Report.scss"
   }
 ]

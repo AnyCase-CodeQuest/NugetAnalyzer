@@ -7,14 +7,14 @@
 
 @section Styles
 {
-    <link href="~/stylesheets/Home/Rules.min.css" rel="stylesheet" />
+    <link href="~/stylesheets/Settings/Rules.min.css" rel="stylesheet" />
 }
 
 @functions
 {
-    private string GetAlertLevel(string status)
+    string GetAlertLevelCssClass(string status)
     {
-        return status.ToLower() == "error" ? "danger" : status.ToLower();
+        return status.ToLower() == "error" ? "alert-danger" : $"alert-{status.ToLower()}";
     }
 }
 
@@ -30,25 +30,25 @@
         <tr>
             <th>Major</th>
             <td>
-                <div class="alert alert-@GetAlertLevel(@Model.VersionStatus.Major.ToString())" role="alert">@Model.VersionStatus.Major</div>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Major.ToString())" role="alert">@Model.VersionStatus.Major</div>
             </td>
         </tr>
         <tr>
             <th>Minor</th>
             <td>
-                <div class="alert alert-@GetAlertLevel(@Model.VersionStatus.Minor.ToString())" role="alert">@Model.VersionStatus.Minor</div>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Minor.ToString())" role="alert">@Model.VersionStatus.Minor</div>
             </td>
         </tr>
         <tr>
             <th>Build</th>
             <td>
-                <div class="alert alert-@GetAlertLevel(@Model.VersionStatus.Build.ToString())" role="alert">@Model.VersionStatus.Build</div>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Build.ToString())" role="alert">@Model.VersionStatus.Build</div>
             </td>
         </tr>
         <tr>
             <th>Revision</th>
             <td>
-                <div class="alert alert-@GetAlertLevel(@Model.VersionStatus.Revision.ToString())" role="alert">@Model.VersionStatus.Revision</div>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Revision.ToString())" role="alert">@Model.VersionStatus.Revision</div>
             </td>
         </tr>
     </tbody>
