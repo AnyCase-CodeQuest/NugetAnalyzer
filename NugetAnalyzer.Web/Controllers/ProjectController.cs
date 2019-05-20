@@ -18,6 +18,11 @@ namespace NugetAnalyzer.Web.Controllers
         {
            ProjectReportDTO model = await projectService.GetProjectReport(id);
 
+           if (model == null)
+           {
+               return BadRequest();
+           }
+
             return View(model);
         }
     }

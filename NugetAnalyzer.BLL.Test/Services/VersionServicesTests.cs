@@ -19,7 +19,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IPackageVersionsRepository> packageVersionsRepositoryMock;
         private Mock<IRepository<Package>> packageRepositoryMock;
         private Mock<IDateTimeProvider> dateTimeProviderMock;
-        private IVersionService versionService;
+        private IPackageVersionService packageVersionService;
 
         [OneTimeSetUp]
         public void Init()
@@ -37,7 +37,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(uow => uow.GetRepository<Package>())
                 .Returns(packageRepositoryMock.Object);
 
-            versionService = new VersionService(uowMock.Object, dateTimeProviderMock.Object);
+            packageVersionService = new PackageVersionService(uowMock.Object, dateTimeProviderMock.Object);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(versionRepository => versionRepository.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()))
                 .ReturnsAsync(latestVersions);
 
-            versionService.UpdateLatestVersionsAsync(versions);
+            packageVersionService.UpdateLatestVersionsAsync(versions);
 
             latestVersions.ForEach(packageVersion =>
                     packageRepositoryMock.Verify(packageRepository => packageRepository.Update(packageVersion.Package)));
@@ -74,7 +74,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(versionRepository => versionRepository.GetAllLatestVersionsAsync())
                 .ReturnsAsync(latestVersions);
 
-            versionService.UpdateAllLatestVersionsAsync(versions);
+            packageVersionService.UpdateAllLatestVersionsAsync(versions);
 
             latestVersions.ForEach(packageVersion =>
                 packageRepositoryMock.Verify(packageRepository => packageRepository.Update(packageVersion.Package)));

@@ -49,29 +49,11 @@ namespace NugetAnalyzer.Web
 
             IConfigurationSection gitHubEndPointsSection = Configuration.GetSection("GitHubEndPoints");
             IConfigurationSection gitHubAppSettingsSection = Configuration.GetSection("GitHubAppSettings");
+
             services.AddGitHubOAuth(gitHubEndPointsSection, gitHubAppSettingsSection);
             services.Configure<PackageVersionConfigurations>(options => Configuration.GetSection("PackageStatus").Bind(options));
 
-            services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
-
-            services.AddSingleton<INugetApiService, NugetApiService>();
-
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<INugetService, NugetService>();
-            services.AddScoped<IVersionService, VersionService>();
-            services.AddScoped<IPackageService, PackageService>();
-
-            services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
-            services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
-            services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
-            services.AddScoped<IRepositoryService, RepositoryService>();
-
-            services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
-            services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
-
             services.AddHttpClient<INugetHttpService, NugetHttpService>();
-            services.AddMvc();
 
             services.AddNugetAnalyzerRepositories();
             services.AddNugetAnalyzerServices();
@@ -92,7 +74,7 @@ namespace NugetAnalyzer.Web
 
             app.UseConfiguredLocalization();
 
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            //app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseStaticFiles();
 
             app.UseAuthentication();

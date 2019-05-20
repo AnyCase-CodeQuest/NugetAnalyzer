@@ -146,7 +146,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             PackageVersionComparisonReport report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorVersionStatus);
 
-            Assert.AreEqual(report.DateStatus, PackageDateStatus.Normal);
+            Assert.AreEqual(report.DateStatus, PackageDateStatus.Info);
             Assert.AreEqual(report.VersionStatus, PackageVersionStatus.Error);
         }
 
@@ -199,7 +199,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 {
                     IsObsolete = false,
                     VersionStatus = PackageVersionStatus.Error,
-                    DateStatus = PackageDateStatus.Normal
+                    DateStatus = PackageDateStatus.Info
                 }
             };
         }

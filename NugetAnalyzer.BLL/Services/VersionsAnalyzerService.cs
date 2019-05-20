@@ -99,7 +99,7 @@ namespace NugetAnalyzer.BLL.Services
 
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.WarningBottomBorder)
             {
-                return PackageDateStatus.Normal;
+                return PackageDateStatus.Info;
             }
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.ErrorBottomBorder)
             {

@@ -4,7 +4,7 @@
     public enum PackageDateStatus : byte
     {
         Undefined = 0,
-        Normal = 1,
+        Info = 1,
         Warning = 2,
         Error = 3
     }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Common.Services;
 using NugetAnalyzer.DAL;
@@ -104,8 +105,10 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
             services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
+            services.AddScoped<IProjectsRepository, ProjectsRepository>();
             services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
             services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
+            services.AddScoped(typeof(IRepository<Project>), provider => provider.GetService<IProjectsRepository>());
         }
 
         /// <summary>
@@ -123,6 +126,12 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddSingleton<IDirectoryService, DirectoryService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
+            services.AddSingleton<INugetApiService, NugetApiService>();
+            services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
+            services.AddScoped<INugetService, NugetService>();
+            services.AddScoped<IPackageVersionService, PackageVersionService>();
+            services.AddScoped<IPackageService, PackageService>();
+            services.AddScoped<IProjectService, ProjectService>();
         }
     }
 }
