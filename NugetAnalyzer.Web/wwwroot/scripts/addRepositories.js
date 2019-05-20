@@ -1,5 +1,5 @@
 ﻿function GetSelect(selectListData) {
-    var selectList = '<select class="form-control modal__select__branch" style="height: unset; padding: unset">';
+    var selectList = '<select class="form-control modal__select-repository-branch" style="height: unset; padding: unset">';
     for (var i = 0; i < selectListData.length; i++) {
         selectList += '<option>' + selectListData[i] + '</option>';
     }
@@ -10,20 +10,20 @@
 function GetSelectedRepositories() {
     var selectedCheckboxes = $(".modal input[type='checkbox']:checked");
     var selectedRepositories = {};
-    
     for (var i = 0; i < selectedCheckboxes.length; i++) {
-        var node = selectedCheckboxes.item(i).parent().parent();
-        
-        selectedRepositories[node.find(".modal__repository-name")[0].getAttribute("href")] =
-            node.find(".modal__select__branch :selected").text();
+        var trNode = selectedCheckboxes[i].parentNode.parentNode;
+        var repositoryUrl = trNode.querySelector(".modal__repository-name").getAttribute("href");
+        var repositoryBranch = trNode.querySelector(".modal__repository-branch") != undefined
+            ? trNode.querySelector(".modal__repository-branch span:nth-child(1)").innerText
+            : trNode.querySelector(".modal__select-repository-branch :checked").text;
 
+        selectedRepositories[repositoryUrl] = repositoryBranch;
     }
-    //console.log(selectedRepositories);
     return selectedRepositories;
 }
 
 function BranchOnClick() {
-    $(".modal .repository-branch").on('click',
+    $(".modal .modal__repository-branch").on('click',
         function () {
             var branchContainer = $(this).parent()[0];
             branchContainer.innerHTML = GetLoader();

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using NugetAnalyzer.DTOs.Converters;
 using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.DTOs.Models.Reports;
@@ -16,14 +16,29 @@ namespace NugetAnalyzer.BLL.Services
 	{
 		private readonly IVersionsAnalyzerService versionsService;
         private readonly IGitService gitService;
+        private readonly IRepositoryAnalyzerService repositoryAnalyzerService;
+        private readonly IRepositorySaverService repositorySaverService;
+        private readonly INugetService nugetService;
 
-		private readonly IUnitOfWork uow;
+        private readonly IDirectoryService directoryService;
+
+        private readonly IUnitOfWork uow;
 		private IRepositoriesRepository repositoriesRepository;
 
-		public RepositoryService(IVersionsAnalyzerService versionsService, IGitService gitService, IUnitOfWork uow)
+		public RepositoryService(IVersionsAnalyzerService versionsService,
+            IGitService gitService,
+            IRepositoryAnalyzerService repositoryAnalyzerService,
+            IRepositorySaverService repositorySaverService,
+            INugetService nugetService,
+            IDirectoryService directoryService,
+            IUnitOfWork uow)
 		{
 			this.versionsService = versionsService ?? throw new ArgumentNullException(nameof(versionsService));
 			this.gitService = gitService ?? throw new ArgumentNullException(nameof(gitService));
+			this.repositoryAnalyzerService = repositoryAnalyzerService ?? throw new ArgumentNullException(nameof(repositoryAnalyzerService));
+			this.repositorySaverService = repositorySaverService ?? throw new ArgumentNullException(nameof(repositorySaverService));
+			this.nugetService = nugetService ?? throw new ArgumentNullException(nameof(nugetService));
+			this.directoryService = directoryService ?? throw new ArgumentNullException(nameof(directoryService));
 			this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
 		}
 
@@ -48,19 +63,31 @@ namespace NugetAnalyzer.BLL.Services
             return await RepositoriesRepository.GetRepositoriesNamesAsync(expression);
         }
 
-        public async Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken)
+        public async Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken, int userId)
         {
             var tasks = new List<Task>();
-            foreach (var repository in repositories) //parallel async
+            foreach (var repository in repositories)
             {
-                tasks.Add(Task.Run(() =>  // TODO: throws exceptions
-                {
-                    var generatedPath = GeneratePathForClone();
-                    gitService.CloneBranch(repository.Key, generatedPath, userToken, repository.Value);
-                    // Analyze data
-                    // Save to db;
-                    Directory.Delete(generatedPath, true);
-                }));
+                //tasks.Add(Task.Run(async () =>
+                //{
+                    string directoryPath = null;
+                    try
+                    {
+                        directoryPath = directoryService.GeneratePath(directoryService.GetName(repository.Key));
+                        gitService.CloneBranch(repository.Key, directoryPath, userToken, repository.Value);
+                        var parsedRepository = repositoryAnalyzerService.GetParsedRepositoryAsync(directoryPath).Result;
+                        repositorySaverService.SaveAsync(parsedRepository, userId).Wait();
+                        nugetService.RefreshLatestVersionOfNewlyAddedPackagesAsync().Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        //TODO: logging
+                    }
+                    finally
+                    {
+                        directoryService.Delete(directoryPath); // TODO !!!
+                    }
+                //}));
             }
 
             await Task.WhenAll(tasks);

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.Dtos.Models.Repositories;
+using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
 
 namespace NugetAnalyzer.Web.Controllers
 {
@@ -12,19 +14,32 @@ namespace NugetAnalyzer.Web.Controllers
     {
         private readonly IGitHubApiService gitHubApiService;
         private readonly IRepositoryService repositoryService;
-        private const string userTestToken = "d190dcfa7984739296f48fc9e87e021ec3ef76ec";
+        private readonly IProfileService profileService;
+        private readonly ISourceService sourceService;
+        private readonly HttpContextInfoProvider httpContextInfoProvider;
 
-        public RepositoryController(IGitHubApiService gitHubApiService, IRepositoryService repositoryService)
+        public RepositoryController(IGitHubApiService gitHubApiService,
+            IRepositoryService repositoryService,
+            IProfileService profileService, 
+            ISourceService sourceService,
+            HttpContextInfoProvider httpContextInfoProvider)
         {
             this.gitHubApiService = gitHubApiService ?? throw new ArgumentNullException(nameof(gitHubApiService));
             this.repositoryService = repositoryService ?? throw new ArgumentNullException(nameof(repositoryService));
+            this.profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
+            this.sourceService = sourceService ?? throw new ArgumentNullException(nameof(sourceService));
+            this.httpContextInfoProvider = httpContextInfoProvider ?? throw new ArgumentNullException(nameof(httpContextInfoProvider));
         }
 
         [HttpGet]
         public async Task<PartialViewResult> AddRepositories()
         {
-            Task<IReadOnlyCollection<RepositoryChoice>> userGitHubRepositoriesTask = gitHubApiService.GetUserRepositoriesAsync(userTestToken);
-            Task<IReadOnlyCollection<string>> addedUserRepositoriesNamesTask = repositoryService.GetRepositoriesNamesAsync(repository => repository.UserId == 1); // TODO: userId ?
+            ProfileDTO userProfile = await GetCurrentUserProfileAsync();
+
+            Task<IReadOnlyCollection<RepositoryChoice>> userGitHubRepositoriesTask = gitHubApiService
+                .GetUserRepositoriesAsync(userProfile.AccessToken);
+            Task<IReadOnlyCollection<string>> addedUserRepositoriesNamesTask = repositoryService
+                .GetRepositoriesNamesAsync(repository => repository.UserId == userProfile.UserId);
 
             await Task.WhenAll(userGitHubRepositoriesTask, addedUserRepositoriesNamesTask);
             var userGitHubRepositories = await userGitHubRepositoriesTask;
@@ -38,19 +53,33 @@ namespace NugetAnalyzer.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<PartialViewResult> AddRepositories(Dictionary<string, string> repositories)
+        public async Task<PartialViewResult> AddRepositories([FromBody]Dictionary<string, string> repositories)
         {
-            await repositoryService.AddRepositoriesAsync(repositories, userTestToken);
-            var userRepositories = await repositoryService.GetAnalyzedRepositoriesAsync(repository => repository.UserId == 1);  // TODO: userId ?
+            ProfileDTO userProfile = await GetCurrentUserProfileAsync();
+
+            await repositoryService.AddRepositoriesAsync(repositories, userProfile.AccessToken, userProfile.UserId);
+            var userRepositories = await repositoryService
+                .GetAnalyzedRepositoriesAsync(repository => repository.UserId == userProfile.UserId);
             return PartialView("PartialRepositories", userRepositories);
         }
 
         [HttpGet]
         public async Task<JsonResult> Branches(long repositoryId)
         {
-            IEnumerable<string> branchesNames = (await gitHubApiService.GetUserRepositoryBranchesAsync(userTestToken, repositoryId))
+            ProfileDTO userProfile = await GetCurrentUserProfileAsync();
+
+            IEnumerable<string> branchesNames = (await gitHubApiService.GetUserRepositoryBranchesAsync(userProfile.AccessToken, repositoryId))
                 .Select(branch => branch.Name);
             return Json(branchesNames);
+        }
+
+        private async Task<ProfileDTO> GetCurrentUserProfileAsync()
+        {
+            string sourceName = httpContextInfoProvider.GetSourceName();
+            int externalId = httpContextInfoProvider.GetExternalId();
+            int sourceId = await sourceService.GetSourceIdByName(sourceName);
+
+            return await profileService.GetProfileBySourceIdAsync(sourceId, externalId);
         }
     }
 }

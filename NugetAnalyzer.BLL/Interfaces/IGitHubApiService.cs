@@ -10,7 +10,5 @@ namespace NugetAnalyzer.BLL.Interfaces
         Task<IReadOnlyCollection<RepositoryChoice>> GetUserRepositoriesAsync(string userToken);
 
         Task<IReadOnlyCollection<Branch>> GetUserRepositoryBranchesAsync(string userToken, long repositoryId);
-
-        //Task<IReadOnlyCollection<Branch>[]> GetAllUserRepositoriesBranchesAsync(string userToken, ICollection<long> repositoriesIds);
     }
 }

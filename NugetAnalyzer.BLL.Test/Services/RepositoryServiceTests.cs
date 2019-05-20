@@ -7,6 +7,7 @@ using Moq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DTOs.Models.Enums;
 using NugetAnalyzer.BLL.Services;
+using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.DTOs.Models.Reports;
@@ -21,6 +22,10 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IRepositoriesRepository> repositoryRepositoryMock;
         private Mock<IPackageVersionsRepository> versionRepositoryMock;
         private Mock<IGitService> gitServiceMock;
+        private Mock<IRepositoryAnalyzerService> repositoryAnalyzerServiceMock;
+        private Mock<IRepositorySaverService> repositorySaverServiceMock;
+        private Mock<INugetService> nugetServiceMock;
+        private Mock<IDirectoryService> directoryServiceMock;
         private Mock<IUnitOfWork> uowMock;
 
         private RepositoryService repositoryService;
@@ -45,15 +50,13 @@ namespace NugetAnalyzer.BLL.Test.Services
             uowMock.SetupGet(uow => uow.RepositoriesRepository).Returns(repositoryRepositoryMock.Object);
             uowMock.SetupGet(uow => uow.PackageVersionsRepository).Returns(versionRepositoryMock.Object);
 
-            repositoryService = new RepositoryService(versionAnalyzerServiceMock.Object, gitServiceMock.Object, uowMock.Object);
-        }
-
-        [Test]
-        public void Constructor_Should_ThrowsArgumentNullException_When_AnyArgumentIsNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(null, gitServiceMock.Object, uowMock.Object));
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionAnalyzerServiceMock.Object,null, uowMock.Object));
-            Assert.Throws<ArgumentNullException>(() => new RepositoryService(versionAnalyzerServiceMock.Object, gitServiceMock.Object, null));
+            repositoryService = new RepositoryService(versionAnalyzerServiceMock.Object,
+                gitServiceMock.Object,
+                repositoryAnalyzerServiceMock.Object,
+                repositorySaverServiceMock.Object,
+                nugetServiceMock.Object,
+                directoryServiceMock.Object,
+                uowMock.Object);
         }
 
         [Test]

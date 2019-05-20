@@ -32,6 +32,7 @@ namespace NugetAnalyzer.BLL.Interfaces
         /// </summary>
         /// <param name="repositories">A dictionary which contains the repository URL as a key and the repository branch as a value</param>
         /// <param name="userToken">User git access token</param>
-        Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken);
+        /// <param name="userId">User identifier in DB</param>
+        Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken, int userId);
     }
 }

@@ -6,6 +6,8 @@
 
         string GetName(string directoryPath);
 
+        string GeneratePath(string directoryName);
+
         void Create(string path);
 
         void Delete(string path);

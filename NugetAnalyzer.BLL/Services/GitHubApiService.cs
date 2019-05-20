@@ -35,15 +35,6 @@ namespace NugetAnalyzer.BLL.Services
             return await LoadRepositoryBranchesFromApiAsync(userToken, repositoryId);
         }
 
-        //public async Task<IReadOnlyCollection<Branch>[]> GetAllUserRepositoriesBranchesAsync(string userToken, ICollection<long> repositoriesIds)
-        //{
-        //    var branchesTasks = repositoriesIds
-        //        .Select(repositoryId => LoadRepositoryBranchesFromApiAsync(userToken, repositoryId))
-        //        .ToList();
-
-        //    return await Task.WhenAll(branchesTasks);
-        //}
-
         private Task<IReadOnlyList<Branch>> LoadRepositoryBranchesFromApiAsync(string userToken, long repositoryId)
         {
             return GetGitHubClientInstance(userToken)

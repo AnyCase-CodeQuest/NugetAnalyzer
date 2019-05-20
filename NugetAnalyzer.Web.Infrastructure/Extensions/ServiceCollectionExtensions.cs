@@ -114,6 +114,12 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
         /// <param name="services"></param>
         public static void AddNugetAnalyzerServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpClient<INugetHttpService, NugetHttpService>();
+            services.AddSingleton<INugetApiService, NugetApiService>();
+            services.AddScoped<INugetService, NugetService>();
+            services.AddScoped<IGitService, GitService>();
+            services.AddScoped<IVersionService, VersionService>();
+            services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<ISourceService, SourceService>();
