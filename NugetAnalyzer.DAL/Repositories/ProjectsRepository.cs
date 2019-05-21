@@ -16,7 +16,7 @@ namespace NugetAnalyzer.DAL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetCollectionIncludePackage(Expression<Func<Project, bool>> predicate)
+        public async Task<IReadOnlyCollection<Project>> GetCollectionIncludePackageAsync(Expression<Func<Project, bool>> predicate)
         {
             return await DbSet
                 .AsNoTracking()

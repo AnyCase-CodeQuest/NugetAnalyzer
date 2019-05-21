@@ -5,6 +5,6 @@ namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IProjectService
     {
-        Task<ProjectReportDTO> GetProjectReport(int projectId);
+        Task<ProjectReportDTO> GetProjectReportAsync(int projectId);
     }
 }

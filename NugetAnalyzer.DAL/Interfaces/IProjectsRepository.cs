@@ -8,6 +8,6 @@ namespace NugetAnalyzer.DAL.Interfaces
 {
     public interface IProjectsRepository : IRepository<Project>
     {
-        Task<IReadOnlyCollection<Project>> GetCollectionIncludePackage(Expression<Func<Project, bool>> predicate);
+        Task<IReadOnlyCollection<Project>> GetCollectionIncludePackageAsync(Expression<Func<Project, bool>> predicate);
     }
 }

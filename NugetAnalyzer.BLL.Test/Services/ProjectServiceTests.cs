@@ -181,7 +181,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             versionAnalyzerServiceMock = new Mock<IVersionsAnalyzerService>();
 
             projectsRepositoryMock
-                .Setup(projectsRepository => projectsRepository.GetCollectionIncludePackage(It.IsAny<Expression<Func<Project, bool>>>()))
+                .Setup(projectsRepository => projectsRepository.GetCollectionIncludePackageAsync(It.IsAny<Expression<Func<Project, bool>>>()))
                 .ReturnsAsync(projects);
 
             packageVersionsRepositoryMock
@@ -220,13 +220,13 @@ namespace NugetAnalyzer.BLL.Test.Services
                 Id = 1
             };
 
-            ProjectReportDTO result = await projectService.GetProjectReport(1);
+            ProjectReportDTO result = await projectService.GetProjectReportAsync(1);
 
             packageVersionsRepositoryMock.Verify(packageVersionsRepository =>
                 packageVersionsRepository.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()));
 
             projectsRepositoryMock.Verify(projectsRepository => 
-                projectsRepository.GetCollectionIncludePackage(It.IsAny<Expression<Func<Project, bool>>>()));
+                projectsRepository.GetCollectionIncludePackageAsync(It.IsAny<Expression<Func<Project, bool>>>()));
 
             versionAnalyzerServiceMock.Verify(versionAnalyzerService =>
                 versionAnalyzerService.Compare(nUnitLatestVersion, nUnitVersion));

@@ -29,9 +29,9 @@ namespace NugetAnalyzer.BLL.Services
         private IPackageVersionsRepository PackageVersionsRepository =>
             packageVersionsRepository ?? (packageVersionsRepository = uow.PackageVersionsRepository);
 
-        public async Task<ProjectReportDTO> GetProjectReport(int projectId)
+        public async Task<ProjectReportDTO> GetProjectReportAsync(int projectId)
         {
-            IReadOnlyCollection<Project> projects = await ProjectRepository.GetCollectionIncludePackage(proj => proj.Id == projectId);
+            IReadOnlyCollection<Project> projects = await ProjectRepository.GetCollectionIncludePackageAsync(proj => proj.Id == projectId);
             Project project = projects.FirstOrDefault();
 
             if (project == null)

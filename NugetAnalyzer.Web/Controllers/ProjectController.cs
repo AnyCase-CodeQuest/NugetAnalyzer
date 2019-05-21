@@ -16,7 +16,7 @@ namespace NugetAnalyzer.Web.Controllers
 
         public async Task<IActionResult> Report(int id)
         {
-           ProjectReportDTO model = await projectService.GetProjectReport(id);
+           ProjectReportDTO model = await projectService.GetProjectReportAsync(id);
 
            if (model == null)
            {
