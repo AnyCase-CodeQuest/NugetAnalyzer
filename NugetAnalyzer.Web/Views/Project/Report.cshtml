@@ -21,13 +21,13 @@
 <h4>@Model.Name 
     @if (Model.Report.VersionStatus != PackageVersionStatus.Actual)
     {
-       <span class="notification__error d-inline-block" tabindex="0" data-toggle="tooltip" title="Version: @Model.Report.VersionStatus.ToString()">
+       <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Version: @Model.Report.VersionStatus.ToString()">
            <notice type="@Model.Report.VersionStatus.ToString()"></notice>
        </span>
     }
     @if (Model.Report.DateStatus != PackageDateStatus.Undefined)
     {
-        <span class="notification__info d-inline-block" tabindex="0" data-toggle="tooltip" title="Date: @Model.Report.DateStatus.ToString()">
+        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Date: @Model.Report.DateStatus.ToString()">
             <notice type="@Model.Report.DateStatus.ToString()"></notice>
         </span>
     }
@@ -41,7 +41,8 @@
             <th class="align-middle">Published date</th>
             <th class="align-middle">Latest version</th>
             <th class="align-middle">Published date</th>
-            <th class="align-middle">Report</th>
+            <th class="align-middle th__notice">Version Report</th>
+            <th class="align-middle th__notice">Date Report</th>
         </tr>
     </thead>
     <tbody>
@@ -73,17 +74,15 @@
                 <td>@item.Current.PublishedDate?.ToShortDateString()</td>
                 <td>@item.Latest.GetVersion()</td>
                 <td>@item.Latest.PublishedDate?.ToShortDateString()</td>
-                <td>@if (@item.Report.VersionStatus != PackageVersionStatus.Actual)
-                    {
-                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="@item.Report.VersionStatus.ToString()">
-                            Version
-                            <notice type="@item.Report.VersionStatus.ToString()"></notice>
-                        </span>
-                    }
+                <td class="th__notice">
+                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="@item.Report.VersionStatus.ToString()">
+                        <notice type="@item.Report.VersionStatus.ToString()"></notice>
+                    </span>
+                </td>
+                <td class="th__notice">
                     @if (@item.Report.DateStatus != PackageDateStatus.Undefined)
                     {
                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="@item.Report.DateStatus.ToString()">
-                            Date
                             <notice type="@item.Report.DateStatus.ToString()"></notice>
                         </span>
                     }
