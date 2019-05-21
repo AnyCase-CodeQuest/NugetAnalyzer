@@ -7,7 +7,6 @@ using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
-using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.DTOs.Models.Reports;
 using NUnit.Framework;
 
@@ -214,7 +213,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 Id = 1
             };
 
-            ProjectReportDTO result = await projectService.GetProjectReportAsync(1);
+            ProjectReport result = await projectService.GetProjectReportAsync(1);
 
             packageVersionsRepositoryMock.Verify(packageVersionsRepository =>
                 packageVersionsRepository.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()));
@@ -231,7 +230,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             versionAnalyzerServiceMock.Verify(versionAnalyzerService =>
                 versionAnalyzerService.CalculateMaxReportLevelStatus(reports));
 
-            Assert.IsInstanceOf<ProjectReportDTO>(result);
+            Assert.IsInstanceOf<ProjectReport>(result);
             Assert.NotNull(result);
         }
     }

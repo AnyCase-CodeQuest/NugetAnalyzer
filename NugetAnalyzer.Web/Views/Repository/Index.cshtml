@@ -1,0 +1,32 @@
+﻿@model  ICollection<NugetAnalyzer.DTOs.Models.Reports.RepositoryReport>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<ul class="list-group list-group-flush">
+    @foreach (var repository in @Model)
+    {
+        <li class="list-group-item">
+            <p>
+                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#@repository.Name" aria-expanded="false" aria-controls="@repository.Name">@repository.Name</button>
+            </p>
+            <div class="collapse multi-collapse" id="@repository.Name">
+                @foreach (var solution in repository.Solutions)
+                {
+                    <div>
+                        <h5>@solution.Name</h5>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var project in solution.Projects)
+                            {
+                                <li class="list-group-item">@project.Name</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </li>
+    }
+</ul>

@@ -6,7 +6,7 @@ using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.DTOs.Converters;
-using NugetAnalyzer.DTOs.Models;
+using NugetAnalyzer.DTOs.Models.Reports;
 
 namespace NugetAnalyzer.BLL.Services
 {
@@ -29,7 +29,7 @@ namespace NugetAnalyzer.BLL.Services
         private IPackageVersionsRepository PackageVersionsRepository =>
             packageVersionsRepository ?? (packageVersionsRepository = uow.PackageVersionsRepository);
 
-        public async Task<ProjectReportDTO> GetProjectReportAsync(int projectId)
+        public async Task<ProjectReport> GetProjectReportAsync(int projectId)
         {
             IReadOnlyCollection<Project> projects = await ProjectRepository.GetCollectionIncludePackageAsync(proj => proj.Id == projectId);
             Project project = projects.FirstOrDefault();
@@ -48,16 +48,16 @@ namespace NugetAnalyzer.BLL.Services
                     .Select(p => p.PackageId)
                     .Contains(x.PackageId));
 
-            List<PackageReportDTO> packageReports = new List<PackageReportDTO>();
+            List<PackageReport> packageReports = new List<PackageReport>();
 
             foreach (PackageVersion packageVersion in currentPackageVersions)
             {
                 PackageVersion latestVersion = latestPackageVersions.FirstOrDefault(p => p.PackageId == packageVersion.PackageId);
-                PackageReportDTO packageVersionReport = new PackageReportDTO
+                PackageReport packageVersionReport = new PackageReport
                 {
-                    PackageId = packageVersion.PackageId,
+                    Id = packageVersion.PackageId,
                     LastUpdateTime = packageVersion.Package.LastUpdateTime,
-                    PackageName = packageVersion.Package.Name,
+                    Name = packageVersion.Package.Name,
                     CurrentPackageVersion = PackageVersionConverter.PackageVersionToPackageVersionDto(packageVersion),
                     LatestPackageVersion = PackageVersionConverter.PackageVersionToPackageVersionDto(latestVersion),
                     Report = versionsAnalyzerService.Compare(latestVersion, packageVersion)
@@ -65,7 +65,7 @@ namespace NugetAnalyzer.BLL.Services
                 packageReports.Add(packageVersionReport);
             }
 
-            ProjectReportDTO projectReport = new ProjectReportDTO
+            ProjectReport projectReport = new ProjectReport
             {
                 Name = project.Name,
                 Id = project.Id,

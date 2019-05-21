@@ -26,7 +26,7 @@ namespace NugetAnalyzer.BLL.Services
 		private IRepositoriesRepository RepositoriesRepository =>
 			repositoriesRepository ?? (repositoriesRepository = uow.RepositoriesRepository);
 
-		public async Task<ICollection<RepositoryVersionReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
+		public async Task<ICollection<RepositoryReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression)
 		{
 			IReadOnlyCollection<Repository> repositories = await RepositoriesRepository.GetRepositoriesWithIncludesAsync(expression);
 
@@ -34,7 +34,7 @@ namespace NugetAnalyzer.BLL.Services
             Dictionary<int, PackageVersion> latestPackageVersions
 				= await uow.PackageVersionsRepository.GetLatestPackageVersionsAsync(packageIds);
 
-			ICollection<RepositoryVersionReport> repositoriesVersionReport = Analyze(repositories, latestPackageVersions);
+			ICollection<RepositoryReport> repositoriesVersionReport = Analyze(repositories, latestPackageVersions);
 
 			return repositoriesVersionReport;
 		}
@@ -52,11 +52,11 @@ namespace NugetAnalyzer.BLL.Services
 			return new HashSet<int>(packageIds);
 		}
 
-		private ICollection<RepositoryVersionReport> Analyze(
+		private ICollection<RepositoryReport> Analyze(
 			IReadOnlyCollection<Repository> repositories,
             Dictionary<int, PackageVersion> latestPackageVersions)
 		{
-			List<RepositoryVersionReport> repositoriesVersionReports
+			List<RepositoryReport> repositoriesVersionReports
 				= repositories.Select(RepositoryConverter.RepositoryToRepositoryVersionReport).ToList();
 
 			for (int i = 0; i < repositories.Count; i++)
