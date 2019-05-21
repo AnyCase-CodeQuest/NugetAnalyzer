@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -70,22 +71,25 @@ namespace NugetAnalyzer.BLL.Services
             {
                 //tasks.Add(Task.Run(async () =>
                 //{
-                    string directoryPath = null;
-                    try
+                    string clonePath = null;
+                    //try
                     {
-                        directoryPath = directoryService.GeneratePath(directoryService.GetName(repository.Key));
-                        gitService.CloneBranch(repository.Key, directoryPath, userToken, repository.Value);
-                        var parsedRepository = repositoryAnalyzerService.GetParsedRepositoryAsync(directoryPath).Result;
-                        repositorySaverService.SaveAsync(parsedRepository, userId).Wait();
-                        nugetService.RefreshLatestVersionOfNewlyAddedPackagesAsync().Wait();
+                        clonePath = directoryService.GenerateClonePath();
+                        var repositoryPath = clonePath + "/" + directoryService.GetName(repository.Key);
+
+                        gitService.CloneBranch(repository.Key, repositoryPath, userToken, repository.Value);
+                        var parsedRepository = await repositoryAnalyzerService.GetParsedRepositoryAsync(repositoryPath);
+                        var domainRepository = await repositorySaverService.SaveAsync(parsedRepository, userId);
+
+                        await nugetService.RefreshLatestVersionOfNewlyAddedPackagesAsync();
                     }
-                    catch (Exception ex)
+                    //catch (Exception ex)
                     {
                         //TODO: logging
                     }
-                    finally
+                    //finally
                     {
-                        directoryService.Delete(directoryPath); // TODO !!!
+                        directoryService.Delete(clonePath);
                     }
                 //}));
             }

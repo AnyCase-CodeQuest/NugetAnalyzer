@@ -6,7 +6,7 @@
 
         string GetName(string directoryPath);
 
-        string GeneratePath(string directoryName);
+        string GenerateClonePath();
 
         void Create(string path);
 

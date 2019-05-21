@@ -67,3 +67,44 @@ $logo-fill-color: rgba(0,0,0,.2);
 .footer__link_margin {
     margin-left: 10px;
 }
+
+
+// -------------------- modal ---------------------
+
+.modal {
+    display: block;
+
+    &-header {
+        border-bottom: unset;
+    }
+
+    &-backdrop {
+        opacity: 0.35;
+    }
+
+    input {
+        &[type="checkbox"] {
+            transform: scale(1.5);
+            cursor: pointer;
+        }
+    }
+}
+
+.text-gray {
+    color: gray;
+}
+
+// -------------------- loader ---------------------
+
+.loader {
+    &-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    &__modal-backdrop {
+        opacity: 0.15 !important;
+    }
+}

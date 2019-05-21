@@ -53,14 +53,14 @@ namespace NugetAnalyzer.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<PartialViewResult> AddRepositories([FromBody]Dictionary<string, string> repositories)
+        public async Task<StatusCodeResult> AddRepositories([FromBody]Dictionary<string, string> repositories)
         {
             ProfileDTO userProfile = await GetCurrentUserProfileAsync();
 
             await repositoryService.AddRepositoriesAsync(repositories, userProfile.AccessToken, userProfile.UserId);
             var userRepositories = await repositoryService
                 .GetAnalyzedRepositoriesAsync(repository => repository.UserId == userProfile.UserId);
-            return PartialView("PartialRepositories", userRepositories);
+            return Ok();
         }
 
         [HttpGet]

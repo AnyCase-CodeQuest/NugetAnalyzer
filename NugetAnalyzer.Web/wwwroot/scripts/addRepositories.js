@@ -1,5 +1,5 @@
 ﻿function GetSelect(selectListData) {
-    var selectList = '<select class="form-control modal__select-repository-branch" style="height: unset; padding: unset">';
+    var selectList = '<select class="form-control modal__select-repository-branch"';
     for (var i = 0; i < selectListData.length; i++) {
         selectList += '<option>' + selectListData[i] + '</option>';
     }
@@ -49,10 +49,14 @@ function AddSelectedRepositoriesOnClick() {
                 url: "/Repository/AddRepositories",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(checkedRepositories),
-                dataType: "html",
                 success: function (data) {
-
+                    alert("ok");
+                    //$("body").append(GetAlert("repositories was added"));
                 },
+                //error: function (data) {
+                //    alert("server error");
+                //    //$("body").append(GetAlert("warning", "warning"));
+                //},
                 complete: function () {
                     $(".loader-wrapper").remove();
                 }

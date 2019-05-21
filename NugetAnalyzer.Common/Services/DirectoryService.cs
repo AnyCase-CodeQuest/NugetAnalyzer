@@ -38,9 +38,9 @@ namespace NugetAnalyzer.Common.Services
             return new DirectoryInfo(directoryPath).Name;
         }
 
-        public string GeneratePath(string directoryName)
+        public string GenerateClonePath()
         {
-            return directoriesConfiguration.RepositoryCloneDirectory + "/" + Guid.NewGuid().ToString() + "/" + directoryName;
+            return directoriesConfiguration.RepositoryCloneDirectory + "/" + Guid.NewGuid().ToString();
         }
 
         public void Create(string path)
@@ -59,11 +59,27 @@ namespace NugetAnalyzer.Common.Services
             {
                 throw new ArgumentNullException(nameof(path));
             }
-
-            if (Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
-                Directory.Delete(path, true);
+                return;
             }
+
+            var filesNames = Directory.GetFiles(path);
+            var directoriesNames = Directory.GetDirectories(path);
+
+            foreach (var fileName in filesNames)
+            {
+                File.SetAttributes(fileName, FileAttributes.Normal);
+                File.Delete(fileName);
+            }
+
+            foreach (var directoryName in directoriesNames)
+            {
+                Delete(directoryName);
+            }
+
+            File.SetAttributes(path, FileAttributes.Normal);
+            Directory.Delete(path, false);
         }
     }
 }

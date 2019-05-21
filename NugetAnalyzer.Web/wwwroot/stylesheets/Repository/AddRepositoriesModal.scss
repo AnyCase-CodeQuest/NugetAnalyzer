@@ -1,0 +1,12 @@
+﻿
+.modal {
+
+    &__repository-branch {
+        cursor: pointer;
+    }
+
+    &__select-repository-branch {
+        height: unset;
+        padding: unset;
+    }
+}

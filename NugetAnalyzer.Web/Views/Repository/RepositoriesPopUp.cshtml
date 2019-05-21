@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<NugetAnalyzer.Dtos.Models.Repositories.RepositoryChoice>
 
+@section Styles {
+    <link href="~/stylesheets/Repository/AddRepositoriesModal.css" rel="stylesheet" />
+}
+
 <div class="modal-wrapper">
-    <div class="modal show" style="display: block">
+    <div class="modal show">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="border-bottom: unset">
+                <div class="modal-header">
                     <h2 class="modal-title font-weight-bold">Add your repositories</h2>
                 </div>
                 <div class="modal-body">
@@ -24,12 +28,12 @@
                                         <a class="modal__repository-name" target="_blank" rel="noopener noreferrer" href="@repository.Url">@repository.Name</a>
                                     </td>
                                     <td>
-                                        <input type="checkbox" value="@repository.Id" style="transform: scale(1.5); cursor: pointer"/>
+                                        <input type="checkbox" value="@repository.Id">
                                     </td>
                                     <td>
-                                        <a class="modal__repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch" style="cursor: pointer">
+                                        <a class="modal__repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch">
                                             <span>@repository.DefaultBranch</span>
-                                            <span style="color: gray">(default)</span>
+                                            <span class="text-gray">(default)</span>
                                         </a>
                                     </td>
                                 </tr>

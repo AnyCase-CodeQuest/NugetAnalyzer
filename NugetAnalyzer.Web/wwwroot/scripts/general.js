@@ -1,11 +1,7 @@
 ﻿$(function() {
     $('[data-toggle="tooltip"]').tooltip();
+    $('.toast').toast("show");
 
-    $.ajaxSetup({
-        error: function(x, status, error) {
-            //window.location.href = "/Error/Error";  //TODO: setup ajax error
-        }
-    });
 });
 
 function GetLoader(sizeInRem = 0) {
@@ -20,9 +16,13 @@ function GetLoader(sizeInRem = 0) {
 
 function GetFullScreenLoader() {
     return '<div class="loader-wrapper">' +
-        '<div class="modal show" style="display: block;">' +
-        '<div style="display: flex; justify-content: center; align-items: center; height: 100%">' + GetLoader(5) + '</div>' + 
+        '<div class="modal show">' +
+        '<div class="loader-content">' + GetLoader(5) + '</div>' + 
         '</div>' +
-        '<div class="modal-backdrop show" style="opacity: 0.15"></div>' +
+        '<div class="modal-backdrop loader__modal-backdrop show"></div>' +
         '</div>';
+}
+
+function GetAlert(message, alertType = "success") {
+    return '';
 }
