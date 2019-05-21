@@ -30,7 +30,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             IsObsolete = true,
             VersionStatus = PackageVersionStatus.Info,
-            DateStatus = PackageDateStatus.Warning
+            DateStatus = PackageVersionStatus.Warning
         };
 
         [OneTimeSetUp]

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
-using NugetAnalyzer.DTOs.Models;
+using NugetAnalyzer.DTOs.Models.Reports;
 
 namespace NugetAnalyzer.Web.Controllers
 {
@@ -16,7 +16,7 @@ namespace NugetAnalyzer.Web.Controllers
 
         public async Task<IActionResult> Report(int id)
         {
-           ProjectReportDTO model = await projectService.GetProjectReportAsync(id);
+           ProjectReport model = await projectService.GetProjectReportAsync(id);
 
            if (model == null)
            {
