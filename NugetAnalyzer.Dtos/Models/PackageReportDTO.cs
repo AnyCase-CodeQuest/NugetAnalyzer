@@ -11,9 +11,9 @@ namespace NugetAnalyzer.DTOs.Models
 
         public string PackageName { get; set; }
 
-        public PackageVersionDTO Current { get; set; }
+        public PackageVersionDTO CurrentPackageVersion { get; set; }
 
-        public PackageVersionDTO Latest { get; set; }
+        public PackageVersionDTO LatestPackageVersion { get; set; }
 
         public PackageVersionComparisonReport Report { get; set; }
     }

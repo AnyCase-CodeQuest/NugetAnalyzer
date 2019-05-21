@@ -16,17 +16,13 @@ namespace NugetAnalyzer.BLL.Test.Services
     [TestFixture]
     public class ProjectServiceTests
     {
-        private readonly PackageVersion nUnitVersion;
-        private readonly PackageVersion nUnitLatestVersion;
-        private readonly PackageVersion moqVersion;
-        private readonly PackageVersion moqLatestVersion;
-        private readonly Package nUnitPackage;
-        private readonly Package moqPackage;
-        private readonly List<ProjectPackageVersion> projectPackageVersions;
-        private readonly Project project;
+        private readonly PackageVersion nUnitPackageVersion;
+        private readonly PackageVersion nUnitLatestPackageVersion;
+        private readonly PackageVersion moqPackageVersion;
+        private readonly PackageVersion moqLatestPackageVersion;
         private readonly List<Project> projects;
         private readonly List<PackageVersion> packageVersions;
-        private readonly List<PackageVersion> packageLatestVersions;
+        private readonly List<PackageVersion> latestPackageVersions;
         private readonly List<Package> packages;
         private readonly PackageVersionComparisonReport nUnitReport;
         private readonly PackageVersionComparisonReport moqReport;
@@ -42,7 +38,7 @@ namespace NugetAnalyzer.BLL.Test.Services
 
         public ProjectServiceTests()
         {
-            nUnitVersion = new PackageVersion
+            nUnitPackageVersion = new PackageVersion
             {
                 Id = 1,
                 Major = 1,
@@ -53,7 +49,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 PackageId = 1
             };
 
-            moqVersion = new PackageVersion
+            moqPackageVersion = new PackageVersion
             {
                 Id = 2,
                 Major = 2,
@@ -64,7 +60,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 PackageId = 2
             };
 
-            nUnitLatestVersion = new PackageVersion
+            nUnitLatestPackageVersion = new PackageVersion
             {
                 Id = 3,
                 Major = 2,
@@ -75,7 +71,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 PackageId = 1
             };
 
-            moqLatestVersion = new PackageVersion
+            moqLatestPackageVersion = new PackageVersion
             {
                 Id = 4,
                 Major = 3,
@@ -86,42 +82,42 @@ namespace NugetAnalyzer.BLL.Test.Services
                 PackageId = 2
             };
 
-            nUnitPackage = new Package
+            var nUnitPackage = new Package
             {
                 Id = 1,
                 Name = "NUnit",
                 Versions = new List<PackageVersion>
                 {
-                    nUnitVersion,
+                    nUnitPackageVersion,
                 },
                 LastUpdateTime = null
             };
 
-            moqPackage = new Package
+            var moqPackage = new Package
             {
                 Id = 2,
                 Name = "Moq",
                 Versions = new List<PackageVersion>
                 {
-                    moqVersion
+                    moqPackageVersion
                 },
                 LastUpdateTime = null
             };
 
-            nUnitVersion.Package = nUnitPackage;
+            nUnitPackageVersion.Package = nUnitPackage;
 
-            moqVersion.Package = moqPackage;
+            moqPackageVersion.Package = moqPackage;
 
             packageVersions = new List<PackageVersion>
             {
-                nUnitVersion,
-                moqVersion
+                nUnitPackageVersion,
+                moqPackageVersion
             };
 
-            packageLatestVersions = new List<PackageVersion>
+            latestPackageVersions = new List<PackageVersion>
             {
-                nUnitLatestVersion,
-                moqLatestVersion
+                nUnitLatestPackageVersion,
+                moqLatestPackageVersion
             };
 
             packages = new List<Package>
@@ -130,33 +126,31 @@ namespace NugetAnalyzer.BLL.Test.Services
                 moqPackage
             };
 
-            projectPackageVersions = new List<ProjectPackageVersion>
+            var projectPackageVersions = new List<ProjectPackageVersion>
             {
                 new ProjectPackageVersion
                 {
                     PackageVersionId = 1,
-                    PackageVersion = nUnitVersion,
+                    PackageVersion = nUnitPackageVersion,
                     ProjectId = 1,
                     
                 },
                 new ProjectPackageVersion
                 {
                     PackageVersionId = 2,
-                    PackageVersion = moqVersion,
+                    PackageVersion = moqPackageVersion,
                     ProjectId = 1,
                 }
             };
 
-            project = new Project
-            {
-                Id = 1,
-                Name = "TestProject",
-                ProjectPackageVersions = projectPackageVersions
-            };
-
             projects = new List<Project>
             {
-                project
+                new Project
+                {
+                    Id = 1,
+                    Name = "TestProject",
+                    ProjectPackageVersions = projectPackageVersions
+                }
             };
 
             nUnitReport = new PackageVersionComparisonReport();
@@ -187,7 +181,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             packageVersionsRepositoryMock
                 .Setup(packageVersionsRepository => 
                     packageVersionsRepository.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()))
-                .ReturnsAsync(packageLatestVersions);
+                .ReturnsAsync(latestPackageVersions);
 
             uowMock
                 .Setup(uow => uow.ProjectsRepository)
@@ -198,11 +192,11 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Returns(packageVersionsRepositoryMock.Object);
 
             versionAnalyzerServiceMock
-                .Setup(versionAnalyzerService => versionAnalyzerService.Compare(nUnitLatestVersion, nUnitVersion))
+                .Setup(versionAnalyzerService => versionAnalyzerService.Compare(nUnitLatestPackageVersion, nUnitPackageVersion))
                 .Returns(nUnitReport);
 
             versionAnalyzerServiceMock
-                .Setup(versionAnalyzerService => versionAnalyzerService.Compare(moqLatestVersion, moqVersion))
+                .Setup(versionAnalyzerService => versionAnalyzerService.Compare(moqLatestPackageVersion, moqPackageVersion))
                 .Returns(moqReport);
 
             versionAnalyzerServiceMock
@@ -229,10 +223,10 @@ namespace NugetAnalyzer.BLL.Test.Services
                 projectsRepository.GetCollectionIncludePackageAsync(It.IsAny<Expression<Func<Project, bool>>>()));
 
             versionAnalyzerServiceMock.Verify(versionAnalyzerService =>
-                versionAnalyzerService.Compare(nUnitLatestVersion, nUnitVersion));
+                versionAnalyzerService.Compare(nUnitLatestPackageVersion, nUnitPackageVersion));
 
             versionAnalyzerServiceMock.Verify(versionAnalyzerService =>
-                versionAnalyzerService.Compare(moqLatestVersion, moqVersion));
+                versionAnalyzerService.Compare(moqLatestPackageVersion, moqPackageVersion));
 
             versionAnalyzerServiceMock.Verify(versionAnalyzerService =>
                 versionAnalyzerService.CalculateMaxReportLevelStatus(reports));

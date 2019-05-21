@@ -58,8 +58,8 @@ namespace NugetAnalyzer.BLL.Services
                     PackageId = packageVersion.PackageId,
                     LastUpdateTime = packageVersion.Package.LastUpdateTime,
                     PackageName = packageVersion.Package.Name,
-                    Current = PackageVersionConverter.PackageVersionToPackageVersionDto(packageVersion),
-                    Latest = PackageVersionConverter.PackageVersionToPackageVersionDto(latestVersion),
+                    CurrentPackageVersion = PackageVersionConverter.PackageVersionToPackageVersionDto(packageVersion),
+                    LatestPackageVersion = PackageVersionConverter.PackageVersionToPackageVersionDto(latestVersion),
                     Report = versionsAnalyzerService.Compare(latestVersion, packageVersion)
                 };
                 packageReports.Add(packageVersionReport);
