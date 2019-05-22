@@ -2,10 +2,8 @@
 
 namespace NugetAnalyzer.Domain
 {
-    public class Source
+    public class Source : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public ICollection<Profile> Profiles { get; set; }

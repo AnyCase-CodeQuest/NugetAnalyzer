@@ -36,7 +36,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             IsObsolete = true,
             VersionStatus = PackageVersionStatus.Info,
-            DateStatus = PackageDateStatus.Warning
+            DateStatus = PackageVersionStatus.Warning
         };
 
         [OneTimeSetUp]
@@ -90,7 +90,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 .Setup(versionAnalyzerService => versionAnalyzerService.CalculateMaxReportLevelStatus(It.IsAny<ICollection<PackageVersionComparisonReport>>()))
                 .Returns(report);
 
-            ICollection<RepositoryVersionReport> result = await repositoryService.GetAnalyzedRepositoriesAsync(expression);
+            ICollection<RepositoryReport> result = await repositoryService.GetAnalyzedRepositoriesAsync(expression);
 
             Assert.IsTrue(result.IsDeepEqual(GetAnalyzedRepositories()));
         }
@@ -281,40 +281,40 @@ namespace NugetAnalyzer.BLL.Test.Services
             };
         }
 
-        private ICollection<RepositoryVersionReport> GetAnalyzedRepositories()
+        private ICollection<RepositoryReport> GetAnalyzedRepositories()
         {
-            return new List<RepositoryVersionReport>
+            return new List<RepositoryReport>
             {
-                new RepositoryVersionReport
+                new RepositoryReport
                 {
                     Report = report,
-                    Solutions = new List<SolutionVersionReport>
+                    Solutions = new List<SolutionReport>
                     {
-                        new SolutionVersionReport
+                        new SolutionReport
                         {
                             Report = report,
-                            Projects = new List<ProjectVersionReport>
+                            Projects = new List<ProjectReport>
                             {
-                                new ProjectVersionReport
+                                new ProjectReport
                                 {
                                     Report = report
                                 },
-                                new ProjectVersionReport
+                                new ProjectReport
                                 {
                                     Report = report
                                 },
                             }
                         },
-                        new SolutionVersionReport
+                        new SolutionReport
                         {
                             Report = report,
-                            Projects = new List<ProjectVersionReport>
+                            Projects = new List<ProjectReport>
                             {
-                                new ProjectVersionReport
+                                new ProjectReport
                                 {
                                     Report = report
                                 },
-                                new ProjectVersionReport
+                                new ProjectReport
                                 {
                                     Report = report
                                 },

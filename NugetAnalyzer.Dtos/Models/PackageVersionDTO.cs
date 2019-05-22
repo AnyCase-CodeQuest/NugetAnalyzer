@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace NugetAnalyzer.Domain
+namespace NugetAnalyzer.DTOs.Models
 {
-    public class PackageVersion : BaseEntity
+    public class PackageVersionDTO
     {
+        public int Id { get; set; }
+
         public int Major { get; set; }
 
         public int Minor { get; set; }
@@ -16,9 +17,5 @@ namespace NugetAnalyzer.Domain
         public DateTime? PublishedDate { get; set; }
 
         public int PackageId { get; set; }
-
-        public Package Package { get; set; }
-
-        public ICollection<ProjectPackageVersion> ProjectPackageVersions { get; set; }
     }
 }

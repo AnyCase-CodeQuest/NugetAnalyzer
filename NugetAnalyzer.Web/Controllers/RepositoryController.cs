@@ -62,7 +62,7 @@ namespace NugetAnalyzer.Web.Controllers
 
             var addedRepositoriesResponse = await repositoryService
                 .AddRepositoriesAsync(addRepositoriesRequestModel.Repositories, userProfile.AccessToken, userProfile.UserId);
-            ICollection<RepositoryVersionReport> userRepositories = await repositoryService
+            ICollection<RepositoryReport> userRepositories = await repositoryService
                 .GetAnalyzedRepositoriesAsync(repository => repository.UserId == userProfile.UserId);
 
             return addRepositoriesRequestModel.IsFromLayout
