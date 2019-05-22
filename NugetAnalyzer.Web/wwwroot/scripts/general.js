@@ -2,6 +2,9 @@
     $('[data-toggle="tooltip"]').tooltip();
     $('.toast').toast("show");
 
+    $(document).on('click', ".modal__button-ok", function() {
+        $(".modal-wrapper").remove();
+    })
 });
 
 function Sleep(ms) {
@@ -25,8 +28,4 @@ function GetFullScreenLoader() {
         '</div>' +
         '<div class="modal-backdrop loader__modal-backdrop show"></div>' +
         '</div>';
-}
-
-function GetAlert(message, alertType = "success") {
-    return '';
 }
