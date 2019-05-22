@@ -8,7 +8,6 @@ namespace NugetAnalyzer.DTOs.Models.Reports
         /// Gets or sets the packages with reports
         /// Can be null to show no details information
         /// </summary>
-
         public List<PackageReport> Packages { get; set; }
     }
 }

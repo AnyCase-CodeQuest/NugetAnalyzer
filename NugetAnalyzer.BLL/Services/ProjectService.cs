@@ -31,8 +31,7 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task<ProjectReport> GetProjectReportAsync(int projectId)
         {
-            IReadOnlyCollection<Project> projects = await ProjectRepository.GetCollectionIncludePackageAsync(proj => proj.Id == projectId);
-            Project project = projects.FirstOrDefault();
+            Project project = await ProjectRepository.GetByIdWithIncludedPackageAsync(projectId);
 
             if (project == null)
             {

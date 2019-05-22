@@ -19,7 +19,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private readonly PackageVersion nUnitLatestPackageVersion;
         private readonly PackageVersion moqPackageVersion;
         private readonly PackageVersion moqLatestPackageVersion;
-        private readonly List<Project> projects;
+        private readonly Project project;
         private readonly List<PackageVersion> packageVersions;
         private readonly List<PackageVersion> latestPackageVersions;
         private readonly List<Package> packages;
@@ -142,14 +142,11 @@ namespace NugetAnalyzer.BLL.Test.Services
                 }
             };
 
-            projects = new List<Project>
+            project = new Project
             {
-                new Project
-                {
-                    Id = 1,
-                    Name = "TestProject",
-                    ProjectPackageVersions = projectPackageVersions
-                }
+                Id = 1,
+                Name = "TestProject",
+                ProjectPackageVersions = projectPackageVersions
             };
 
             nUnitReport = new PackageVersionComparisonReport();
@@ -174,8 +171,8 @@ namespace NugetAnalyzer.BLL.Test.Services
             versionAnalyzerServiceMock = new Mock<IVersionsAnalyzerService>();
 
             projectsRepositoryMock
-                .Setup(projectsRepository => projectsRepository.GetCollectionIncludePackageAsync(It.IsAny<Expression<Func<Project, bool>>>()))
-                .ReturnsAsync(projects);
+                .Setup(projectsRepository => projectsRepository.GetByIdWithIncludedPackageAsync(It.IsAny<int>()))
+                .ReturnsAsync(project);
 
             packageVersionsRepositoryMock
                 .Setup(packageVersionsRepository => 
@@ -219,7 +216,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 packageVersionsRepository.GetLatestVersionsAsync(It.IsAny<Expression<Func<PackageVersion, bool>>>()));
 
             projectsRepositoryMock.Verify(projectsRepository => 
-                projectsRepository.GetCollectionIncludePackageAsync(It.IsAny<Expression<Func<Project, bool>>>()));
+                projectsRepository.GetByIdWithIncludedPackageAsync(packageVersion.Id));
 
             versionAnalyzerServiceMock.Verify(versionAnalyzerService =>
                 versionAnalyzerService.Compare(nUnitLatestPackageVersion, nUnitPackageVersion));
