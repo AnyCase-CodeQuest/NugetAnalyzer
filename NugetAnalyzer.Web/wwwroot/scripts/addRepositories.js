@@ -1,5 +1,5 @@
 ﻿function GetSelect(selectListData) {
-    var selectList = '<select class="form-control modal__select-repository-branch"';
+    var selectList = '<select class="form-control modal__select-repository-branch">';
     for (var i = 0; i < selectListData.length; i++) {
         selectList += '<option>' + selectListData[i] + '</option>';
     }
@@ -8,7 +8,7 @@
 }
 
 function GetSelectedRepositories() {
-    var selectedCheckboxes = $(".modal input[type='checkbox']:checked");
+    var selectedCheckboxes = $(".modal tbody input[type='checkbox']:checked");
     var selectedRepositories = {};
     for (var i = 0; i < selectedCheckboxes.length; i++) {
         var trNode = selectedCheckboxes[i].parentNode.parentNode;
@@ -51,7 +51,7 @@ function AddSelectedRepositoriesOnClick(isFromLayout) {
                 type: "POST",
                 url: "/Repository/AddRepositories",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify( { repositories: checkedRepositories, isFromLayout: isFromLayout } ),
+                data: JSON.stringify({ repositories: checkedRepositories, isFromLayout: isFromLayout }),
                 complete: async function (data) {
                     console.log(data);
                     $(".loader-wrapper").remove();
@@ -61,6 +61,17 @@ function AddSelectedRepositoriesOnClick(isFromLayout) {
                 }
             });
         });
+}
+
+
+function ToggleAllRepositoriesOnClick() {
+    $(".modal thead input[type='checkbox']").on('click', function () {
+        var isChecked = $(".modal thead input[type='checkbox']")[0].checked;
+        var checkboxes = $(".modal tbody input[type='checkbox']");
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = isChecked;
+        }
+    });
 }
 
 function AddRepositories(isFromLayout) {
@@ -74,6 +85,7 @@ function AddRepositories(isFromLayout) {
             await Sleep(10);
             $(".modal.fade")[0].classList.add("show");
             BranchOnClick();
+            ToggleAllRepositoriesOnClick();
             AddSelectedRepositoriesOnClick(isFromLayout);
         },
         complete: function () {
@@ -84,10 +96,10 @@ function AddRepositories(isFromLayout) {
 }
 
 function AddRepositoriesOnClick() {
-    $("#add-repositories_layout-action").one('click', function() {
+    $("#add-repositories_layout-action").one('click', function () {
         AddRepositories(true);
     });
-    $("#add-repositories_profile-action").one('click', function() {
+    $("#add-repositories_profile-action").one('click', function () {
         AddRepositories(false);
     });
 }

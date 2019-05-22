@@ -74,10 +74,6 @@ $logo-fill-color: rgba(0,0,0,.2);
 .modal {
     display: block;
 
-    &-header {
-        border-bottom: unset;
-    }
-
     &-backdrop {
         opacity: 0.35;
     }
@@ -87,6 +83,15 @@ $logo-fill-color: rgba(0,0,0,.2);
             transform: scale(1.5);
             cursor: pointer;
         }
+    }
+
+    &__repository-branch {
+        cursor: pointer;
+    }
+
+    &__select-repository-branch {
+        height: unset;
+        padding: unset;
     }
 }
 

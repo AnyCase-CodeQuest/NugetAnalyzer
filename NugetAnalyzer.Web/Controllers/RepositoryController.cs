@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DTOs.Models;
-using NugetAnalyzer.DTOs.Models.Enums;
 using NugetAnalyzer.DTOs.Models.Reports;
 using NugetAnalyzer.Dtos.Models.Repositories;
 using NugetAnalyzer.DTOs.Models.Repositories;

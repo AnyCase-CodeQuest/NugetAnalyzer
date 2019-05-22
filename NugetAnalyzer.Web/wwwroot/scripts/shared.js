@@ -4,7 +4,7 @@
 
     $(document).on('click', ".modal__button-ok", function() {
         $(".modal-wrapper").remove();
-    })
+    });
 });
 
 function Sleep(ms) {

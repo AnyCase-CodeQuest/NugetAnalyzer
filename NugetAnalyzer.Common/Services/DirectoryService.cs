@@ -55,6 +55,12 @@ namespace NugetAnalyzer.Common.Services
 
         public void Delete(string path)
         {
+            SetAttributes(path);
+            Directory.Delete(path, true);
+        }
+
+        private void SetAttributes(string path)
+        {
             if (path == null)
             {
                 throw new ArgumentNullException(nameof(path));
@@ -65,21 +71,18 @@ namespace NugetAnalyzer.Common.Services
             }
 
             var filesNames = Directory.GetFiles(path);
-            var directoriesNames = Directory.GetDirectories(path);
-
             foreach (var fileName in filesNames)
             {
                 File.SetAttributes(fileName, FileAttributes.Normal);
-                File.Delete(fileName);
             }
 
+            var directoriesNames = Directory.GetDirectories(path);
             foreach (var directoryName in directoriesNames)
             {
-                Delete(directoryName);
+                SetAttributes(directoryName);
             }
 
             File.SetAttributes(path, FileAttributes.Normal);
-            Directory.Delete(path, false);
         }
     }
 }

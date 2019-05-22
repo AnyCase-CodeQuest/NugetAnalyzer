@@ -1,22 +1,24 @@
 ﻿@model IEnumerable<NugetAnalyzer.Dtos.Models.Repositories.RepositoryChoice>
 
-@section Styles {
-    <link href="~/stylesheets/Repository/AddRepositoriesModal.css" rel="stylesheet" />
-}
-
 <div class="modal-wrapper">
     <div class="modal fade">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="border-bottom: unset;">
                     <h2 class="modal-title font-weight-bold">Add your repositories</h2>
                 </div>
                 <div class="modal-body">
+                    @if (!Model.Any())
+                    {
+                        <span>All your repositories have already been added</span>
+                    }
+                    else
+                    {
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Repository name</th>
-                                <th></th>
+                                <th><input type="checkbox" value="0"></th>
                                 <th>Branch</th>
                             </tr>
                         </thead>
@@ -40,9 +42,10 @@
                             }
                         </tbody>
                     </table>
+                    }
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <input type="submit" class="btn btn-dark" value="Add"/>
+                    <input type="submit" class="btn btn-dark" value="Add" />
                 </div>
             </div>
         </div>

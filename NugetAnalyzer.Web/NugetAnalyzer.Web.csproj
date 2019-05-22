@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Resources\Views\Home\" />
+    <Folder Include="TempRepositoriesCloning\" />
   </ItemGroup>
 
 </Project>

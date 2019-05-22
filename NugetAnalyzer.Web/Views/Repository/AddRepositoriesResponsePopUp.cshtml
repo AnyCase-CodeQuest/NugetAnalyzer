@@ -1,26 +1,25 @@
 ﻿@model NugetAnalyzer.DTOs.Models.Repositories.AddRepositoriesResponseDTO
 
-    <div class="modal-wrapper">
-        <div class="modal fade">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+<div class="modal-wrapper">
+    <div class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
 
-                    <div class="modal-header">
-                        <h4 class="modal-title">@Model.ResponseType.ToString()</h4>
-                    </div>
-                    <div class="modal-body">
-                        <span>Was added repositories: @Model.RepositoriesNames.Count</span>
-                        @foreach (var repositoryName in @Model.RepositoriesNames)
-                        {
-                            <p>@repositoryName</p>
-                        }
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-dark modal__button-ok">Ok</button>
-                    </div>
-
+                <div class="modal-header flex-column">
+                    <h4 class="modal-title">@Model.ResponseType.ToString()</h4>
+                    <span>Was added repositories: @Model.RepositoriesNames.Count</span>
+                </div>
+                <div class="modal-body">
+                    @foreach (var repositoryName in @Model.RepositoriesNames)
+                    {
+                        @repositoryName<br/>
+                    }
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-dark modal__button-ok">Ok</button>
                 </div>
             </div>
         </div>
-        <div class="modal-backdrop show"></div>
     </div>
+    <div class="modal-backdrop show"></div>
+</div>
