@@ -1,9 +1,7 @@
 ﻿namespace NugetAnalyzer.Domain
 {
-    public class Profile
+    public class Profile : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Url { get; set; }
 
         public string AccessToken { get; set; }
