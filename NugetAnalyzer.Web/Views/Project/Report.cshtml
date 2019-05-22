@@ -18,15 +18,13 @@
     <script src="~/scripts/Shared/tooltip.js"></script>
 }
 
-<h4>@Model.Name 
-    @if (Model.Report.VersionStatus != PackageVersionStatus.Actual)
+<h4>
+    @Model.Name
+    @if (@Model.Packages.Count != 0)
     {
-       <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Version: @Model.Report.VersionStatus.ToString()">
-           <notice type="@Model.Report.VersionStatus.ToString()"></notice>
-       </span>
-    }
-    @if (Model.Report.DateStatus != PackageVersionStatus.Undefined)
-    {
+        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Version: @Model.Report.VersionStatus.ToString()">
+            <notice type="@Model.Report.VersionStatus.ToString()"></notice>
+        </span>
         <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Date: @Model.Report.DateStatus.ToString()">
             <notice type="@Model.Report.DateStatus.ToString()"></notice>
         </span>
@@ -80,12 +78,9 @@
                     </span>
                 </td>
                 <td class="th__notice">
-                    @if (package.Report.DateStatus != PackageVersionStatus.Undefined)
-                    {
-                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="@package.Report.DateStatus.ToString()">
-                            <notice type="@package.Report.DateStatus.ToString()"></notice>
-                        </span>
-                    }
+                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="@package.Report.DateStatus.ToString()">
+                        <notice type="@package.Report.DateStatus.ToString()"></notice>
+                    </span>
                     @if (package.Report.IsObsolete)
                     {
                         <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="The package has not been updated for a long time">

@@ -14,7 +14,12 @@
 {
     string GetAlertLevelCssClass(string status)
     {
-        return status.ToLower() == "error" ? "alert-danger" : $"alert-{status.ToLower()}";
+        switch (status.ToLower())
+        {
+            case "error": return "alert-danger";
+            case "actual": return "alert-success";
+            default: return $"alert-{status.ToLower()}";
+        }
     }
 }
 
@@ -66,7 +71,7 @@
         <tr>
             <th>Package version is not updated &lt; @Model.DateBordersInMonths.WarningBottomBorder month(s)</th>
             <td>
-                <div class="alert alert-info" role="alert">Actual</div>
+                <div class="alert alert-success" role="alert">Actual</div>
             </td>
         </tr>
         <tr>
