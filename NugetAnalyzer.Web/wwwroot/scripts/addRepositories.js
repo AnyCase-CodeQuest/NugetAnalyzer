@@ -38,51 +38,58 @@ function BranchOnClick() {
         });
 }
 
-function AddSelectedRepositoriesOnClick() {
+function AddSelectedRepositoriesOnClick(isFromLayout) {
     $('.modal input[type="submit"]').on('click',
         function () {
             var checkedRepositories = GetSelectedRepositories();
+            if (Object.keys(checkedRepositories).length == 0) {
+                return;
+            }
             $(".modal-wrapper").remove();
             $("body").append(GetFullScreenLoader());
             $.ajax({
                 type: "POST",
                 url: "/Repository/AddRepositories",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(checkedRepositories),
-                success: function (data) {
-                    alert("ok");
-                    //$("body").append(GetAlert("repositories was added"));
-                },
-                //error: function (data) {
-                //    alert("server error");
-                //    //$("body").append(GetAlert("warning", "warning"));
-                //},
-                complete: function () {
+                data: JSON.stringify( { repositories: checkedRepositories, isFromLayout: isFromLayout } ),
+                complete: async function (data) {
+                    console.log(data);
                     $(".loader-wrapper").remove();
+                    $("body").append(data.responseText);
+                    await Sleep(10);
+                    $(".modal.fade")[0].classList.add("show");
                 }
             });
         });
 }
 
+function AddRepositories(isFromLayout) {
+    $("body").append(GetFullScreenLoader());
+    $.ajax({
+        type: "GET",
+        url: "/Repository/AddRepositories",
+        dataType: "html",
+        success: async function (data) {
+            $('body').append(data);
+            await Sleep(10);
+            $(".modal.fade")[0].classList.add("show");
+            BranchOnClick();
+            AddSelectedRepositoriesOnClick(isFromLayout);
+        },
+        complete: function () {
+            $(".loader-wrapper").remove();
+            AddRepositoriesOnClick();
+        }
+    });
+}
+
 function AddRepositoriesOnClick() {
-    $("#new-repo-action").one('click',
-        function () {
-            $("body").append(GetFullScreenLoader());
-            $.ajax({
-                type: "GET",
-                url: "/Repository/AddRepositories",
-                dataType: "html",
-                success: function (data) {
-                    $('body').append(data);
-                    BranchOnClick();
-                    AddSelectedRepositoriesOnClick();
-                },
-                complete: function () {
-                    $(".loader-wrapper").remove();
-                    AddRepositoriesOnClick();
-                }
-            });
-        });
+    $("#add-repositories_layout-action").one('click', function() {
+        AddRepositories(true);
+    });
+    $("#add-repositories_profile-action").one('click', function() {
+        AddRepositories(false);
+    });
 }
 
 $(document).mouseup(function (e) {

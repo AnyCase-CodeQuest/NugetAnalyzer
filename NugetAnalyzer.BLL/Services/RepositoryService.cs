@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -9,7 +8,9 @@ using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.DTOs.Models.Enums;
 using NugetAnalyzer.DTOs.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Repositories;
 
 namespace NugetAnalyzer.BLL.Services
 {
@@ -64,42 +65,48 @@ namespace NugetAnalyzer.BLL.Services
             return await RepositoriesRepository.GetRepositoriesNamesAsync(expression);
         }
 
-        public async Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken, int userId)
+        public async Task<AddRepositoriesResponseDTO> AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken, int userId)
         {
             var tasks = new List<Task>();
+            var addedRepositoriesResponse = new AddRepositoriesResponseDTO
+            {
+                ResponseType = ResponseType.Info,
+                RepositoriesNames = new List<string>()
+            };
             foreach (var repository in repositories)
             {
-                //tasks.Add(Task.Run(async () =>
-                //{
+                tasks.Add(Task.Run(async () =>
+                {
                     string clonePath = null;
-                    //try
+                    try
                     {
                         clonePath = directoryService.GenerateClonePath();
-                        var repositoryPath = clonePath + "/" + directoryService.GetName(repository.Key);
+                        var repositoryName = directoryService.GetName(repository.Key);
+                        var repositoryPath = clonePath + "/" + repositoryName;
 
                         gitService.CloneBranch(repository.Key, repositoryPath, userToken, repository.Value);
                         var parsedRepository = await repositoryAnalyzerService.GetParsedRepositoryAsync(repositoryPath);
                         var domainRepository = await repositorySaverService.SaveAsync(parsedRepository, userId);
 
+                        addedRepositoriesResponse.RepositoriesNames.Add(domainRepository.Name);
+
                         await nugetService.RefreshLatestVersionOfNewlyAddedPackagesAsync();
                     }
-                    //catch (Exception ex)
+                    catch (Exception ex)
                     {
+                        addedRepositoriesResponse.ResponseType = ResponseType.Error;
                         //TODO: logging
                     }
-                    //finally
+                    finally
                     {
                         directoryService.Delete(clonePath);
                     }
-                //}));
+                }));
             }
 
             await Task.WhenAll(tasks);
-        }
 
-        private string GeneratePathForClone()
-        {
-            throw new NotImplementedException();
+            return addedRepositoriesResponse;
         }
 
         private HashSet<int> GetAllPackagesIdsFromRepositories(IEnumerable<Repository> repositories)

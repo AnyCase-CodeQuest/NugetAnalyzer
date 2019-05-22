@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.DTOs.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Repositories;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
@@ -33,6 +34,7 @@ namespace NugetAnalyzer.BLL.Interfaces
         /// <param name="repositories">A dictionary which contains the repository URL as a key and the repository branch as a value</param>
         /// <param name="userToken">User git access token</param>
         /// <param name="userId">User identifier in DB</param>
-        Task AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken, int userId);
+        /// <returns>Response with a response type and collection of names of added repositories</returns>
+        Task<AddRepositoriesResponseDTO> AddRepositoriesAsync(Dictionary<string, string> repositories, string userToken, int userId);
     }
 }

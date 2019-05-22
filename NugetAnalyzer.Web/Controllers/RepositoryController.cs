@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DTOs.Models;
+using NugetAnalyzer.DTOs.Models.Enums;
+using NugetAnalyzer.DTOs.Models.Reports;
 using NugetAnalyzer.Dtos.Models.Repositories;
+using NugetAnalyzer.DTOs.Models.Repositories;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
 
 namespace NugetAnalyzer.Web.Controllers
@@ -53,14 +56,18 @@ namespace NugetAnalyzer.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<StatusCodeResult> AddRepositories([FromBody]Dictionary<string, string> repositories)
+        public async Task<PartialViewResult> AddRepositories([FromBody]AddRepositoriesRequest addRepositoriesRequestModel)
         {
             ProfileDTO userProfile = await GetCurrentUserProfileAsync();
 
-            await repositoryService.AddRepositoriesAsync(repositories, userProfile.AccessToken, userProfile.UserId);
-            var userRepositories = await repositoryService
+            var addedRepositoriesResponse = await repositoryService
+                .AddRepositoriesAsync(addRepositoriesRequestModel.Repositories, userProfile.AccessToken, userProfile.UserId);
+            ICollection<RepositoryVersionReport> userRepositories = await repositoryService
                 .GetAnalyzedRepositoriesAsync(repository => repository.UserId == userProfile.UserId);
-            return Ok();
+
+            return addRepositoriesRequestModel.IsFromLayout
+                ? PartialView("AddRepositoriesResponsePopUp", addedRepositoriesResponse)
+                : PartialView("RepositoriesPartial", userRepositories);
         }
 
         [HttpGet]
@@ -68,7 +75,8 @@ namespace NugetAnalyzer.Web.Controllers
         {
             ProfileDTO userProfile = await GetCurrentUserProfileAsync();
 
-            IEnumerable<string> branchesNames = (await gitHubApiService.GetUserRepositoryBranchesAsync(userProfile.AccessToken, repositoryId))
+            IEnumerable<string> branchesNames = (await gitHubApiService
+                    .GetUserRepositoryBranchesAsync(userProfile.AccessToken, repositoryId))
                 .Select(branch => branch.Name);
             return Json(branchesNames);
         }

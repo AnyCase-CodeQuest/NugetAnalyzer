@@ -4,6 +4,10 @@
 
 });
 
+function Sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function GetLoader(sizeInRem = 0) {
     return sizeInRem == undefined || sizeInRem <= 0
         ? '<div class="spinner-border spinner-border-sm" role="status">' +
