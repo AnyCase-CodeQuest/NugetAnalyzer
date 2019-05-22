@@ -11,6 +11,8 @@ namespace NugetAnalyzer.DAL.Interfaces
 
         IPackageVersionsRepository PackageVersionsRepository { get; }
 
+        IProjectsRepository ProjectsRepository { get; }
+
         Task<int> SaveChangesAsync();
     }
 }

@@ -4,7 +4,7 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Interfaces
 {
-    public interface IVersionService
+    public interface IPackageVersionService
     {
         Task UpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions);
 

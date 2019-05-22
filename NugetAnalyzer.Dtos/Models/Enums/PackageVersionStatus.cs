@@ -3,9 +3,10 @@
     // Don't change the order
     public enum PackageVersionStatus : byte
     {
-        Actual = 0,
-        Info = 1,
-        Warning = 2,
-        Error = 3
+        Undefined = 0,
+        Actual = 1,
+        Info = 2,
+        Warning = 3,
+        Error = 4
     }
 }

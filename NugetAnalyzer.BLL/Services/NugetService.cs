@@ -11,13 +11,13 @@ namespace NugetAnalyzer.BLL.Services
     public class NugetService : INugetService
     {
         private readonly INugetApiService nugetApiService;
-        private readonly IVersionService versionService;
+        private readonly IPackageVersionService packageVersionService;
         private readonly IPackageService packageService;
 
-        public NugetService(INugetApiService nugetApiService, IVersionService versionService, IPackageService packageService)
+        public NugetService(INugetApiService nugetApiService, IPackageVersionService packageVersionService, IPackageService packageService)
         {
             this.nugetApiService = nugetApiService ?? throw new ArgumentNullException(nameof(nugetApiService));
-            this.versionService = versionService ?? throw new ArgumentNullException(nameof(versionService));
+            this.packageVersionService = packageVersionService ?? throw new ArgumentNullException(nameof(packageVersionService));
             this.packageService = packageService ?? throw new ArgumentNullException(nameof(packageService));
         }
 
@@ -27,7 +27,7 @@ namespace NugetAnalyzer.BLL.Services
 
             PackageVersion[] versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
-            await versionService.UpdateAllLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
+            await packageVersionService.UpdateAllLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
         }
 
         public async Task RefreshLatestVersionOfNewlyAddedPackagesAsync()
@@ -36,7 +36,7 @@ namespace NugetAnalyzer.BLL.Services
 
             PackageVersion[] versions = await GetLatestVersionsOfPackagesAsync(newPackages);
 
-            await versionService.UpdateLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
+            await packageVersionService.UpdateLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
         }
 
 

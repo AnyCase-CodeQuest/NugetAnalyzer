@@ -56,8 +56,8 @@ namespace NugetAnalyzer.BLL.Services
 
             return reports.Count == 0 ? new PackageVersionComparisonReport() : new PackageVersionComparisonReport
             {
-                DateStatus = CalculateMaxDateStatusLevel(reports),
                 VersionStatus = CalculateMaxVersionStatusLevel(reports),
+                DateStatus = CalculateMaxDateStatusLevel(reports),
                 IsObsolete = reports
                                  .Cast<PackageVersionComparisonReport?>()
                                  .FirstOrDefault(packageVersionComparisonReport => packageVersionComparisonReport.Value.IsObsolete) != null
@@ -69,7 +69,7 @@ namespace NugetAnalyzer.BLL.Services
             return reports.Select(packageVersionComparisonReport => packageVersionComparisonReport.VersionStatus).Max();
         }
 
-        private PackageDateStatus CalculateMaxDateStatusLevel(ICollection<PackageVersionComparisonReport> reports)
+        private PackageVersionStatus CalculateMaxDateStatusLevel(ICollection<PackageVersionComparisonReport> reports)
         {
             return reports.Select(packageVersionComparisonReport => packageVersionComparisonReport.DateStatus).Max();
         }
@@ -87,11 +87,11 @@ namespace NugetAnalyzer.BLL.Services
                        .Days / DaysInTheMonth >= packageVersionConfiguration.ObsoleteBorderInMonths;
         }
 
-        private PackageDateStatus CompareDates(DateTime? publishedDateOfLatestVersion, DateTime? publishedDateOfCurrentVersion)
+        private PackageVersionStatus CompareDates(DateTime? publishedDateOfLatestVersion, DateTime? publishedDateOfCurrentVersion)
         {
             if (publishedDateOfLatestVersion == null || publishedDateOfCurrentVersion == null)
             {
-                return PackageDateStatus.Undefined;
+                return PackageVersionStatus.Undefined;
             }
 
             double differenceInMonths = publishedDateOfLatestVersion.Value
@@ -99,14 +99,14 @@ namespace NugetAnalyzer.BLL.Services
 
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.WarningBottomBorder)
             {
-                return PackageDateStatus.Normal;
+                return PackageVersionStatus.Actual;
             }
             if (differenceInMonths < packageVersionConfiguration.DateBordersInMonths.ErrorBottomBorder)
             {
-                return PackageDateStatus.Warning;
+                return PackageVersionStatus.Warning;
             }
 
-            return PackageDateStatus.Error;
+            return PackageVersionStatus.Error;
         }
 
         private PackageVersionStatus CompareVersions(PackageVersion latestVersion, PackageVersion currentVersion)
