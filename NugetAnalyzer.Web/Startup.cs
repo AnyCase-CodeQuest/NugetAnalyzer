@@ -9,7 +9,6 @@ using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.Web.Infrastructure.Extensions;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
-using NugetAnalyzer.Web.Middleware;
 
 namespace NugetAnalyzer.Web
 {
@@ -50,7 +49,6 @@ namespace NugetAnalyzer.Web
             services.AddScoped<HttpContextInfoProvider>();
            
             services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
-
             services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }
 

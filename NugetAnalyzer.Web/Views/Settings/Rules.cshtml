@@ -1,0 +1,96 @@
+﻿@using NugetAnalyzer.Common.Configurations;
+@model PackageVersionConfigurations
+
+@{
+    ViewData["Title"] = "Rules";
+}
+
+@section Styles
+{
+    <link href="~/stylesheets/Settings/Rules.min.css" rel="stylesheet" />
+}
+
+@functions
+{
+    string GetAlertLevelCssClass(string status)
+    {
+        switch (status.ToLower())
+        {
+            case "error": return "alert-danger";
+            case "actual": return "alert-success";
+            default: return $"alert-{status.ToLower()}";
+        }
+    }
+}
+
+<h3>Rules</h3>
+<br />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th colspan="2">Package version difference (pattern: Major.Minor[.Build[.Revision]])</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Major</th>
+            <td>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Major.ToString())" role="alert">@Model.VersionStatus.Major</div>
+            </td>
+        </tr>
+        <tr>
+            <th>Minor</th>
+            <td>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Minor.ToString())" role="alert">@Model.VersionStatus.Minor</div>
+            </td>
+        </tr>
+        <tr>
+            <th>Build</th>
+            <td>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Build.ToString())" role="alert">@Model.VersionStatus.Build</div>
+            </td>
+        </tr>
+        <tr>
+            <th>Revision</th>
+            <td>
+                <div class="alert @GetAlertLevelCssClass(@Model.VersionStatus.Revision.ToString())" role="alert">@Model.VersionStatus.Revision</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th colspan="2">
+                Last update date package version
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Package version is not updated &lt; @Model.DateBordersInMonths.WarningBottomBorder month(s)</th>
+            <td>
+                <div class="alert alert-success" role="alert">Actual</div>
+            </td>
+        </tr>
+        <tr>
+            <th>Package version is not updated &lt; @Model.DateBordersInMonths.ErrorBottomBorder month(s)</th>
+            <td>
+                <div class="alert alert-warning" role="alert">Warning</div>
+            </td>
+        </tr>
+        <tr>
+            <th>Package version is not updated &gt; @Model.DateBordersInMonths.ErrorBottomBorder month(s)</th>
+            <td>
+                <div class="alert alert-danger" role="alert">Error</div>
+            </td>
+        </tr>
+        <tr>
+            <th>Latest package version is not updated &gt; @Model.ObsoleteBorderInMonths month(s)</th>
+            <td>
+                <div class="alert alert-info" role="alert">The package may not be supported</div>
+            </td>
+        </tr>
+    </tbody>
+</table>

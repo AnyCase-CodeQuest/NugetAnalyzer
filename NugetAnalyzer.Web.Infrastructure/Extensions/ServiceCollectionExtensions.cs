@@ -104,8 +104,10 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
             services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
+            services.AddScoped<IProjectsRepository, ProjectsRepository>();
             services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
             services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
+            services.AddScoped(typeof(IRepository<Project>), provider => provider.GetService<IProjectsRepository>());
         }
 
         /// <summary>
@@ -118,7 +120,6 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddSingleton<INugetApiService, NugetApiService>();
             services.AddScoped<INugetService, NugetService>();
             services.AddScoped<IGitService, GitService>();
-            services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
@@ -130,6 +131,9 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
             services.AddScoped<IGitHubApiService, GitHubApiService>(provider => new GitHubApiService(configuration["ApplicationName"]));
+            services.AddScoped<IPackageVersionService, PackageVersionService>();
+            services.AddScoped<IProjectService, ProjectService>();
+
         }
     }
 }

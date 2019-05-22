@@ -10,45 +10,24 @@ using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.BLL.Services
 {
-    public class VersionService : IVersionService
+    public class PackageVersionService : IPackageVersionService
     {
         private readonly IUnitOfWork uow;
         private readonly IDateTimeProvider dateTimeProvider;
         private IRepository<Package> packageRepository;
         private IPackageVersionsRepository packageVersionsRepository;
 
-        public VersionService(IUnitOfWork uow, IDateTimeProvider dateTimeProvider)
+        public PackageVersionService(IUnitOfWork uow, IDateTimeProvider dateTimeProvider)
         {
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
             this.dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
 
-        private IRepository<Package> PackageRepository
-        {
-            get
-            {
-                if (packageRepository == null)
-                {
-                    packageRepository = uow.GetRepository<Package>();
-                }
+        private IRepository<Package> PackageRepository =>
+            packageRepository ?? (packageRepository = uow.GetRepository<Package>());
 
-                return packageRepository;
-            }
-        }
-
-        private IPackageVersionsRepository PackageVersionsRepository
-        {
-            get
-            {
-                if (packageVersionsRepository == null)
-                {
-                    packageVersionsRepository = uow.PackageVersionsRepository;
-                }
-
-                return packageVersionsRepository;
-            }
-        }
-
+        private IPackageVersionsRepository PackageVersionsRepository =>
+            packageVersionsRepository ?? (packageVersionsRepository = uow.PackageVersionsRepository);
 
         public async Task UpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions)
         {

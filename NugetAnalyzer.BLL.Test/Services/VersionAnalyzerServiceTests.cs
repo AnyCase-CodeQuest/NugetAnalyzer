@@ -128,7 +128,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             PackageVersionComparisonReport report = versionsService.Compare(packageVersionWithUndefinedDate, packageVersionWithUndefinedDate);
 
-            Assert.AreEqual(report.DateStatus, PackageDateStatus.Undefined);
+            Assert.AreEqual(report.DateStatus, PackageVersionStatus.Undefined);
             Assert.AreEqual(report.IsObsolete, false);
         }
 
@@ -137,7 +137,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             PackageVersionComparisonReport report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorDateStatus);
 
-            Assert.AreEqual(report.DateStatus, PackageDateStatus.Error);
+            Assert.AreEqual(report.DateStatus, PackageVersionStatus.Error);
             Assert.AreEqual(report.VersionStatus, PackageVersionStatus.Actual);
         }
 
@@ -146,7 +146,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             PackageVersionComparisonReport report = versionsService.Compare(latestPackageVersion, packageVersionWithErrorVersionStatus);
 
-            Assert.AreEqual(report.DateStatus, PackageDateStatus.Normal);
+            Assert.AreEqual(report.DateStatus, PackageVersionStatus.Actual);
             Assert.AreEqual(report.VersionStatus, PackageVersionStatus.Error);
         }
 
@@ -174,13 +174,13 @@ namespace NugetAnalyzer.BLL.Test.Services
             {
                 IsObsolete = true,
                 VersionStatus = PackageVersionStatus.Error,
-                DateStatus = PackageDateStatus.Warning
+                DateStatus = PackageVersionStatus.Warning
             });
             Assert.AreEqual(report2, new PackageVersionComparisonReport
             {
                 IsObsolete = true,
                 VersionStatus = PackageVersionStatus.Info,
-                DateStatus = PackageDateStatus.Undefined
+                DateStatus = PackageVersionStatus.Undefined
             });
         }
 
@@ -188,18 +188,21 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             return new List<PackageVersionComparisonReport>
             {
-                new PackageVersionComparisonReport(),
+                new PackageVersionComparisonReport
+                {
+                    VersionStatus = PackageVersionStatus.Actual
+                },
                 new PackageVersionComparisonReport
                 {
                     IsObsolete = true,
                     VersionStatus = PackageVersionStatus.Warning,
-                    DateStatus = PackageDateStatus.Warning
+                    DateStatus = PackageVersionStatus.Warning
                 },
                 new PackageVersionComparisonReport
                 {
                     IsObsolete = false,
                     VersionStatus = PackageVersionStatus.Error,
-                    DateStatus = PackageDateStatus.Normal
+                    DateStatus = PackageVersionStatus.Actual
                 }
             };
         }
@@ -212,15 +215,18 @@ namespace NugetAnalyzer.BLL.Test.Services
                 {
                     IsObsolete = false,
                     VersionStatus = PackageVersionStatus.Actual,
-                    DateStatus = PackageDateStatus.Undefined
+                    DateStatus = PackageVersionStatus.Undefined
                 },
                 new PackageVersionComparisonReport
                 {
                     IsObsolete = true,
                     VersionStatus = PackageVersionStatus.Info,
-                    DateStatus = PackageDateStatus.Undefined
+                    DateStatus = PackageVersionStatus.Undefined
                 },
-                new PackageVersionComparisonReport()
+                new PackageVersionComparisonReport
+                {
+                    VersionStatus = PackageVersionStatus.Actual
+                }
             };
         }
     }

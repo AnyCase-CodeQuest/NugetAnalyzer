@@ -6,7 +6,7 @@ namespace NugetAnalyzer.DTOs.Models.Reports
     {
         public PackageVersionStatus VersionStatus { get; set; }
 
-        public PackageDateStatus DateStatus { get; set; }
+        public PackageVersionStatus DateStatus { get; set; }
 
         public bool IsObsolete { get; set; }
     }

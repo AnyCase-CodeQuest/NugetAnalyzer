@@ -15,7 +15,7 @@ namespace NugetAnalyzer.BLL.Test.Services
     {
         private Mock<IPackageService> packageServiceMock;
         private Mock<INugetApiService> nugetApiServiceMock;
-        private Mock<IVersionService> versionServiceMock;
+        private Mock<IPackageVersionService> versionServiceMock;
         private INugetService nugetService;
 
         private readonly PackageVersion nUnitVersion;
@@ -87,7 +87,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         {
             packageServiceMock = new Mock<IPackageService>();
             nugetApiServiceMock = new Mock<INugetApiService>();
-            versionServiceMock = new Mock<IVersionService>();
+            versionServiceMock = new Mock<IPackageVersionService>();
 
             nugetService = new NugetService(
                 nugetApiServiceMock.Object,

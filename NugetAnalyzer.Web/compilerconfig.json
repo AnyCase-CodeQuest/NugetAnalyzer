@@ -22,5 +22,13 @@
   {
     "outputFile": "wwwroot/stylesheets/Repository/AddRepositoriesModal.css",
     "inputFile": "wwwroot/stylesheets/Repository/AddRepositoriesModal.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Settings/Rules.css",
+    "inputFile": "wwwroot/stylesheets/Settings/Rules.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Project/Report.css",
+    "inputFile": "wwwroot/stylesheets/Project/Report.scss"
   }
 ]

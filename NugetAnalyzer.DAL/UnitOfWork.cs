@@ -20,6 +20,7 @@ namespace NugetAnalyzer.DAL
 
         public IRepositoriesRepository RepositoriesRepository => (IRepositoriesRepository)GetRepository<Repository>();
         public IPackageVersionsRepository PackageVersionsRepository => (IPackageVersionsRepository)GetRepository<PackageVersion>();
+        public IProjectsRepository ProjectsRepository => (IProjectsRepository)GetRepository<Project>();
 
         public IRepository<T> GetRepository<T>()
             where T : class
