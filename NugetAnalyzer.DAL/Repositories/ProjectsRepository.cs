@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NugetAnalyzer.DAL.Context;
@@ -17,17 +15,13 @@ namespace NugetAnalyzer.DAL.Repositories
 
         public async Task<Project> GetByIdWithIncludedPackageAsync(int id)
         {
-           return await GetIQueryableIncludePackage(project => project.Id == id).SingleOrDefaultAsync();
-        }
-
-        private  IQueryable<Project> GetIQueryableIncludePackage(Expression<Func<Project, bool>> predicate)
-        {
-            return DbSet
+            return await DbSet
                 .AsNoTracking()
                 .Include(project => project.ProjectPackageVersions)
                 .ThenInclude(projectPackageVersion => projectPackageVersion.PackageVersion)
                 .ThenInclude(packageVersion => packageVersion.Package)
-                .Where(predicate);
+                .Where(project => project.Id == id)
+                .SingleOrDefaultAsync();
         }
     }
 }
