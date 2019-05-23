@@ -109,7 +109,7 @@ namespace NugetAnalyzer.BLL.Services
             }
             finally
             {
-                directoryService.Delete(clonePath);
+                directoryService.Delete(clonePath); // TODO: async ?
             }
 
             return repositoryName;

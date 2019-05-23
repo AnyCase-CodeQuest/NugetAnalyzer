@@ -24,7 +24,7 @@ function GetLoader(sizeInRem = 0) {
 function GetFullScreenLoader() {
     return '<div class="loader-wrapper">' +
         '<div class="modal show">' +
-        '<div class="loader-content">' + GetLoader(5) + '</div>' + 
+        '<div class="loader__content">' + GetLoader(5) + '</div>' + 
         '</div>' +
         '<div class="modal-backdrop loader__modal-backdrop show"></div>' +
         '</div>';

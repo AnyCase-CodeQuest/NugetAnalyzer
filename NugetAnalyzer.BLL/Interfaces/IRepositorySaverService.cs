@@ -6,6 +6,6 @@ namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface IRepositorySaverService
     {
-        Task<Repository> SaveAsync(RepositoryDTO repositoryDTO, int userId);
+        Task SaveAsync(RepositoryDTO repositoryDTO, int userId);
     }
 }

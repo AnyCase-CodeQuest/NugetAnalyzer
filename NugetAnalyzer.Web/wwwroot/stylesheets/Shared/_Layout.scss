@@ -95,14 +95,10 @@ $logo-fill-color: rgba(0,0,0,.2);
     }
 }
 
-.text-gray {
-    color: gray;
-}
-
 // -------------------- loader ---------------------
 
 .loader {
-    &-content {
+    &__content {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -112,4 +108,11 @@ $logo-fill-color: rgba(0,0,0,.2);
     &__modal-backdrop {
         opacity: 0.15 !important;
     }
+}
+
+
+
+
+.text-gray {
+    color: gray;
 }

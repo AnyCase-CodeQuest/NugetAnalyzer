@@ -60,12 +60,11 @@ namespace NugetAnalyzer.BLL.Services
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<Repository> SaveAsync(RepositoryDTO repositoryDTO, int userId)
+        public async Task SaveAsync(RepositoryDTO repositoryDTO, int userId)
         {
             var repository = await ToDomainAsync(repositoryDTO, userId);
             unitOfWork.GetRepository<Repository>().Add(repository);
             await unitOfWork.SaveChangesAsync();
-            return repository;
         }
 
         #region PrivateMethods

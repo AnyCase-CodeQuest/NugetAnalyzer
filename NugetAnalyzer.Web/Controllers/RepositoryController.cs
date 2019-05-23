@@ -51,7 +51,7 @@ namespace NugetAnalyzer.Web.Controllers
                 .Where(repositoryChoice => !addedUserRepositoriesNames
                     .Contains(repositoryChoice.Name));
 
-            return PartialView("RepositoriesPopUp", notAddedUserRepositories);
+            return PartialView("AddRepositoriesPopUp", notAddedUserRepositories);
         }
 
         [HttpPost]
@@ -66,7 +66,7 @@ namespace NugetAnalyzer.Web.Controllers
 
             return addRepositoriesRequestModel.IsFromLayout
                 ? PartialView("AddRepositoriesResponsePopUp", addedRepositoriesResponse)
-                : PartialView("RepositoriesPartial", userRepositories);
+                : PartialView("_RepositoriesReport", userRepositories);
         }
 
         [HttpGet]
