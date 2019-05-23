@@ -93,7 +93,7 @@ namespace NugetAnalyzer.BLL.Services
         {
             string clonePath = directoryService.GenerateClonePath();
             var repositoryName = directoryService.GetName(repository.Key);
-            var repositoryPath = clonePath + "/" + repositoryName;
+            var repositoryPath = $"{clonePath}/{repositoryName}";
             try
             {
                 gitService.CloneBranch(repository.Key, repositoryPath, userToken, repository.Value);

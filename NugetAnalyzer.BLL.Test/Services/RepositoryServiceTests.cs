@@ -142,12 +142,12 @@ namespace NugetAnalyzer.BLL.Test.Services
 
             gitServiceMock.Verify(gitService => gitService.CloneBranch(
                     It.Is<string>(match => repositoriesForAdd.ContainsKey(match)),
-                    clonePath + "/" + repositoryName,
+                    $"{clonePath}/{repositoryName}",
                     userToken,
                     It.Is<string>(match => repositoriesForAdd.ContainsValue(match))));
 
             repositoryAnalyzerServiceMock.Verify(repositoryAnalyzerService =>
-                repositoryAnalyzerService.GetParsedRepositoryAsync(clonePath + "/" + repositoryName));
+                repositoryAnalyzerService.GetParsedRepositoryAsync($"{clonePath}/{repositoryName}"));
 
             repositorySaverServiceMock.Verify(repositorySaverService =>
                 repositorySaverService.SaveAsync(parsedRepository, userId));
