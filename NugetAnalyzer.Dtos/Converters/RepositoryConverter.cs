@@ -2,7 +2,7 @@
 using System.Linq;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.DTOs.Models.Reports;
-using NugetAnalyzer.Dtos.Models.Repositories;
+using NugetAnalyzer.DTOs.Models.Repositories;
 
 namespace NugetAnalyzer.DTOs.Converters
 {

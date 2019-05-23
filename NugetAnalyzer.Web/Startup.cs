@@ -9,6 +9,7 @@ using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.Web.Infrastructure.Extensions;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
+using NugetAnalyzer.Web.Middleware;
 
 namespace NugetAnalyzer.Web
 {
@@ -60,13 +61,13 @@ namespace NugetAnalyzer.Web
             }
             else
             {
-                //app.UseExceptionHandler("/Error/ServerError");
-                //app.UseStatusCodePagesWithRedirects("/Error/NotFoundError");
+                app.UseExceptionHandler("/Error/ServerError");
+                app.UseStatusCodePagesWithRedirects("/Error/NotFoundError");
             }
 
             app.UseConfiguredLocalization();
 
-            //app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseStaticFiles();
 
             app.UseAuthentication();

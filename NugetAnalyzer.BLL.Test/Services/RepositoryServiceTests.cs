@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DeepEqual.Syntax;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DTOs.Models.Enums;
@@ -27,6 +28,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IRepositorySaverService> repositorySaverServiceMock;
         private Mock<INugetService> nugetServiceMock;
         private Mock<IDirectoryService> directoryServiceMock;
+        private Mock<ILogger<RepositoryService>> loggerMock;
         private Mock<IUnitOfWork> uowMock;
 
         private RepositoryService repositoryService;
@@ -51,6 +53,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             repositorySaverServiceMock = new Mock<IRepositorySaverService>();
             nugetServiceMock = new Mock<INugetService>();
             directoryServiceMock = new Mock<IDirectoryService>();
+            loggerMock = new Mock<ILogger<RepositoryService>>();
             uowMock = new Mock<IUnitOfWork>();
             uowMock.SetupGet(uow => uow.RepositoriesRepository).Returns(repositoryRepositoryMock.Object);
             uowMock.SetupGet(uow => uow.PackageVersionsRepository).Returns(versionRepositoryMock.Object);
@@ -61,6 +64,7 @@ namespace NugetAnalyzer.BLL.Test.Services
                 repositorySaverServiceMock.Object,
                 nugetServiceMock.Object,
                 directoryServiceMock.Object,
+                loggerMock.Object,
                 uowMock.Object);
         }
 

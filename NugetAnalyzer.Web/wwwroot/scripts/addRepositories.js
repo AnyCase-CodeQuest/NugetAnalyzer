@@ -1,4 +1,4 @@
-﻿function GetSelect(selectListData) {
+﻿function getSelect(selectListData) {
     var selectList = '<select class="form-control modal__select-repository-branch">';
     for (var i = 0; i < selectListData.length; i++) {
         selectList += '<option>' + selectListData[i] + '</option>';
@@ -7,7 +7,7 @@
     return selectList;
 }
 
-function GetSelectedRepositories() {
+function getSelectedRepositories() {
     var selectedCheckboxes = $(".modal tbody input[type='checkbox']:checked");
     var selectedRepositories = {};
     for (var i = 0; i < selectedCheckboxes.length; i++) {
@@ -22,49 +22,53 @@ function GetSelectedRepositories() {
     return selectedRepositories;
 }
 
-function BranchOnClick() {
+function branchOnClick() {
     $(".modal .modal__repository-branch").on('click',
         function () {
             var branchContainer = $(this).parent()[0];
-            branchContainer.innerHTML = GetLoader();
+            branchContainer.innerHTML = getLoader();
             $.ajax({
                 type: "GET",
-                url: "/Repository/Branches?repositoryId=" + $(this)[0].getAttribute("value"),
+                url: "/Repository/BranchNames?repositoryId=" + $(this)[0].getAttribute("value"),
                 dataType: "json",
                 success: function (data) {
-                    branchContainer.innerHTML = GetSelect(data);
+                    branchContainer.innerHTML = getSelect(data);
                 }
             });
         });
 }
 
-function AddSelectedRepositoriesOnClick(isFromLayout) {
+function addSelectedRepositoriesOnClick(isFromLayout) {
     $('.modal input[type="submit"]').on('click',
         function () {
-            var checkedRepositories = GetSelectedRepositories();
+            var checkedRepositories = getSelectedRepositories();
             if (Object.keys(checkedRepositories).length == 0) {
                 return;
             }
             $(".modal-wrapper").remove();
-            $("body").append(GetFullScreenLoader());
+            $("body").append(getFullScreenLoader());
             $.ajax({
                 type: "POST",
                 url: "/Repository/AddRepositories",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({ repositories: checkedRepositories, isFromLayout: isFromLayout }),
                 complete: async function (data) {
-                    console.log(data);
                     $(".loader-wrapper").remove();
-                    $("body").append(data.responseText);
-                    await Sleep(10);
-                    $(".modal.fade")[0].classList.add("show");
+                    if (isFromLayout) {
+                        $("body").append(data.responseText);
+                        await sleep(10);
+                        $(".modal.fade")[0].classList.add("show");
+                    }
+                    else { // TODO
+                        $("#repositories-id")[0].append(data.responseText);
+                    }
                 }
             });
         });
 }
 
 
-function ToggleAllRepositoriesOnClick() {
+function toggleAllRepositoriesOnClick() {
     $(".modal thead input[type='checkbox']").on('click', function () {
         var isChecked = $(".modal thead input[type='checkbox']")[0].checked;
         var checkboxes = $(".modal tbody input[type='checkbox']");
@@ -74,33 +78,33 @@ function ToggleAllRepositoriesOnClick() {
     });
 }
 
-function AddRepositories(isFromLayout) {
-    $("body").append(GetFullScreenLoader());
+function addRepositories(isFromLayout) {
+    $("body").append(getFullScreenLoader());
     $.ajax({
         type: "GET",
-        url: "/Repository/AddRepositories",
+        url: "/Repository/GetNotAddedRepositories",
         dataType: "html",
         success: async function (data) {
             $('body').append(data);
-            await Sleep(10);
+            await sleep(10);
             $(".modal.fade")[0].classList.add("show");
-            BranchOnClick();
-            ToggleAllRepositoriesOnClick();
-            AddSelectedRepositoriesOnClick(isFromLayout);
+            branchOnClick();
+            toggleAllRepositoriesOnClick();
+            addSelectedRepositoriesOnClick(isFromLayout);
         },
         complete: function () {
             $(".loader-wrapper").remove();
-            AddRepositoriesOnClick();
+            addRepositoriesOnClick();
         }
     });
 }
 
-function AddRepositoriesOnClick() {
+function addRepositoriesOnClick() {
     $("#add-repositories_layout-action").one('click', function () {
-        AddRepositories(true);
+        addRepositories(true);
     });
     $("#add-repositories_profile-action").one('click', function () {
-        AddRepositories(false);
+        addRepositories(false);
     });
 }
 
@@ -112,5 +116,5 @@ $(document).mouseup(function (e) {
 });
 
 $(function () {
-    AddRepositoriesOnClick();
+    addRepositoriesOnClick();
 });

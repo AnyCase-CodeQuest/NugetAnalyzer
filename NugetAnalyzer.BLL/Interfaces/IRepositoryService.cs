@@ -22,7 +22,7 @@ namespace NugetAnalyzer.BLL.Interfaces
         Task<ICollection<RepositoryReport>> GetAnalyzedRepositoriesAsync(Expression<Func<Repository, bool>> expression);
 
         /// <summary>
-        /// Get repositories names  
+        /// Get repositories names
         /// </summary>
         /// <param name="expression">Linq lambda expressions filter</param>
         /// <returns>A collection of repositories names</returns>

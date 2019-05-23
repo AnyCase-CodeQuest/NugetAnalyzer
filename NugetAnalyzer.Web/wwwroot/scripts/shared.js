@@ -7,11 +7,11 @@
     });
 });
 
-function Sleep(ms) {
+function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function GetLoader(sizeInRem = 0) {
+function getLoader(sizeInRem = 0) {
     return sizeInRem == undefined || sizeInRem <= 0
         ? '<div class="spinner-border spinner-border-sm" role="status">' +
         '<span class="sr-only">Loading...</span>' +
@@ -21,10 +21,10 @@ function GetLoader(sizeInRem = 0) {
         '</div>';
 }
 
-function GetFullScreenLoader() {
+function getFullScreenLoader() {
     return '<div class="loader-wrapper">' +
         '<div class="modal show">' +
-        '<div class="loader__content">' + GetLoader(5) + '</div>' + 
+        '<div class="loader__content">' + getLoader(5) + '</div>' + 
         '</div>' +
         '<div class="modal-backdrop loader__modal-backdrop show"></div>' +
         '</div>';

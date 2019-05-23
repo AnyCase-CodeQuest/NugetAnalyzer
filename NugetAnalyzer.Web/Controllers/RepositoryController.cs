@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.DTOs.Models.Reports;
-using NugetAnalyzer.Dtos.Models.Repositories;
 using NugetAnalyzer.DTOs.Models.Repositories;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
+using NugetAnalyzer.Web.Models.Repositories;
 
 namespace NugetAnalyzer.Web.Controllers
 {
@@ -34,7 +34,7 @@ namespace NugetAnalyzer.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<PartialViewResult> AddRepositories()
+        public async Task<PartialViewResult> GetNotAddedRepositories()
         {
             ProfileDTO userProfile = await GetCurrentUserProfileAsync();
 
@@ -70,7 +70,7 @@ namespace NugetAnalyzer.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> Branches(long repositoryId)
+        public async Task<JsonResult> BranchNames(long repositoryId)
         {
             ProfileDTO userProfile = await GetCurrentUserProfileAsync();
 

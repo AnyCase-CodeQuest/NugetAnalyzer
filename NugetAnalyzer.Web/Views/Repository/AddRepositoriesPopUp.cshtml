@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NugetAnalyzer.Dtos.Models.Repositories.RepositoryChoice>
+﻿@model IEnumerable<NugetAnalyzer.DTOs.Models.Repositories.RepositoryChoice>
 
 <div class="modal-wrapper">
     <div class="modal fade">
@@ -45,7 +45,14 @@
                     }
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <input type="submit" class="btn btn-dark" value="Add" />
+                    @if (!Model.Any())
+                    {
+                        <input type="submit" class="btn btn-dark modal__button-ok" value="Ok" />
+                    }
+                    else
+                    {
+                        <input type="submit" class="btn btn-dark" value="Add" />
+                    }
                 </div>
             </div>
         </div>

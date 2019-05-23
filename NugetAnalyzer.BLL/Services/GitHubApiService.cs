@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DTOs.Converters;
-using NugetAnalyzer.Dtos.Models.Repositories;
+using NugetAnalyzer.DTOs.Models.Repositories;
 using Octokit;
 using Octokit.Internal;
 

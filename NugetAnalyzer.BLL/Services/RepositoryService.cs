@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using NugetAnalyzer.DTOs.Converters;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Common.Interfaces;
@@ -21,8 +22,9 @@ namespace NugetAnalyzer.BLL.Services
         private readonly IRepositoryAnalyzerService repositoryAnalyzerService;
         private readonly IRepositorySaverService repositorySaverService;
         private readonly INugetService nugetService;
-
         private readonly IDirectoryService directoryService;
+
+        private readonly ILogger<RepositoryService> logger;
 
         private readonly IUnitOfWork uow;
         private IRepositoriesRepository repositoriesRepository;
@@ -33,6 +35,7 @@ namespace NugetAnalyzer.BLL.Services
             IRepositorySaverService repositorySaverService,
             INugetService nugetService,
             IDirectoryService directoryService,
+            ILogger<RepositoryService> logger,
             IUnitOfWork uow)
         {
             this.versionsService = versionsService ?? throw new ArgumentNullException(nameof(versionsService));
@@ -41,6 +44,7 @@ namespace NugetAnalyzer.BLL.Services
             this.repositorySaverService = repositorySaverService ?? throw new ArgumentNullException(nameof(repositorySaverService));
             this.nugetService = nugetService ?? throw new ArgumentNullException(nameof(nugetService));
             this.directoryService = directoryService ?? throw new ArgumentNullException(nameof(directoryService));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
 
@@ -104,8 +108,8 @@ namespace NugetAnalyzer.BLL.Services
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, ex.Message);
                 return null;
-                //TODO: logging
             }
             finally
             {
