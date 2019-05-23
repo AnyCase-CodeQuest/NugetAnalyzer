@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace NugetAnalyzer.Web.Middleware
@@ -10,22 +12,40 @@ namespace NugetAnalyzer.Web.Middleware
         private readonly RequestDelegate nextRequestDelegate;
         private readonly ILogger logger;
 
-        public ExceptionHandlingMiddleware(RequestDelegate nextRequestDelegate, ILogger<ExceptionHandlingMiddleware> logger)
+        public ExceptionHandlingMiddleware(RequestDelegate nextRequestDelegate, ILoggerFactory loggerFactory)
         {
             this.nextRequestDelegate = nextRequestDelegate ?? throw new ArgumentNullException(nameof(nextRequestDelegate));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            logger = (loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory))).CreateLogger<ExceptionHandlingMiddleware>();
         }
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                await nextRequestDelegate(context);
+                logger.LogInformation(await FormatRequest(context.Request));
+
+                await nextRequestDelegate.Invoke(context);
+
+                logger.LogInformation($"Response type: {context.Response.ContentType}");
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, ex.Message);
+                throw;
             }
+        }
+
+        private async Task<string> FormatRequest(HttpRequest request)
+        {
+            var body = request.Body;
+            request.EnableRewind();
+
+            var buffer = new byte[Convert.ToInt32(request.ContentLength)];
+            await request.Body.ReadAsync(buffer, 0, buffer.Length);
+            var bodyAsText = Encoding.UTF8.GetString(buffer);
+            request.Body = body;
+
+            return $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}";
         }
     }
 }
