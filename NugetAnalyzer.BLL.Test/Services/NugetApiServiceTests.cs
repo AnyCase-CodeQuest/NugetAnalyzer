@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
@@ -14,13 +15,15 @@ namespace NugetAnalyzer.BLL.Test.Services
     {
         private INugetApiService nugetApiService;
         private Mock<INugetHttpService> nugetHttpServiceMock;
+        private Mock<ILogger<NugetApiService>> loggerMock;
 
         [SetUp]
         public void Set()
         {
             nugetHttpServiceMock = new Mock<INugetHttpService>();
+            loggerMock = new Mock<ILogger<NugetApiService>>();
 
-            nugetApiService = new NugetApiService(nugetHttpServiceMock.Object);
+            nugetApiService = new NugetApiService(nugetHttpServiceMock.Object, loggerMock.Object);
         }
 
         [Test]

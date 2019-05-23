@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NugetAnalyzer.BLL.Helpers;
 using NugetAnalyzer.BLL.Interfaces;
@@ -16,6 +17,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         private Mock<IPackageService> packageServiceMock;
         private Mock<INugetApiService> nugetApiServiceMock;
         private Mock<IPackageVersionService> versionServiceMock;
+        private Mock<ILogger<NugetService>> loggerMock;
         private INugetService nugetService;
 
         private readonly PackageVersion nUnitVersion;
@@ -88,11 +90,13 @@ namespace NugetAnalyzer.BLL.Test.Services
             packageServiceMock = new Mock<IPackageService>();
             nugetApiServiceMock = new Mock<INugetApiService>();
             versionServiceMock = new Mock<IPackageVersionService>();
+            loggerMock = new Mock<ILogger<NugetService>>();
 
             nugetService = new NugetService(
                 nugetApiServiceMock.Object,
                 versionServiceMock.Object,
-                packageServiceMock.Object);
+                packageServiceMock.Object,
+                loggerMock.Object);
         }
 
         [SetUp]
