@@ -21,50 +21,56 @@ namespace NugetAnalyzer.BLL.Services
             this.packageService = packageService ?? throw new ArgumentNullException(nameof(packageService));
         }
 
-        public async Task RefreshLatestVersionOfAllPackagesAsync()
+        public async Task RefreshLatestPackageVersionOfAllPackagesAsync()
         {
             IReadOnlyCollection<Package> newPackages = await packageService.GetAllAsync();
 
-            PackageVersion[] versions = await GetLatestVersionsOfPackagesAsync(newPackages);
+            Package[] packages = await GetPackageVersionsOfPackagesAsync(newPackages);
 
-            await packageVersionService.UpdateAllLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
+            await packageVersionService.UpdateAllLatestVersionsAsync(packages.Where(package => package != null).SelectMany(package => package.Versions));
         }
 
-        public async Task RefreshLatestVersionOfNewlyAddedPackagesAsync()
+        public async Task RefreshNewlyAddedPackageVersionsAsync()
         {
-            IReadOnlyCollection<Package> newPackages = await packageService.GetNewlyAddedPackagesAsync();
+            IReadOnlyCollection<Package> newPackages = await packageService.GetPackagesOfNewlyAddedPackageVersionsAsync();
 
-            PackageVersion[] versions = await GetLatestVersionsOfPackagesAsync(newPackages);
+            Package[] packages = await GetPackageVersionsOfPackagesAsync(newPackages);
 
-            await packageVersionService.UpdateLatestVersionsAsync(versions.Where(packageVersion => packageVersion != null));
+            await packageVersionService.UpdateLatestVersionsAsync(packages.Where(package => package != null).SelectMany(package => package.Versions));
         }
 
-
-        private async Task<PackageVersion[]> GetLatestVersionsOfPackagesAsync(IReadOnlyCollection<Package> packages)
+        private async Task<Package[]> GetPackageVersionsOfPackagesAsync(IReadOnlyCollection<Package> packages)
         {
-            IEnumerable<Task<PackageVersion>> packageVersionTasks = packages
-                .Select(GetLatestVersionOfPackageAsync);
+            IEnumerable<Task<Package>> packageVersionTasks = packages
+                .Select(GetAllPackageVersionsOfPackageAsync);
 
             return await Task.WhenAll(packageVersionTasks);
         }
 
-        private async Task<PackageVersion> GetLatestVersionOfPackageAsync(Package package)
+        private async Task<Package> GetAllPackageVersionsOfPackageAsync(Package package)
         {
-            PackageVersion version = null;
             try
             {
-                version = await nugetApiService.GetLatestPackageVersionAsync(package.Name);
+                PackageVersion version = await nugetApiService.GetLatestPackageVersionAsync(package.Name);
+                version.PackageId = package.Id;
 
-                version.PublishedDate = await nugetApiService
-                    .GetPackagePublishedDateByVersionAsync(package.Name, version.GetVersion().ToString());
+                if (!package.Versions.Select(p => p.GetVersion()).Any())
+                {
+                    package.Versions.Add(version);
+                }
+
+                foreach (PackageVersion packageVersion in package.Versions)
+                {
+                    packageVersion.PublishedDate = await nugetApiService
+                    .GetPackagePublishedDateByVersionAsync(package.Name, packageVersion.GetVersion().ToString());
+                }
             }
             catch
             {
                 return null;
             }
            
-            version.PackageId = package.Id;
-            return version;
+            return package;
         }
     }
 }

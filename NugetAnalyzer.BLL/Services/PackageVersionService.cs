@@ -36,17 +36,18 @@ namespace NugetAnalyzer.BLL.Services
                                                         .Select(packageVersion => packageVersion.PackageId)
                                                         .Contains(latestPackageVersion.PackageId));
 
-            await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
+            await AddOrUpdatePackageVersionsAsync(versions, latestVersions);
         }
 
         public async Task UpdateAllLatestVersionsAsync(IEnumerable<PackageVersion> versions)
         {
             IReadOnlyCollection<PackageVersion> latestVersions = await PackageVersionsRepository.GetAllLatestVersionsAsync();
 
-            await AddOrUpdateLatestVersionsAsync(versions, latestVersions);
+            await AddOrUpdatePackageVersionsAsync(versions, latestVersions);
         }
 
-        private async Task AddOrUpdateLatestVersionsAsync(IEnumerable<PackageVersion> versions, IReadOnlyCollection<PackageVersion> latestVersions)
+        private async Task AddOrUpdatePackageVersionsAsync(
+            IEnumerable<PackageVersion> versions, IReadOnlyCollection<PackageVersion> latestVersions)
         {
             foreach (PackageVersion packageVersion in versions)
             {
@@ -60,6 +61,10 @@ namespace NugetAnalyzer.BLL.Services
                 {
                     latestVersion.PublishedDate = packageVersion.PublishedDate;
                     PackageVersionsRepository.Update(latestVersion);
+                }
+                else if (packageVersion.Id > 0)
+                {
+                    PackageVersionsRepository.Update(packageVersion);
                 }
                 else
                 {
