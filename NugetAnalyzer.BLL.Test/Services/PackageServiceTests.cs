@@ -14,21 +14,21 @@ namespace NugetAnalyzer.BLL.Test.Services
     public class PackageServiceTests
     {
         private Mock<IUnitOfWork> uowMock;
-        private Mock<IRepository<Package>> packageRepository;
+        private Mock<IPackagesRepository> packageRepository;
         private PackageService packageService;
 
         [OneTimeSetUp]
         public void Init()
         {
             uowMock = new Mock<IUnitOfWork>();
-            packageRepository = new Mock<IRepository<Package>>();
+            packageRepository = new Mock<IPackagesRepository>();
 
             packageRepository
                 .Setup(packageRepository => packageRepository.GetAllAsync())
                 .ReturnsAsync(It.IsAny<IReadOnlyCollection<Package>>());
 
             uowMock
-                .Setup(uow => uow.GetRepository<Package>())
+                .Setup(uow => uow.PackagesRepository)
                 .Returns(packageRepository.Object);
 
             packageService = new PackageService(uowMock.Object);
@@ -46,12 +46,12 @@ namespace NugetAnalyzer.BLL.Test.Services
         public async Task GetNewPackagesAsync_Should_Invoke_GetAsync()
         {
             packageRepository
-                .Setup(packageRepository => packageRepository.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()))
+                .Setup(packageRepository => packageRepository.GetIncludePackageVersionWithNotSetPublishedDateAsync())
                 .ReturnsAsync(It.IsAny<IReadOnlyCollection<Package>>());
 
-            await packageService.GetNewlyAddedPackagesAsync();
+            await packageService.GetPackagesOfNewlyAddedPackageVersionsAsync();
 
-            packageRepository.Verify(packageRepository => packageRepository.GetAsync(It.IsAny<Expression<Func<Package, bool>>>()));
+            packageRepository.Verify(packageRepository => packageRepository.GetIncludePackageVersionWithNotSetPublishedDateAsync());
         }
     }
 }

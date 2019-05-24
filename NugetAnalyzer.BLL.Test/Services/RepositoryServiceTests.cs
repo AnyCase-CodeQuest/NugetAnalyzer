@@ -156,7 +156,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             repositorySaverServiceMock.Verify(repositorySaverService =>
                 repositorySaverService.SaveAsync(parsedRepository, userId));
 
-            nugetServiceMock.Verify(nugetService => nugetService.RefreshLatestVersionOfNewlyAddedPackagesAsync());
+            nugetServiceMock.Verify(nugetService => nugetService.RefreshNewlyAddedPackageVersionsAsync());
 
             directoryServiceMock.Verify(directoryService => directoryService.Delete(clonePath));
         }
