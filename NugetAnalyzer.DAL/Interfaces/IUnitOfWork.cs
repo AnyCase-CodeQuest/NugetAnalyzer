@@ -13,6 +13,8 @@ namespace NugetAnalyzer.DAL.Interfaces
 
         IProjectsRepository ProjectsRepository { get; }
 
+        IPackagesRepository PackagesRepository { get; }
+
         Task<int> SaveChangesAsync();
     }
 }

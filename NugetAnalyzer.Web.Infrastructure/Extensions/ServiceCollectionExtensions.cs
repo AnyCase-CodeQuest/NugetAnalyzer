@@ -105,9 +105,11 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddScoped<IPackageVersionsRepository, PackageVersionsRepository>();
             services.AddScoped<IRepositoriesRepository, RepositoriesRepository>();
             services.AddScoped<IProjectsRepository, ProjectsRepository>();
+            services.AddScoped<IPackagesRepository, PackagesRepository>();
             services.AddScoped(typeof(IRepository<PackageVersion>), provider => provider.GetService<IPackageVersionsRepository>());
             services.AddScoped(typeof(IRepository<Repository>), provider => provider.GetService<IRepositoriesRepository>());
             services.AddScoped(typeof(IRepository<Project>), provider => provider.GetService<IProjectsRepository>());
+            services.AddScoped(typeof(IRepository<Package>), provider => provider.GetService<IPackagesRepository>());
         }
 
         /// <summary>
