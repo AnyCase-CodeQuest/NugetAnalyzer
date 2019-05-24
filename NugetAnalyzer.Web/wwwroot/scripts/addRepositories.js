@@ -47,12 +47,13 @@ function addSelectedRepositoriesOnClick(isFromLayout) {
             }
             $(".modal-wrapper").remove();
             $("body").append(getFullScreenLoader());
+            console.log({ repositories: checkedRepositories, isFromLayout: isFromLayout });
             $.ajax({
                 type: "POST",
                 url: "/Repository/AddRepositories",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ repositories: checkedRepositories, isFromLayout: isFromLayout }),
-                complete: async function (data) {
+                data: JSON.stringify( { isFromLayout: isFromLayout, repositories: checkedRepositories } ),
+                success: async function (data) {
                     $(".loader-wrapper").remove();
                     if (isFromLayout) {
                         $("body").append(data.responseText);
@@ -62,6 +63,9 @@ function addSelectedRepositoriesOnClick(isFromLayout) {
                     else { // TODO
                         $("#repositories-id")[0].append(data.responseText);
                     }
+                },
+                complete: function() {
+                    $(".loader-wrapper").remove();
                 }
             });
         });

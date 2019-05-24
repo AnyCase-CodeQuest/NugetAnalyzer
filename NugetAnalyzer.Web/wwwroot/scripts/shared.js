@@ -5,6 +5,19 @@
     $(document).on('click', ".modal__button-ok", function() {
         $(".modal-wrapper").remove();
     });
+
+    $.ajaxSetup({
+        statusCode: {
+            500: function (data) {
+                $("body")[0].innerHTML = data.responseText;
+            },
+            404: function (data) {
+                var container = $("#body-container");
+                container.removeChild(container.childNodes[0]);
+                container.insertBefore(data.responseText, container.firstChild);
+            }
+        }
+    });
 });
 
 function sleep(ms) {
