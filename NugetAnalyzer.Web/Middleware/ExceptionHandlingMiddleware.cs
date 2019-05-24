@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -37,12 +38,12 @@ namespace NugetAnalyzer.Web.Middleware
 
         private async Task<string> FormatRequest(HttpRequest request)
         {
-            var body = request.Body;
+            Stream body = request.Body;
             request.EnableRewind();
 
-            var buffer = new byte[Convert.ToInt32(request.ContentLength)];
+            byte[] buffer = new byte[Convert.ToInt32(request.ContentLength)];
             await request.Body.ReadAsync(buffer, 0, buffer.Length);
-            var bodyAsText = Encoding.UTF8.GetString(buffer);
+            string bodyAsText = Encoding.UTF8.GetString(buffer);
             request.Body = body;
 
             return $"{request.Scheme} {request.Host}{request.Path} {request.QueryString} {bodyAsText}";
