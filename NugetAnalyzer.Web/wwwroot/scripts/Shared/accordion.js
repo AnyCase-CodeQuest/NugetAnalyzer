@@ -1,9 +1,9 @@
 ﻿(function Accordion() {
 	let acc = document.getElementsByClassName("div__accordion");
-	let ii;
+	let i;
 
-	for (ii = 0; ii < acc.length; ii++) {
-		acc[ii].addEventListener("click", function () {
+	for (i = 0; i < acc.length; i++) {
+		acc[i].addEventListener("click", function () {
 			this.classList.toggle("div__active");
 			this.firstElementChild.classList.toggle("div__animation_active");
 			var panel = this.nextElementSibling;
