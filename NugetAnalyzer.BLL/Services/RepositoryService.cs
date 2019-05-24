@@ -104,7 +104,7 @@ namespace NugetAnalyzer.BLL.Services
                 var parsedRepository = await repositoryAnalyzerService.GetParsedRepositoryAsync(repositoryPath);
                 await repositorySaverService.SaveAsync(parsedRepository, userId);
 
-                await nugetService.RefreshLatestVersionOfNewlyAddedPackagesAsync();
+                await nugetService.RefreshNewlyAddedPackageVersionsAsync();
             }
             catch (Exception ex)
             {

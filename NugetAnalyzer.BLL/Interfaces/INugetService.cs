@@ -4,8 +4,8 @@ namespace NugetAnalyzer.BLL.Interfaces
 {
     public interface INugetService
     {
-        Task RefreshLatestVersionOfAllPackagesAsync();
+        Task RefreshLatestPackageVersionOfAllPackagesAsync();
 
-        Task RefreshLatestVersionOfNewlyAddedPackagesAsync();
+        Task RefreshNewlyAddedPackageVersionsAsync();
     }
 }
