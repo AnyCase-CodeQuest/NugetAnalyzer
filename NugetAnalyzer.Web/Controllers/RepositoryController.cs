@@ -28,6 +28,7 @@ namespace NugetAnalyzer.Web.Controllers
             this.profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
         }
 
+        [HttpGet]
         public async Task<IActionResult> Report()
         {
             string sourceName = httpContextInfoProvider.GetSourceName();
