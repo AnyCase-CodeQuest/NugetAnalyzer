@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using NugetAnalyzer.BLL.Helpers;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Domain;
@@ -14,11 +15,18 @@ namespace NugetAnalyzer.BLL.Services
         private readonly IPackageVersionService packageVersionService;
         private readonly IPackageService packageService;
 
-        public NugetService(INugetApiService nugetApiService, IPackageVersionService packageVersionService, IPackageService packageService)
+        private readonly ILogger<NugetService> logger;
+
+        public NugetService(
+            INugetApiService nugetApiService,
+            IPackageVersionService packageVersionService,
+            IPackageService packageService,
+            ILogger<NugetService> logger)
         {
             this.nugetApiService = nugetApiService ?? throw new ArgumentNullException(nameof(nugetApiService));
             this.packageVersionService = packageVersionService ?? throw new ArgumentNullException(nameof(packageVersionService));
             this.packageService = packageService ?? throw new ArgumentNullException(nameof(packageService));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task RefreshLatestVersionOfAllPackagesAsync()
@@ -58,8 +66,9 @@ namespace NugetAnalyzer.BLL.Services
                 version.PublishedDate = await nugetApiService
                     .GetPackagePublishedDateByVersionAsync(package.Name, version.GetVersion().ToString());
             }
-            catch
+            catch (Exception ex)
             {
+                logger.LogError(ex, ex.Message);
                 return null;
             }
            

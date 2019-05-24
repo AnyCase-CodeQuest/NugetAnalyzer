@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NugetAnalyzer.Web.Controllers
 {
     public class ErrorController : Controller
     {
-        public ActionResult ServerError()
+        public ViewResult ServerError()
         {
+            Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             return View();
         }
 
-        public ActionResult NotFoundError()
+        public ViewResult NotFoundError()
         {
+            Response.StatusCode = (int)HttpStatusCode.NotFound;
             return View();
         }
     }

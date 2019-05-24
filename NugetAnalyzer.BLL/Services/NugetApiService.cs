@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NugetAnalyzer.BLL.Interfaces;
@@ -14,9 +15,12 @@ namespace NugetAnalyzer.BLL.Services
 
         private readonly INugetHttpService nugetHttpService;
 
-        public NugetApiService(INugetHttpService nugetHttpService)
+        private readonly ILogger<NugetApiService> logger;
+
+        public NugetApiService(INugetHttpService nugetHttpService, ILogger<NugetApiService> logger)
         {
             this.nugetHttpService = nugetHttpService ?? throw new ArgumentNullException(nameof(nugetHttpService));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<PackageVersion> GetLatestPackageVersionAsync(string packageName)
@@ -55,8 +59,9 @@ namespace NugetAnalyzer.BLL.Services
             {
                 jsonObject = JObject.Parse(response);
             }
-            catch (JsonReaderException)
+            catch (JsonReaderException ex)
             {
+                logger.LogError(ex, ex.Message);
                 return null;
             }
 
@@ -91,8 +96,9 @@ namespace NugetAnalyzer.BLL.Services
             {
                 jsonObject = JObject.Parse(response);
             }
-            catch (JsonReaderException)
+            catch (JsonReaderException ex)
             {
+                logger.LogError(ex, ex.Message);
                 return null;
             }
 
