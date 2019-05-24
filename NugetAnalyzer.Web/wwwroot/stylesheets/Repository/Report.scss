@@ -1,0 +1,63 @@
+﻿$border-bottom: 1px solid rgba(128,128,128,.2);
+
+div.div__line:hover {
+    background-color: rgba(128,128,128,.1)
+}
+
+div.div__repository {
+    border-bottom: $border-bottom;
+    padding: 10px;
+}
+
+div.div__solution {
+    padding: 10px;
+    border-bottom: $border-bottom;
+
+    .col-10 {
+        padding-left: 40px;
+    }
+}
+
+div.div__project {
+    padding: 10px;
+    border-bottom: $border-bottom;
+
+    .col-10 {
+        padding-left: 60px;
+    }
+}
+
+// -------------------- accordion --------------------
+.div__animation:before {
+    content: '\003E';
+}
+
+.div__animation_active:before {
+    content: "\2228";
+}
+
+.div__accordion {
+    color: #444;
+    cursor: pointer;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+
+    &:before, .div__active {
+        background-color: #eee;
+    }
+
+    &:before {
+        color: #777;
+        font-weight: bold;
+        float: right;
+    }
+}
+
+.div__collapse {
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
