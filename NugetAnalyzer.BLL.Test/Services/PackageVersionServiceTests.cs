@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace NugetAnalyzer.BLL.Test.Services
 {
     [TestFixture(Category = "UnitTests")]
-    public class VersionServicesTests
+    public class PackageVersionServiceTests
     {
         private Mock<IUnitOfWork> uowMock;
         private Mock<IPackageVersionsRepository> packageVersionsRepositoryMock;
@@ -40,9 +40,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             packageVersionService = new PackageVersionService(uowMock.Object, dateTimeProviderMock.Object);
         }
 
-        //TODO: fix next commit
-        [Ignore("")]
-        [Test]
+       [Test]
         public void UpdateLatestVersionOfNewPackagesAsync_Should_Invoke_Add_And_Update_When_Valid_Values()
         {
             List<PackageVersion> latestVersions = GetLatestPackageVersions();
@@ -58,16 +56,17 @@ namespace NugetAnalyzer.BLL.Test.Services
                     packageRepositoryMock.Verify(packageRepository => packageRepository.Update(packageVersion.Package)));
 
             packageVersionsRepositoryMock.Verify(versionRepository =>
-                versionRepository.Add(It.Is<PackageVersion>(packageVersion => packageVersion == versions.FirstOrDefault(version => version.Id == 2))));
+                versionRepository.Add(It.Is<PackageVersion>(packageVersion => packageVersion == versions.FirstOrDefault(version => version.Id <= 0))));
 
             packageVersionsRepositoryMock.Verify(versionRepository =>
                 versionRepository.Update(It.Is<PackageVersion>(packageVersion => packageVersion == latestVersions.FirstOrDefault(latestVersion => latestVersion.Id == 1))));
 
+            packageVersionsRepositoryMock.Verify(versionRepository =>
+                versionRepository.Update(It.Is<PackageVersion>(packageVersion => packageVersion.Id == 2)));
+
             uowMock.Verify(uow => uow.SaveChangesAsync());
         }
 
-        //TODO: fix next commit
-        [Ignore("")]
         [Test]
         public void UpdateLatestVersionOfPackagesAsync_Should_Invoke_Add_And_Update_When_Valid_Values()
         {
@@ -84,10 +83,14 @@ namespace NugetAnalyzer.BLL.Test.Services
                 packageRepositoryMock.Verify(packageRepository => packageRepository.Update(packageVersion.Package)));
 
             packageVersionsRepositoryMock.Verify(versionRepository =>
-                versionRepository.Add(It.Is<PackageVersion>(packageVersion => packageVersion == versions.FirstOrDefault(version => version.Id == 2))));
+                versionRepository.Add(It.Is<PackageVersion>(packageVersion => packageVersion == versions.FirstOrDefault(version => version.Id <= 0))));
 
             packageVersionsRepositoryMock.Verify(versionRepository =>
                 versionRepository.Update(It.Is<PackageVersion>(packageVersion => packageVersion == latestVersions.FirstOrDefault(latestVersion => latestVersion.Id == 1))));
+
+            packageVersionsRepositoryMock.Verify(versionRepository =>
+                versionRepository.Update(It.Is<PackageVersion>(packageVersion => packageVersion.Id == 2)));
+
 
             uowMock.Verify(uow => uow.SaveChangesAsync());
         }
@@ -109,6 +112,15 @@ namespace NugetAnalyzer.BLL.Test.Services
                 new PackageVersion
                 {
                     Id = 2,
+                    Major = 3,
+                    Minor = 0,
+                    Build = 0,
+                    Revision = 0,
+                    PackageId = 2,
+                    Package = new Package()
+                },
+                new PackageVersion
+                {
                     Major = 3,
                     Minor = 0,
                     Build = 0,
