@@ -17,19 +17,16 @@ namespace NugetAnalyzer.Web.Controllers
         private readonly IGitHubApiService gitHubApiService;
         private readonly IRepositoryService repositoryService;
         private readonly IProfileService profileService;
-        private readonly ISourceService sourceService;
         private readonly HttpContextInfoProvider httpContextInfoProvider;
 
         public RepositoryController(IGitHubApiService gitHubApiService,
             IRepositoryService repositoryService,
             IProfileService profileService, 
-            ISourceService sourceService,
             HttpContextInfoProvider httpContextInfoProvider)
         {
             this.gitHubApiService = gitHubApiService ?? throw new ArgumentNullException(nameof(gitHubApiService));
             this.repositoryService = repositoryService ?? throw new ArgumentNullException(nameof(repositoryService));
             this.profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
-            this.sourceService = sourceService ?? throw new ArgumentNullException(nameof(sourceService));
             this.httpContextInfoProvider = httpContextInfoProvider ?? throw new ArgumentNullException(nameof(httpContextInfoProvider));
         }
 

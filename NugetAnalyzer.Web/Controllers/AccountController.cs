@@ -13,25 +13,22 @@ using Octokit;
 
 namespace NugetAnalyzer.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IUserService userService;
         private readonly IProfileService profileService;
-        private readonly ISourceService sourceService;
         private readonly HttpContextInfoProvider httpContextInfoProvider;
         private readonly ILogger<AccountController> logger;
 
         public AccountController(
             IUserService userService,
             IProfileService profileService,
-            ISourceService sourceService,
             HttpContextInfoProvider httpContextInfoProvider,
             ILogger<AccountController> logger)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
-            this.sourceService = sourceService ?? throw new ArgumentNullException(nameof(sourceService));
             this.httpContextInfoProvider = httpContextInfoProvider ?? throw new ArgumentNullException(nameof(httpContextInfoProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -50,7 +47,6 @@ namespace NugetAnalyzer.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserRegisterModel user)
         {
-            logger.LogError("0000000000000000000000000000000000000\n000000000000000000000000000000000000\n00000000000000000000000000000000000000000");
             await userService.CreateUserAsync(user);
             return RedirectToAction("Profile");
         }

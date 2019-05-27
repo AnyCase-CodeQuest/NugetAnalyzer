@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.Domain.Enums;
 using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.Web.Infrastructure;
@@ -12,14 +11,12 @@ namespace NugetAnalyzer.Web.Controllers
 {
 	public class GitHubAuthController : Controller
 	{
-		private readonly ISourceService sourceService;
 		private readonly HttpContextInfoProvider httpContextInfoProvider;
         private const string redirectUri = "/GitHubAuth/Authenticate";
 
 
-        public GitHubAuthController(ISourceService sourceService, HttpContextInfoProvider httpContextInfoProvider)
+        public GitHubAuthController(HttpContextInfoProvider httpContextInfoProvider)
 		{
-			this.sourceService = sourceService ?? throw new ArgumentNullException(nameof(sourceService));
 			this.httpContextInfoProvider = httpContextInfoProvider ?? throw new ArgumentNullException(nameof(httpContextInfoProvider));
 		}
 

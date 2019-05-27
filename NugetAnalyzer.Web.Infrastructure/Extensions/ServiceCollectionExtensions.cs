@@ -123,7 +123,6 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
-            services.AddScoped<ISourceService, SourceService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
             services.AddScoped<IRepositorySaverService, RepositorySaverService>();
