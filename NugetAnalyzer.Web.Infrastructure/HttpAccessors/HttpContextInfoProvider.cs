@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -55,16 +56,8 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
                 .HttpContext
                 .User
                 .FindFirstValue(Constants.NugetAnalyzerClaimTypes.SourceClaimType);
-            return (SourceType)(int.Parse(type));
+            return Enum.Parse<SourceType>(type);
         }
-
-        //public string GetSourceName()
-        //{
-        //    return httpContextAccessor
-        //        .HttpContext
-        //        .User
-        //        .FindFirstValue(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType);
-        //}
 
         public int GetExternalId()
         {
