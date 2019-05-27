@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using NugetAnalyzer.BLL.Interfaces;
+using NugetAnalyzer.Domain.Enums;
 using NugetAnalyzer.DTOs.Models;
 using NugetAnalyzer.Web.Infrastructure;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
@@ -27,15 +28,13 @@ namespace NugetAnalyzer.Web.Controllers
 		{
 			return Challenge(
 				new AuthenticationProperties { RedirectUri = redirectUri },
-				Constants.OAuthSourceNames.GitHubSourceName);
+				Constants.OAuthSourceNames.GitHubSourceType.ToString());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> Authenticate()
 		{
-			int sourceId = await sourceService.GetSourceIdByName(Constants.OAuthSourceNames.GitHubSourceName);
-
-			string accessToken = await httpContextInfoProvider.GetAccessTokenAsync();
+            string accessToken = await httpContextInfoProvider.GetAccessTokenAsync();
 
 			var user = new UserRegisterModel
 			{
@@ -44,7 +43,7 @@ namespace NugetAnalyzer.Web.Controllers
 				Url = httpContextInfoProvider.GetExternalUrl(),
 				ExternalId = httpContextInfoProvider.GetExternalId(),
 				AccessToken = accessToken,
-				SourceId = sourceId
+				SourceId = (int)SourceType.GitHub
 			};
 
 			return RedirectToAction("GitHubLogin", "Account", user);

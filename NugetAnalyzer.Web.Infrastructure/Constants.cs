@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using NugetAnalyzer.Domain.Enums;
 
 namespace NugetAnalyzer.Web.Infrastructure
 {
@@ -36,14 +37,14 @@ namespace NugetAnalyzer.Web.Infrastructure
             public const string UserNameClaimType = "login";
             public const string GithubUrlClaimType = "url";
             public const string AvatarUrlClaimType = "avatarUrl";
-            public const string SourceNameClaimType = "source";
+            public const string SourceClaimType = "source";
             public const string ExternalIdClaimType = ClaimTypes.NameIdentifier;
             public const string GitHubSourceName = "GitHub";
         }
 
         public static class OAuthSourceNames
         {
-            public const string GitHubSourceName = "GitHub";
+            public const SourceType GitHubSourceType = SourceType.GitHub;
         }
     }
 }

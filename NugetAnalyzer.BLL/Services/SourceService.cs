@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Domain.Enums;
 
 namespace NugetAnalyzer.BLL.Services
 {
@@ -31,10 +32,10 @@ namespace NugetAnalyzer.BLL.Services
             }
         }
 
-        public async Task<int> GetSourceIdByName(string sourceName)
+        public async Task<int> GetSourceIdByName(SourceType sourceType)
         {
             IReadOnlyCollection<Source> sources = await SourcesRepository.GetAllAsync();
-            return sources.First(source => source.Name == sourceName).Id;
+            return sources.First(source => source.Type == sourceType).Id;
         }
     }
 }

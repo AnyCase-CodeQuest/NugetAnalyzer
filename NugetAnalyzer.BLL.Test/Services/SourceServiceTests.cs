@@ -4,6 +4,7 @@ using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Domain.Enums;
 using NUnit.Framework;
 
 namespace NugetAnalyzer.BLL.Test.Services
@@ -41,8 +42,9 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void GetSourceIdByName_Should_Invoke_GetAllAsync()
         {
-            sourceService.GetSourceIdByName("GitHub");
+            sourceService.GetSourceIdByName(SourceType.GitHub);
             sourceRepositoryMock.Verify(sourceRepository => sourceRepository.GetAllAsync());
         }
-    }
+
+}
 }

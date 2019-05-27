@@ -82,11 +82,10 @@ namespace NugetAnalyzer.Web.Controllers
 
         private async Task<ProfileDTO> GetCurrentUserProfileAsync()
         {
-            string sourceName = httpContextInfoProvider.GetSourceName();
+            var source = httpContextInfoProvider.GetSource();
             int externalId = httpContextInfoProvider.GetExternalId();
-            int sourceId = await sourceService.GetSourceIdByName(sourceName);
 
-            return await profileService.GetProfileBySourceIdAsync(sourceId, externalId);
+            return await profileService.GetProfileBySourceIdAsync(source, externalId);
         }
     }
 }

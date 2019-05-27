@@ -52,10 +52,10 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = Constants.OAuthSourceNames.GitHubSourceName;
+                options.DefaultChallengeScheme = Constants.OAuthSourceNames.GitHubSourceType.ToString();
             })
             .AddCookie()
-            .AddOAuth(Constants.OAuthSourceNames.GitHubSourceName, options =>
+            .AddOAuth(Constants.OAuthSourceNames.GitHubSourceType.ToString(), options =>
             {
                 options.ClientId = gitHubSecretsConfigurations.ClientId;
                 options.ClientSecret = gitHubSecretsConfigurations.ClientSecret;
@@ -69,7 +69,7 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
                 options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.UserNameClaimType, Constants.GitHubUserClaimTypes.UserName);
                 options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.GithubUrlClaimType, Constants.GitHubUserClaimTypes.Url);
                 options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.AvatarUrlClaimType, Constants.GitHubUserClaimTypes.AvatarUrl);
-                options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType, Constants.NugetAnalyzerClaimTypes.SourceNameClaimType);
+                options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.SourceClaimType, Constants.NugetAnalyzerClaimTypes.SourceClaimType);
 
                 options.Scope.Add(Constants.GitHubScopes.Repo);
 
@@ -87,7 +87,7 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
                         response.EnsureSuccessStatusCode();
                         string jObjectResponse = await response.Content.ReadAsStringAsync();
                         JObject user = JObject.Parse(jObjectResponse);
-                        user.Add(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType, Constants.OAuthSourceNames.GitHubSourceName);
+                        user.Add(Constants.NugetAnalyzerClaimTypes.SourceClaimType, Constants.OAuthSourceNames.GitHubSourceType.ToString());
                         context.RunClaimActions(user);
                     }
                 };

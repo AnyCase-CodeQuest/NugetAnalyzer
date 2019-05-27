@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using NugetAnalyzer.Domain.Enums;
 
 namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
 {
@@ -48,13 +49,22 @@ namespace NugetAnalyzer.Web.Infrastructure.HttpAccessors
                 .FindFirstValue(Constants.NugetAnalyzerClaimTypes.GithubUrlClaimType);
         }
 
-        public string GetSourceName()
+        public SourceType GetSource()
         {
-            return httpContextAccessor
+            var type = httpContextAccessor
                 .HttpContext
                 .User
-                .FindFirstValue(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType);
+                .FindFirstValue(Constants.NugetAnalyzerClaimTypes.SourceClaimType);
+            return (SourceType)(int.Parse(type));
         }
+
+        //public string GetSourceName()
+        //{
+        //    return httpContextAccessor
+        //        .HttpContext
+        //        .User
+        //        .FindFirstValue(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType);
+        //}
 
         public int GetExternalId()
         {
