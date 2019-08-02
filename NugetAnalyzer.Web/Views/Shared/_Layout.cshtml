@@ -45,7 +45,7 @@
             else
             {
                 <div class="dropdown float-right dropdown__menu_float">
-                    <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenuRepositories" data-toggle="dropdown">
+                    <button class="btn btn-default btn_layout dropdown-toggle text-white lead" type="button" id="dropdownMenuRepositories" data-toggle="dropdown">
                         <span class="navbar__dropdown_button">+</span>
                         <span class="caret align-middle"></span>
                     </button>
@@ -59,7 +59,7 @@
 
                 </div>
                 <div class="dropdown float-right  dropdown__menu_float">
-                    <button class="btn btn-default dropdown-toggle text-white lead" type="button" id="dropdownMenuProfile" data-toggle="dropdown">
+                    <button class="btn btn-default btn_layout dropdown-toggle text-white lead" type="button" id="dropdownMenuProfile" data-toggle="dropdown">
                         <span class="navbar__dropdown_button">
                             <img src=@User.Claims.FirstOrDefault(p => p.Type == "avatarUrl")?.Value width="24px" height="24px" alt="Alternate Text" />
                         </span>

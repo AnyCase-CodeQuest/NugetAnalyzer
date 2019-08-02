@@ -4,23 +4,28 @@
 }
 
 @section Styles {
-    <link href="~/stylesheets/Account/Profile.css" rel="stylesheet" />
+    <link href="~/stylesheets/Account/Profile.min.css" rel="stylesheet" />
+    <link href="~/stylesheets/Repository/Report.min.css" rel="stylesheet" />
+}
+
+@section Scritps {
+    <script src="~/scripts/Account/profile.js"></script>
 }
 
 <div class="row ">
-    <div class="column profile__column">
+    <div class="col-2 profile__column">
         <img class="profile__column_item profile__avatar" src=@Model.AvatarUrl />
         <h3 class="profile__column_item">@Model.UserName</h3>
         <button class="w-100 profile__column_item">@Localizer["Edit"]</button>
     </div>
-    <div class="column ml-4">
+    <div class="col-9 ml-2">
         <ul class="nav nav-tabs">
-            <li class="nav-item"><a class="nav-link nav__link_profile_tab active" data-toggle="tab" href="#overview">@Localizer["Overview"]</a></li>
-            <li class="nav-item"><a class="nav-link nav__link_profile_tab" data-toggle="tab" href="#repostiories">@Localizer["Repositories"]</a></li>
+            <li class="nav-item"><a id="overview_tab" class="nav-link nav__link_profile_tab active" data-toggle="tab" href="#overview">@Localizer["Overview"]</a></li>
+            <li class="nav-item"><a id="repositories_tab" class="nav-link nav__link_profile_tab" data-toggle="tab" href="#repositories">@Localizer["Repositories"]</a></li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">@Localizer["Overview"]</div>
-            <div class="tab-pane fade" id="repostiories" role="tabpanel" aria-labelledby="repostiories-tab">@Localizer["Repositories"]</div>
+            <div class="tab-pane fade" id="repositories" role="tabpanel" aria-labelledby="repositories-tab"></div>
         </div>
     </div>
 </div>

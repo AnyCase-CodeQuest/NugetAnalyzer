@@ -55,7 +55,6 @@ namespace NugetAnalyzer.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            env.EnvironmentName = EnvironmentName.Production;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

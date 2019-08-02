@@ -9,6 +9,7 @@ using NugetAnalyzer.DTOs.Models.Reports;
 using NugetAnalyzer.DTOs.Models.Repositories;
 using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
 using NugetAnalyzer.Web.Models.Repositories;
+using NugetAnalyzer.Web.Infrastructure.HttpAccessors;
 
 namespace NugetAnalyzer.Web.Controllers
 {
@@ -83,6 +84,19 @@ namespace NugetAnalyzer.Web.Controllers
             int externalId = httpContextInfoProvider.GetExternalId();
 
             return await profileService.GetProfileBySourceIdAsync(source, externalId);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Report()
+        {
+            var source = httpContextInfoProvider.GetSource();
+            int externalId = httpContextInfoProvider.GetExternalId();
+
+            ProfileDTO profile =  await profileService.GetProfileBySourceIdAsync(source, externalId);
+
+            ICollection<RepositoryReport> model = await repositoryService.GetAnalyzedRepositoriesAsync(p => p.UserId == profile.UserId);
+            
+            return View("_RepositoriesReport", model);
         }
     }
 }
