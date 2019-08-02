@@ -1,0 +1,81 @@
+﻿@model ICollection<NugetAnalyzer.DTOs.Models.Reports.RepositoryReport>
+@{
+    Layout = null;
+}
+<br/>
+
+<div class="d-flex justify-content-between">
+    <div>
+        <a  role="button" class="btn btn-success" data-toggle="modal" href="#legendModal">Legend</a>
+        <a class="btn btn-success" asp-controller="Settings" asp-action="Rules">Rules</a>
+    </div>
+    <div>
+        <a class="btn btn-success" asp-controller="Repository">Add repository</a>
+    </div>
+</div>
+@{
+    await Html.RenderPartialAsync("_Legend");
+}
+<div class="container shadow-sm p-3 mb-5 bg-white rounded">
+    <div class="row">
+        <div class="offset-10 col-1 p-0 font-weight-bold">Version</div>
+        <div class="col-1 p-0 font-weight-bold">Date</div>
+    </div>
+    @foreach (var repository in @Model)
+    {
+        <div class="row div__line div__repository div__accordion">
+            <div class="col-10 div__animation font-weight-bold">
+                <span font-weight-bold>@repository.Name</span>
+            </div>
+            <div class="col-1">
+                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Version: @repository.Report.VersionStatus.ToString()">
+                    <notice type="@repository.Report.VersionStatus"></notice>
+                </span>
+            </div>
+            <div class="col-1">
+                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Published date: @repository.Report.DateStatus.ToString()">
+                    <notice type="@repository.Report.DateStatus"></notice>
+                </span>
+            </div>
+        </div>
+
+        <div class="div__collapse">
+            @foreach (var solution in repository.Solutions)
+            {
+                <div class="row div__solution">
+                    <div class="col-10 font-weight-bold">@solution.Name</div>
+                    <div class="col-1">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Version: @solution.Report.VersionStatus.ToString()">
+                            <notice type="@solution.Report.VersionStatus"></notice>
+                        </span>
+                    </div>
+                    <div class="col-1">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Published date: @solution.Report.DateStatus.ToString()">
+                            <notice type="@solution.Report.DateStatus"></notice>
+                        </span>
+                    </div>
+                </div>
+
+                foreach (var project in solution.Projects)
+                {
+                    <div class="row div__project">
+                        <div class="col-10 font-weight-bold"><a asp-action="Report" asp-controller="Project" asp-route-id="@project.Id">@project.Name</a></div>
+                        <div class="col-1">
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Version: @project.Report.VersionStatus.ToString()">
+                                <notice type="@project.Report.VersionStatus"></notice>
+                            </span>
+                        </div>
+                        <div class="col-1">
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Published date: @project.Report.DateStatus.ToString()">
+                                <notice type="@project.Report.DateStatus"></notice>
+                            </span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+
+<script src="~/scripts/Shared/accordion.js"></script>
+<script src="~/scripts/Shared/tooltip.js"></script>

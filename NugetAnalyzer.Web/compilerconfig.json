@@ -26,5 +26,9 @@
   {
     "outputFile": "wwwroot/stylesheets/Project/Report.css",
     "inputFile": "wwwroot/stylesheets/Project/Report.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/Repository/Report.css",
+    "inputFile": "wwwroot/stylesheets/Repository/Report.scss"
   }
 ]

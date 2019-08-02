@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+<div class="modal fade" id="legendModal" tabindex="-1" role="dialog" aria-labelledby="legendModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="legendModalLabel">Legend</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-sm shadow-sm p-3 mb-5 bg-white rounded">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Notification</th>
+                            <th scope="col">Version</th>
+                            <th scope="col">Published date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><notice type="undefined"></notice></td>
+                            <td>No version</td>
+                            <td>No published date</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td><notice type="Error"></notice></td>
+                            <td>Error</td>
+                            <td>Error</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td><notice type="warning"></notice></td>
+                            <td>Warning</td>
+                            <td>Warning</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td><notice type="info"></notice></td>
+                            <td>Info</td>
+                            <td>Info</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td><notice type="actual"></notice></td>
+                            <td>Actual</td>
+                            <td>Actual</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">6</th>
+                            <td><notice type="obsolete"></notice></td>
+                            <td>-</td>
+                            <td>Obsolete</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
