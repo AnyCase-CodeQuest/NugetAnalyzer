@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace NugetAnalyzer.Domain
 {
-    public class Package
+    public class Package : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public DateTime? LastUpdateTime { get; set; }

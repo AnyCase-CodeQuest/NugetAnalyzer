@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Octokit" Version="0.32.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NugetAnalyzer.Domain\NugetAnalyzer.Domain.csproj" />
   </ItemGroup>
 

@@ -10,6 +10,8 @@ namespace NugetAnalyzer.DAL.EntityConfigurations
         {
             builder.ToTable("Sources");
 
+            builder.Ignore(source => source.Type);
+
             builder
                 .Property(source => source.Name)
                 .HasMaxLength(64)

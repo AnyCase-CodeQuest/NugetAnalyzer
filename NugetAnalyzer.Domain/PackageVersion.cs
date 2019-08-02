@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace NugetAnalyzer.Domain
 {
-    public class PackageVersion
+    public class PackageVersion : BaseEntity
     {
-        public int Id { get; set; }
-
         public int Major { get; set; }
 
         public int Minor { get; set; }

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<NugetAnalyzer.DTOs.Models.Repositories.RepositoryChoice>
+
+<div class="modal-wrapper">
+    <div class="modal fade">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: unset;">
+                    <h2 class="modal-title font-weight-bold">Add your repositories</h2>
+                </div>
+                <div class="modal-body">
+                    @if (!Model.Any())
+                    {
+                        <span>All your repositories have already been added</span>
+                    }
+                    else
+                    {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Repository name</th>
+                                <th><input type="checkbox" value="0"></th>
+                                <th>Branch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var repository in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a class="modal__repository-name" target="_blank" rel="noopener noreferrer" href="@repository.Url">@repository.Name</a>
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" value="@repository.Id">
+                                    </td>
+                                    <td>
+                                        <a class="modal__repository-branch" value="@repository.Id" data-toggle="tooltip" title="click to change branch">
+                                            <span>@repository.DefaultBranch</span>
+                                            <span class="text-gray">(default)</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    }
+                </div>
+                <div class="modal-footer justify-content-center">
+                    @if (!Model.Any())
+                    {
+                        <input type="submit" class="btn btn-dark modal__button-ok" value="Ok" />
+                    }
+                    else
+                    {
+                        <input type="submit" class="btn btn-dark" value="Add" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop show"></div>
+</div>

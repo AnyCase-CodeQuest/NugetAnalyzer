@@ -51,7 +51,7 @@
                     </button>
                     <ul class="dropdown-menu text-white dropdown-menu-right mr-auto navbar__ul" aria-labelled-by="dropdownMenuRepositories">
                         <li>
-                            <a asp-action="About" asp-controller="Home" class="nav-link nav__link_navbar navbar__li">
+                            <a href="#" id="add-repositories_layout-action" class="nav-link nav__link_navbar navbar__li">
                                 @Localizer["Add repository"]
                             </a>
                         </li>
@@ -83,7 +83,7 @@
             }
         </div>
     </nav>
-    <div class="container mt-5">
+    <div id="body-container" class="container mt-5">
         @RenderBody()
         <footer class="container footer__container">
             <div class="row footer__row_margin">
@@ -110,6 +110,11 @@
     <script src="~/scripts/jquery-3.4.0.min.js"></script>
     <script src="~/scripts/popper.min.js"></script>
     <script src="~/scripts/bootstrap.min.js"></script>
+
+    <script src="~/scripts/shared.js"></script>
+    <script src="~/scripts/addRepositories.js"></script>
+
     @RenderSection("Scritps", false)
+
 </body>
 </html>

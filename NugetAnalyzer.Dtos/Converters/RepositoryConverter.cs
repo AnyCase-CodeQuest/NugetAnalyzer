@@ -2,6 +2,7 @@
 using System.Linq;
 using NugetAnalyzer.Domain;
 using NugetAnalyzer.DTOs.Models.Reports;
+using NugetAnalyzer.DTOs.Models.Repositories;
 
 namespace NugetAnalyzer.DTOs.Converters
 {
@@ -22,5 +23,18 @@ namespace NugetAnalyzer.DTOs.Converters
 									.ToList()
 					};
 		}
-	}
+
+        public static RepositoryChoice OctokitRepositoryToRepositoryChoice(Octokit.Repository repository)
+        {
+            return repository == null
+                ? null
+                : new RepositoryChoice
+                {
+                    Id = repository.Id,
+                    Url = repository.HtmlUrl,
+                    Name = repository.Name,
+                    DefaultBranch = repository.DefaultBranch
+                };
+        }
+    }
 }

@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
-using NugetAnalyzer.Common;
 using NugetAnalyzer.Common.Interfaces;
 using NugetAnalyzer.Common.Services;
 using NugetAnalyzer.DAL;
@@ -53,10 +52,10 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = Constants.OAuthSourceNames.GitHubSourceName;
+                options.DefaultChallengeScheme = Constants.OAuthSourceNames.GitHubSourceType.ToString();
             })
             .AddCookie()
-            .AddOAuth(Constants.OAuthSourceNames.GitHubSourceName, options =>
+            .AddOAuth(Constants.OAuthSourceNames.GitHubSourceType.ToString(), options =>
             {
                 options.ClientId = gitHubSecretsConfigurations.ClientId;
                 options.ClientSecret = gitHubSecretsConfigurations.ClientSecret;
@@ -70,7 +69,7 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
                 options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.UserNameClaimType, Constants.GitHubUserClaimTypes.UserName);
                 options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.GithubUrlClaimType, Constants.GitHubUserClaimTypes.Url);
                 options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.AvatarUrlClaimType, Constants.GitHubUserClaimTypes.AvatarUrl);
-                options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType, Constants.NugetAnalyzerClaimTypes.SourceNameClaimType);
+                options.ClaimActions.MapJsonKey(Constants.NugetAnalyzerClaimTypes.SourceClaimType, Constants.NugetAnalyzerClaimTypes.SourceClaimType);
 
                 options.Scope.Add(Constants.GitHubScopes.Repo);
 
@@ -88,7 +87,7 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
                         response.EnsureSuccessStatusCode();
                         string jObjectResponse = await response.Content.ReadAsStringAsync();
                         JObject user = JObject.Parse(jObjectResponse);
-                        user.Add(Constants.NugetAnalyzerClaimTypes.SourceNameClaimType, Constants.OAuthSourceNames.GitHubSourceName);
+                        user.Add(Constants.NugetAnalyzerClaimTypes.SourceClaimType, Constants.OAuthSourceNames.GitHubSourceType.ToString());
                         context.RunClaimActions(user);
                     }
                 };
@@ -115,23 +114,25 @@ namespace NugetAnalyzer.Web.Infrastructure.Extensions
         /// Registers services for project
         /// </summary>
         /// <param name="services"></param>
-        public static void AddNugetAnalyzerServices(this IServiceCollection services)
+        public static void AddNugetAnalyzerServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpClient<INugetHttpService, NugetHttpService>();
+            services.AddSingleton<INugetApiService, NugetApiService>();
+            services.AddScoped<INugetService, NugetService>();
+            services.AddScoped<IGitService, GitService>();
+            services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
-            services.AddScoped<ISourceService, SourceService>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IVersionsAnalyzerService, VersionsAnalyzerService>();
             services.AddScoped<IRepositorySaverService, RepositorySaverService>();
             services.AddSingleton<IDirectoryService, DirectoryService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IRepositoryAnalyzerService, RepositoryAnalyzerService>();
-            services.AddSingleton<INugetApiService, NugetApiService>();
-            services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
-            services.AddScoped<INugetService, NugetService>();
+            services.AddScoped<IGitHubApiService, GitHubApiService>(provider => new GitHubApiService(configuration["ApplicationName"]));
             services.AddScoped<IPackageVersionService, PackageVersionService>();
-            services.AddScoped<IPackageService, PackageService>();
             services.AddScoped<IProjectService, ProjectService>();
+
         }
     }
 }

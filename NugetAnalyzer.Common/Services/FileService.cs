@@ -39,7 +39,7 @@ namespace NugetAnalyzer.Common.Services
             return filesPaths.Count() == 0 ? null : filesPaths.First();
         }
 
-        public Task<string> GetContentAsync(string filePath)
+        public async Task<string> GetContentAsync(string filePath)
         {
             if (filePath == null)
             {
@@ -48,7 +48,7 @@ namespace NugetAnalyzer.Common.Services
 
             using (StreamReader streamReader = new StreamReader(filePath))
             {
-                return streamReader.ReadToEndAsync();
+                return await streamReader.ReadToEndAsync();
             }
         }
 

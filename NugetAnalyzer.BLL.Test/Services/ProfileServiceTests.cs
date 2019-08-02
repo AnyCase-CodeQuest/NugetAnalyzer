@@ -6,6 +6,7 @@ using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.DAL.Interfaces;
 using NugetAnalyzer.Domain;
+using NugetAnalyzer.Domain.Enums;
 using NugetAnalyzer.DTOs.Converters;
 using NugetAnalyzer.DTOs.Models;
 using NUnit.Framework;
@@ -60,14 +61,14 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public void GetProfileBySourceIdAsync_Should_Invoke_GetSingleOrDefaultAsync_With_Proper_Expression()
         {
-            var sourceId = 3;
+            var source = SourceType.GitBucket;
             var externalId = 3;
             var argProfile = new Profile
             {
                 SourceId = 3,
                 ExternalId = 3
             };
-            profileService.GetProfileBySourceIdAsync(sourceId, externalId);
+            profileService.GetProfileBySourceIdAsync(source, externalId);
 
             profileRepositoryMock
                 .Verify(profileRepository =>
@@ -77,7 +78,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public async Task GetProfileForUserAsync_Should_Invoke_UpdateProfileAsync_When_ProfileNotNullAsync()
         {
-            await profileService.GetProfileForUserAsync(userMock, 1);
+            await profileService.GetProfileForUserAsync(userMock, SourceType.GitHub);
             profileRepositoryMock.Verify(profileRepository => profileRepository.GetByIdAsync(It.IsAny<int>()));
             profileRepositoryMock.Verify(profileRepository => profileRepository.Update(profileMock));
             unitOfWorkMock.Verify(unitOfWork => unitOfWork.SaveChangesAsync());
@@ -86,7 +87,7 @@ namespace NugetAnalyzer.BLL.Test.Services
         [Test]
         public async Task GetUserIdByExternalIdAsync_Should_Invoke_GetSingleOrDefaultAsync()
         {
-            await profileService.GetUserIdByExternalIdAsync(1, 1);
+            await profileService.GetUserIdByExternalIdAsync(SourceType.GitHub, 1);
             profileRepositoryMock.Verify(profileRepository => profileRepository.GetSingleOrDefaultAsync(It.IsAny<Expression<Func<Profile, bool>>>()));
         }
     }

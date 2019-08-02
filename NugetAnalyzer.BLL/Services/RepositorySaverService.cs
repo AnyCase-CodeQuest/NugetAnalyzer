@@ -62,7 +62,8 @@ namespace NugetAnalyzer.BLL.Services
 
         public async Task SaveAsync(RepositoryDTO repositoryDTO, int userId)
         {
-            unitOfWork.GetRepository<Repository>().Add(await ToDomainAsync(repositoryDTO, userId));
+            var repository = await ToDomainAsync(repositoryDTO, userId);
+            unitOfWork.GetRepository<Repository>().Add(repository);
             await unitOfWork.SaveChangesAsync();
         }
 

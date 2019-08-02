@@ -41,7 +41,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             Minor = 1,
             Build = 1,
             Revision = 1,
-            PublishedDate = new DateTime(2019, 05, 10)
+            PublishedDate = DateTime.Today
         };
         private readonly PackageVersion obsoletePackageVersion = new PackageVersion
         {
@@ -49,7 +49,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             Minor = 1,
             Build = 1,
             Revision = 1,
-            PublishedDate = new DateTime(2017, 05, 10)
+            PublishedDate = DateTime.Today.AddYears(-2)
         };
 
         private readonly PackageVersion actualPackageVersion = new PackageVersion
@@ -58,7 +58,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             Minor = 1,
             Build = 1,
             Revision = 1,
-            PublishedDate = new DateTime(2019, 04, 4)
+            PublishedDate = DateTime.Today.AddMonths(-1)
         };
 
         private readonly PackageVersion packageVersionWithErrorVersionStatus = new PackageVersion
@@ -67,7 +67,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             Minor = 1,
             Build = 1,
             Revision = 0,
-            PublishedDate = new DateTime(2019, 04, 4)
+            PublishedDate = DateTime.Today.AddMonths(-1)
         };
 
         private readonly PackageVersion packageVersionWithErrorDateStatus = new PackageVersion
@@ -76,7 +76,7 @@ namespace NugetAnalyzer.BLL.Test.Services
             Minor = 1,
             Build = 1,
             Revision = 1,
-            PublishedDate = new DateTime(2016, 04, 4)
+            PublishedDate = DateTime.Today.AddYears(-3).AddMonths(-1)
         };
 
         private readonly PackageVersion packageVersionWithUndefinedDate = new PackageVersion

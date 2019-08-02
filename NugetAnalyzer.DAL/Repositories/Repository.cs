@@ -4,13 +4,15 @@ using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NugetAnalyzer.DAL.Context;
 using NugetAnalyzer.DAL.Interfaces;
+using NugetAnalyzer.Domain;
 
 namespace NugetAnalyzer.DAL.Repositories
 {
     public class Repository<T> : IRepository<T>
-        where T : class
+        where T : BaseEntity
     {
         private readonly NugetAnalyzerDbContext context;
         protected readonly DbSet<T> DbSet;
@@ -84,6 +86,17 @@ namespace NugetAnalyzer.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(item));
             }
+
+            EntityEntry<T> entityEntry = context
+                                            .ChangeTracker
+                                            .Entries<T>()
+                                            .SingleOrDefault(e => e.Entity.Id == item.Id);
+
+            if (entityEntry != null)
+            {
+                context.Entry(entityEntry.Entity).State = EntityState.Detached;
+            }
+
             context.Entry(item).State = EntityState.Modified;
         }
     }

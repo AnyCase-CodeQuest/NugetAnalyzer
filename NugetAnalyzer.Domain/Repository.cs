@@ -2,10 +2,8 @@
 
 namespace NugetAnalyzer.Domain
 {
-    public class Repository
+    public class Repository : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public int UserId { get; set; }
