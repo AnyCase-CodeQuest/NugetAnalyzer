@@ -57,7 +57,9 @@ namespace NugetAnalyzer.Web
 
             services.AddNugetAnalyzerRepositories();
             services.AddNugetAnalyzerServices();
-            services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
+            services
+                .AddMvc(o => o.EnableEndpointRouting = false)
+                .AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

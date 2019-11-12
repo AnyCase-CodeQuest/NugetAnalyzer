@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace NugetAnalyzer.Web.Middleware
@@ -39,7 +38,7 @@ namespace NugetAnalyzer.Web.Middleware
         private async Task<string> FormatRequest(HttpRequest request)
         {
             Stream body = request.Body;
-            request.EnableRewind();
+            request.EnableBuffering();
 
             byte[] buffer = new byte[Convert.ToInt32(request.ContentLength)];
             await request.Body.ReadAsync(buffer, 0, buffer.Length);
