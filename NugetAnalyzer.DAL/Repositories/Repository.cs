@@ -31,7 +31,7 @@ namespace NugetAnalyzer.DAL.Repositories
             DbSet.Add(item);
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public ValueTask<T> GetByIdAsync(int id)
         {
             return DbSet.FindAsync(id);
         }
