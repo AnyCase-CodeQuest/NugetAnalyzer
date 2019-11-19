@@ -36,10 +36,7 @@ namespace NugetAnalyzer.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<NugetAnalyzerDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
-            });
+            services.AddDbContext<NugetAnalyzerDbContext>();
 
             services.AddConverters();
 
