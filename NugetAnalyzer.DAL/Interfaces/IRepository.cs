@@ -10,7 +10,7 @@ namespace NugetAnalyzer.DAL.Interfaces
     {
         void Add(T item);
 
-        Task<T> GetByIdAsync(int id);
+        ValueTask<T> GetByIdAsync(int id);
 
         Task<T> GetSingleOrDefaultAsync(Expression<Func<T, bool>> predicates);
 

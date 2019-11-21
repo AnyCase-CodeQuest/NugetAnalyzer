@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NugetAnalyzer.BLL.Interfaces;
 using NugetAnalyzer.BLL.Services;
 using NugetAnalyzer.Common;
@@ -22,7 +23,7 @@ namespace NugetAnalyzer.Web
     public class Startup
     {
         private const string ResourcePath = "Resources";
-        public Startup(IHostingEnvironment environment)
+        public Startup(IWebHostEnvironment environment)
         {
             Configuration = new ConfigurationBuilder()
                                 .SetBasePath(environment.ContentRootPath)
@@ -35,10 +36,7 @@ namespace NugetAnalyzer.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<NugetAnalyzerDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration["ConnectionString:DefaultConnection"]);
-            });
+            services.AddDbContext<NugetAnalyzerDbContext>();
 
             services.AddConverters();
 
@@ -57,12 +55,14 @@ namespace NugetAnalyzer.Web
 
             services.AddNugetAnalyzerRepositories();
             services.AddNugetAnalyzerServices();
-            services.AddMvc().AddViewLocalization(p => p.ResourcesPath = ResourcePath);
+            services
+                .AddMvc(o => o.EnableEndpointRouting = false)
+                .AddViewLocalization(p => p.ResourcesPath = ResourcePath);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            env.EnvironmentName = EnvironmentName.Production;
+            env.EnvironmentName = Environments.Production;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
